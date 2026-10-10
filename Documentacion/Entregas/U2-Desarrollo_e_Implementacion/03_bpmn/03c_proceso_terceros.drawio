@@ -1,0 +1,107 @@
+<mxfile host="app.diagrams.net" agent="SGSI-ES2" version="24.0.0">
+  <diagram id="p3" name="P3-Terceros">
+    <mxGraphModel dx="900" dy="720" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="720" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="bandA" value="Carril: Administrador de Contratos" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="840" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="start3" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="bandA">
+          <mxGeometry x="20" y="55" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ta1" value="Recepcionar contrato / bases de licitación" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandA">
+          <mxGeometry x="90" y="48" width="250" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="ta2" value="Registrar tercero y contrato" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandA">
+          <mxGeometry x="370" y="48" width="250" height="54" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bandB" value="Carril: Encargado de Ciberseguridad" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="220" width="840" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="tb1" value="Revisar checklist de cláusulas de seguridad" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandB">
+          <mxGeometry x="90" y="50" width="250" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="g1" value="¿Cláusulas completas?" style="rhombus;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="bandB">
+          <mxGeometry x="380" y="55" width="44" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="tb2" value="Verificar cumplimiento (documentación de respaldo)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandB">
+          <mxGeometry x="460" y="50" width="250" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="g2" value="¿Cumple requisitos de seguridad?" style="rhombus;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="bandB">
+          <mxGeometry x="90" y="150" width="44" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="tb3" value="Marcar no conforme + plan de acción" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandB">
+          <mxGeometry x="180" y="150" width="230" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="end_no" value="Fin" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="bandB">
+          <mxGeometry x="440" y="157" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="tb4" value="Marcar conforme / habilitado" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandB">
+          <mxGeometry x="500" y="150" width="230" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="tb5" value="Actualizar estado y publicar en reporte de terceros" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandB">
+          <mxGeometry x="180" y="225" width="270" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="end_ok" value="Fin" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="bandB">
+          <mxGeometry x="480" y="232" width="40" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bandC" value="Pool externo: Proveedor / Tercero" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="40" y="520" width="840" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="tc1" value="Solicitar ajuste de cláusulas (mensaje)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="bandC">
+          <mxGeometry x="90" y="50" width="240" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="tc2" value="Corregir / incorporar cláusulas de seguridad" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="bandC">
+          <mxGeometry x="370" y="50" width="260" height="54" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="start3" target="ta1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="ta1" target="ta2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="ta2" target="tb1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="tb1" target="g1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="Sí" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="g1" target="tb2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;" edge="1" parent="1" source="g1" target="tc1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="tc1" target="tc2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="Reenvía contrato corregido" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;" edge="1" parent="1" source="tc2" target="tb1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="tb2" target="g2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="g2" target="tb3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="tb3" target="end_no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="Sí" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="g2" target="tb4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="tb4" target="tb5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="tb5" target="end_ok">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
