@@ -1,89 +1,109 @@
-<mxfile host="app.diagrams.net" agent="SGSI-ES2" version="24.0.0">
+<mxfile host="app.diagrams.net" agent="SGSI-ES2">
   <diagram id="p1" name="P1-Controles-ISO27001">
-    <mxGraphModel dx="900" dy="760" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="760" math="0" shadow="0">
+    <mxGraphModel dx="1122" dy="732" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="760" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
-        <mxCell id="bandA" value="Carril: Encargado de Ciberseguridad" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="60" width="840" height="210" as="geometry" />
+        <mxCell id="bandA" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Carril: Encargado de&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Ciberseguridad&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="210" width="840" x="40" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="start1" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="bandA">
-          <mxGeometry x="20" y="85" width="40" height="40" as="geometry" />
+        <mxCell id="start1" parent="bandA" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="Inicio" vertex="1">
+          <mxGeometry height="40" width="40" x="55" y="28" as="geometry" />
         </mxCell>
-        <mxCell id="t1" value="Identificar control del Anexo A a registrar" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandA">
-          <mxGeometry x="90" y="78" width="240" height="54" as="geometry" />
+        <mxCell id="t1" parent="bandA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Identificar control del Anexo&lt;div&gt;A a registrar&lt;/div&gt;" vertex="1">
+          <mxGeometry height="54" width="240" x="125" y="21" as="geometry" />
         </mxCell>
-        <mxCell id="t2" value="Registrar control (dominio, descripción, estado inicial)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandA">
-          <mxGeometry x="360" y="78" width="250" height="54" as="geometry" />
+        <mxCell id="t2" parent="bandA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Registrar control (dominio, descripción, estado inicial)" vertex="1">
+          <mxGeometry height="54" width="250" x="395" y="21" as="geometry" />
         </mxCell>
-        <mxCell id="g1" value="¿Existe evidencia?" style="rhombus;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="bandA">
-          <mxGeometry x="640" y="85" width="44" height="44" as="geometry" />
+        <mxCell id="g1" parent="bandA" style="rhombus;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" value="¿Existe evidencia?" vertex="1">
+          <mxGeometry height="44" width="44" x="682" y="26" as="geometry" />
         </mxCell>
-        <mxCell id="t3" value="Adjuntar evidencia (acta / documento / certificado)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandA">
-          <mxGeometry x="360" y="150" width="250" height="54" as="geometry" />
+        <mxCell id="t3" parent="bandA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Adjuntar evidencia (acta / documento / certificado)" vertex="1">
+          <mxGeometry height="54" width="250" x="360" y="123" as="geometry" />
         </mxCell>
-        <mxCell id="t4" value="Actualizar estado del control (no iniciado…gestionado)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandA">
-          <mxGeometry x="640" y="150" width="190" height="54" as="geometry" />
+        <mxCell id="t4" parent="bandA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Actualizar estado del control (no iniciado…gestionado)" vertex="1">
+          <mxGeometry height="54" width="190" x="640" y="123" as="geometry" />
         </mxCell>
-
-        <mxCell id="bandB" value="Carril: Referente Técnico / Dirección" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="290" width="840" height="190" as="geometry" />
+        <mxCell id="bandB" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Carril: Referente&lt;div&gt;Técnico / Dirección&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="840" x="40" y="290" as="geometry" />
         </mxCell>
-        <mxCell id="sub1" value="(Subproceso) Validar cumplimiento y revisar evidencia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="bandB">
-          <mxGeometry x="90" y="70" width="260" height="54" as="geometry" />
+        <mxCell id="sub1" parent="bandB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" value="(Subproceso) Validar cumplimiento y revisar evidencia" vertex="1">
+          <mxGeometry height="54" width="260" x="90" y="70" as="geometry" />
         </mxCell>
-        <mxCell id="g2" value="¿Control validado?" style="rhombus;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="bandB">
-          <mxGeometry x="400" y="75" width="44" height="44" as="geometry" />
+        <mxCell id="g2" parent="bandB" style="rhombus;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" value="¿Control validado?" vertex="1">
+          <mxGeometry height="44" width="44" x="400" y="75" as="geometry" />
         </mxCell>
-        <mxCell id="t5" value="Marcar control como gestionado" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandB">
-          <mxGeometry x="490" y="70" width="220" height="54" as="geometry" />
+        <mxCell id="t5" parent="bandB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Marcar control como gestionado" vertex="1">
+          <mxGeometry height="54" width="220" x="490" y="70" as="geometry" />
         </mxCell>
-
-        <mxCell id="bandC" value="Carril: Sistema SGSI" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="40" y="500" width="840" height="170" as="geometry" />
+        <mxCell id="bandC" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Carril: Sistema SGSI" vertex="1">
+          <mxGeometry height="170" width="840" x="40" y="500" as="geometry" />
         </mxCell>
-        <mxCell id="t6" value="Calcular % de madurez y publicar en dashboard" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="bandC">
-          <mxGeometry x="90" y="60" width="280" height="54" as="geometry" />
+        <mxCell id="t6" parent="bandC" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Calcular % de madurez y publicar en dashboard" vertex="1">
+          <mxGeometry height="54" width="280" x="90" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="end1" value="Fin" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="bandC">
-          <mxGeometry x="440" y="67" width="40" height="40" as="geometry" />
+        <mxCell id="end1" parent="bandC" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" value="Fin" vertex="1">
+          <mxGeometry height="40" width="40" x="440" y="67" as="geometry" />
         </mxCell>
-
-        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="start1" target="t1">
+        <mxCell id="e1" edge="1" parent="1" source="start1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="t1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="t1" target="t2">
+        <mxCell id="e2" edge="1" parent="1" source="t1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="t2">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="t2" target="g1">
+        <mxCell id="e3" edge="1" parent="1" source="t2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="g1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e4" value="Sí" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="g1" target="t3">
+        <mxCell id="e4" edge="1" parent="1" source="g1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="t3" value="Sí">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="744" y="160" />
+              <mxPoint x="525" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="g1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="t4" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="775" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="t3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="t4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e5" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="g1" target="t4">
+        <mxCell id="e7" edge="1" parent="1" source="t4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="sub1">
+          <mxGeometry relative="1" x="-0.0408" as="geometry">
+            <Array as="points">
+              <mxPoint x="750" y="250" />
+              <mxPoint x="260" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="sub1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="g2">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="t3" target="t4">
+        <mxCell id="e9" edge="1" parent="1" source="g2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="t5" value="Sí">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="t4" target="sub1">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e10" edge="1" parent="1" source="g2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="t4" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="462" y="320" />
+              <mxPoint x="775" y="320" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="sub1" target="g2">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e11" edge="1" parent="1" source="t5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="t6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="460" />
+              <mxPoint x="270" y="460" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="e9" value="Sí" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="g2" target="t5">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e10" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="g2" target="t4">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="t5" target="t6">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" edge="1" parent="1" source="t6" target="end1">
+        <mxCell id="e12" edge="1" parent="1" source="t6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="end1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
