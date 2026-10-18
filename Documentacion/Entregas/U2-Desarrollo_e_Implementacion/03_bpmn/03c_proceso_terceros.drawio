@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="SGSI-ES2">
   <diagram id="p3" name="P3-Terceros">
-    <mxGraphModel dx="785" dy="615" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="720" math="0" shadow="0">
+    <mxGraphModel dx="428" dy="336" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="720" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -93,7 +93,7 @@
         <mxCell id="e7" edge="1" parent="1" source="tc1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="tc2">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e8" edge="1" parent="1" source="tc2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;entryX=0.482;entryY=0.979;entryDx=0;entryDy=0;entryPerimeter=0;" target="tb1" value="Reenvía contrato corregido">
+        <mxCell id="e8" edge="1" parent="1" source="tc2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;entryX=0.482;entryY=0.979;entryDx=0;entryDy=0;entryPerimeter=0;" target="tb1" value="Reenvía&amp;nbsp;&lt;div&gt;contrato&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;corregido&lt;/span&gt;&lt;/div&gt;">
           <mxGeometry relative="1" x="0.1514" as="geometry">
             <Array as="points">
               <mxPoint x="540" y="560" />
