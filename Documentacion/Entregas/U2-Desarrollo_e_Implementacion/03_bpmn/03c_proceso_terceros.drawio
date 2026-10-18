@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="SGSI-ES2">
+<mxfile host="app.diagrams.net" agent="SGSI-ES2">
   <diagram id="p3" name="P3-Terceros">
-    <mxGraphModel dx="934" dy="732" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="720" math="0" shadow="0">
+    <mxGraphModel dx="1189" dy="701" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="720" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -29,31 +29,31 @@
           <mxGeometry height="320" width="840" x="40" y="210" as="geometry" />
         </mxCell>
         <mxCell id="tb1" parent="bandB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Revisar checklist de cláusulas de seguridad" vertex="1">
-          <mxGeometry height="54" width="250" x="90" y="30" as="geometry" />
+          <mxGeometry height="54" width="250" x="90" y="16" as="geometry" />
         </mxCell>
         <mxCell id="g1" parent="bandB" style="rhombus;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" value="¿Cláusulas completas?" vertex="1">
-          <mxGeometry height="70" width="70" x="390" y="22" as="geometry" />
+          <mxGeometry height="70" width="70" x="390" y="8" as="geometry" />
         </mxCell>
         <mxCell id="tb2" parent="bandB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Verificar cumplimiento (documentación de respaldo)" vertex="1">
-          <mxGeometry height="54" width="250" x="550" y="30" as="geometry" />
+          <mxGeometry height="54" width="250" x="550" y="16" as="geometry" />
         </mxCell>
         <mxCell id="g2" parent="bandB" style="rhombus;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" value="¿Cumple requisitos de seguridad?" vertex="1">
-          <mxGeometry height="70" width="70" x="106" y="135" as="geometry" />
+          <mxGeometry height="70" width="70" x="106" y="140" as="geometry" />
         </mxCell>
         <mxCell id="tb3" parent="bandB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Marcar no conforme + plan de acción" vertex="1">
-          <mxGeometry height="54" width="230" x="250" y="140" as="geometry" />
+          <mxGeometry height="54" width="230" x="250" y="145" as="geometry" />
         </mxCell>
         <mxCell id="end_no" parent="bandB" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" value="Fin" vertex="1">
-          <mxGeometry height="40" width="40" x="505" y="147" as="geometry" />
+          <mxGeometry height="40" width="40" x="505" y="152" as="geometry" />
         </mxCell>
         <mxCell id="tb4" parent="bandB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Marcar conforme / habilitado" vertex="1">
-          <mxGeometry height="54" width="230" x="590" y="150" as="geometry" />
+          <mxGeometry height="55" width="230" x="594" y="159" as="geometry" />
         </mxCell>
         <mxCell id="tb5" parent="bandB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Actualizar estado y publicar en reporte de terceros" vertex="1">
-          <mxGeometry height="54" width="270" x="385" y="250" as="geometry" />
+          <mxGeometry height="54" width="270" x="385" y="252" as="geometry" />
         </mxCell>
         <mxCell id="end_ok" parent="bandB" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" value="Fin" vertex="1">
-          <mxGeometry height="40" width="40" x="230" y="257" as="geometry" />
+          <mxGeometry height="40" width="40" x="230" y="259" as="geometry" />
         </mxCell>
         <mxCell id="e13" edge="1" parent="bandB" source="tb4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.998;entryY=0.605;entryDx=0;entryDy=0;entryPerimeter=0;" target="tb5">
           <mxGeometry relative="1" x="0.1624" as="geometry">
@@ -62,12 +62,13 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="e12" edge="1" parent="bandB" source="g2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="tb4" value="Sí">
-          <mxGeometry relative="1" x="0.2196" as="geometry">
+          <mxGeometry relative="1" x="0.2671" as="geometry">
             <Array as="points">
+              <mxPoint x="141" y="205" />
               <mxPoint x="140" y="205" />
-              <mxPoint x="140" y="220" />
-              <mxPoint x="570" y="220" />
-              <mxPoint x="570" y="177" />
+              <mxPoint x="140" y="230" />
+              <mxPoint x="560" y="230" />
+              <mxPoint x="560" y="186.5" />
             </Array>
             <mxPoint x="130" y="210" as="sourcePoint" />
           </mxGeometry>
@@ -82,8 +83,8 @@
         <mxCell id="e9" edge="1" parent="bandB" source="tb2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="g2">
           <mxGeometry relative="1" x="0.1487" as="geometry">
             <Array as="points">
-              <mxPoint x="675" y="106" />
-              <mxPoint x="141" y="106" />
+              <mxPoint x="675" y="120" />
+              <mxPoint x="141" y="120" />
             </Array>
             <mxPoint x="667" y="69.99999999999994" as="sourcePoint" />
             <mxPoint x="140" y="130" as="targetPoint" />
@@ -113,12 +114,12 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e8" edge="1" parent="1" source="tc2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="tb1" value="Reenvía&amp;nbsp;&lt;div&gt;contrato&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;corregido&lt;/span&gt;&lt;/div&gt;">
-          <mxGeometry relative="1" x="0.1745" as="geometry">
+          <mxGeometry relative="1" x="0.1734" as="geometry">
             <Array as="points">
               <mxPoint x="540" y="560" />
               <mxPoint x="130" y="560" />
-              <mxPoint x="130" y="310" />
-              <mxPoint x="255" y="310" />
+              <mxPoint x="130" y="300" />
+              <mxPoint x="255" y="300" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -131,8 +132,8 @@
         <mxCell id="e6" edge="1" parent="1" source="g1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="tc1" value="No">
           <mxGeometry relative="1" x="-0.2669" as="geometry">
             <Array as="points">
-              <mxPoint x="465" y="322" />
-              <mxPoint x="100" y="322" />
+              <mxPoint x="465" y="320" />
+              <mxPoint x="100" y="320" />
               <mxPoint x="100" y="619" />
             </Array>
             <mxPoint x="475" y="293.9999999999998" as="sourcePoint" />
