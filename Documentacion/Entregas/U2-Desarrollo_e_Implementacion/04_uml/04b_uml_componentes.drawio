@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="SGSI-ES2">
+<mxfile host="app.diagrams.net" agent="SGSI-ES2">
   <diagram id="comp" name="Componentes SGSI">
-    <mxGraphModel dx="766" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="760" math="0" shadow="0">
+    <mxGraphModel dx="1057" dy="623" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="760" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -90,7 +90,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e1" edge="1" parent="1" source="f1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#333333;fontSize=10;endFill=1;entryX=0.001;entryY=0.415;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="b2" value="HTTP REST /api (JSON)">
-          <mxGeometry relative="1" x="0.324" y="10" as="geometry">
+          <mxGeometry relative="1" x="0.199" y="15" as="geometry">
             <mxPoint as="offset" />
             <Array as="points" />
             <mxPoint x="328.8800000000001" y="160" as="sourcePoint" />
