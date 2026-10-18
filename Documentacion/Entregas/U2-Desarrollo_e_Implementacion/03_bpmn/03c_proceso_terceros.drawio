@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="SGSI-ES2">
   <diagram id="p3" name="P3-Terceros">
-    <mxGraphModel dx="753" dy="590" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="720" math="0" shadow="0">
+    <mxGraphModel dx="934" dy="732" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="720" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -79,18 +79,6 @@
             <mxPoint x="230" y="170" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="e6" edge="1" parent="bandB" source="g1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="No">
-          <mxGeometry relative="1" x="-0.2695" as="geometry">
-            <Array as="points">
-              <mxPoint x="430" y="92" />
-              <mxPoint x="430" y="112" />
-              <mxPoint x="60" y="112" />
-              <mxPoint x="60" y="409" />
-            </Array>
-            <mxPoint x="435" y="83.99999999999977" as="sourcePoint" />
-            <mxPoint x="110" y="409.0000000000002" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="e9" edge="1" parent="bandB" source="tb2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="g2">
           <mxGeometry relative="1" x="0.1487" as="geometry">
             <Array as="points">
@@ -139,6 +127,17 @@
         </mxCell>
         <mxCell id="e14" edge="1" parent="1" source="tb5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="end_ok">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="g1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="tc1" value="No">
+          <mxGeometry relative="1" x="-0.2669" as="geometry">
+            <Array as="points">
+              <mxPoint x="465" y="322" />
+              <mxPoint x="100" y="322" />
+              <mxPoint x="100" y="619" />
+            </Array>
+            <mxPoint x="475" y="293.9999999999998" as="sourcePoint" />
+            <mxPoint x="150" y="619.0000000000002" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
