@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="SGSI-ES2">
   <diagram id="arq" name="Arquitectura de la Solución SGSI">
-    <mxGraphModel dx="1182" dy="927" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="980" pageHeight="920" math="0" shadow="0">
+    <mxGraphModel dx="907" dy="711" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="980" pageHeight="920" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -64,19 +64,41 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e3" edge="1" parent="1" source="neg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="db" value="SQLAlchemy · TCP 5432">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="645" y="550" />
+              <mxPoint x="309" y="550" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="e4" edge="1" parent="1" source="mod" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="fs" value="carga/descarga">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e5" edge="1" parent="1" source="sec" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#b85450;" target="seg">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" x="0.2089" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="590" />
+              <mxPoint x="370" y="590" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="e6" edge="1" parent="1" source="mon" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#b85450;" target="api">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" x="-0.1121" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="825" />
+              <mxPoint x="430" y="580" />
+              <mxPoint x="800" y="580" />
+              <mxPoint x="800" y="325" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="e7" edge="1" parent="1" source="bk" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#b85450;" target="db">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e7" edge="1" parent="1" source="bk" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#b85450;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" target="db">
+          <mxGeometry relative="1" x="0.0044" as="geometry">
+            <Array as="points">
+              <mxPoint x="743" y="770" />
+              <mxPoint x="310" y="770" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
