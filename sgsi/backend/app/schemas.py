@@ -2,16 +2,20 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .models import (
+    CategoriaTicket,
     Dominio,
     EstadoControl,
     EstadoCumplimiento,
     EstadoIncidente,
+    EstadoTicket,
+    MedioNotificacion,
     Role,
     Severidad,
     TipoPersonaControl,
+    TipoTicket,
 )
 
 
@@ -23,6 +27,12 @@ class UsuarioOut(BaseModel):
     username: str
     nombre_completo: str
     rol: Role
+    activo: bool = True
+
+    @field_validator("activo", mode="before")
+    @classmethod
+    def _activo_none_es_inactivo(cls, v):
+        return bool(v)
 
 
 class LoginRequest(BaseModel):
@@ -33,6 +43,52 @@ class LoginRequest(BaseModel):
 class TokenOut(BaseModel):
     token: str
     user: UsuarioOut
+
+
+# ---------- Usuarios (administración) ----------
+USERNAME_PATTERN = r"^[A-Za-z0-9._@-]+$"
+
+
+class UsuarioCreate(BaseModel):
+    username: str = Field(min_length=3, max_length=64, pattern=USERNAME_PATTERN)
+    nombre_completo: str = Field(min_length=1, max_length=150)
+    password: str = Field(min_length=8, max_length=128)
+    rol: Role
+
+    @field_validator("username", "nombre_completo", mode="before")
+    @classmethod
+    def _strip(cls, v):
+        return v.strip() if isinstance(v, str) else v
+
+
+class UsuarioUpdate(BaseModel):
+    username: Optional[str] = Field(default=None, min_length=3, max_length=64, pattern=USERNAME_PATTERN)
+    nombre_completo: Optional[str] = Field(default=None, min_length=1, max_length=150)
+    rol: Optional[Role] = None
+
+    @field_validator("username", "nombre_completo", mode="before")
+    @classmethod
+    def _strip(cls, v):
+        return v.strip() if isinstance(v, str) else v
+
+
+class UsuarioEstado(BaseModel):
+    activo: bool
+
+
+class UsuarioResetPassword(BaseModel):
+    password: str = Field(min_length=8, max_length=128)
+
+
+class AuditoriaOut(BaseModel):
+    id: int
+    actor_id: int
+    actor_username: Optional[str] = None
+    usuario_objetivo_id: int
+    usuario_objetivo_username: Optional[str] = None
+    accion: str
+    detalle: str = ""
+    creado_en: datetime
 
 
 # ---------- Controles / Evidencias ----------
@@ -211,3 +267,84 @@ class MadurezOut(BaseModel):
     global_pct: float
     total_controles: int
     dominios: List[MadurezDominio]
+
+
+# ---------- Tickets (denuncias / reportes) ----------
+class TicketPublicCreated(BaseModel):
+    codigo: str
+    codigo_seguimiento: str
+    estado: EstadoTicket
+    mensaje: str
+
+
+class TicketPublicEstado(BaseModel):
+    codigo: str
+    tipo: TipoTicket
+    estado: EstadoTicket
+    creado_en: datetime
+    actualizado_en: Optional[datetime] = None
+
+
+class TicketAdjuntoOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    nombre_archivo: str
+    mime: str
+    tamano_bytes: int
+
+
+class TicketOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    codigo: str
+    tipo: TipoTicket
+    categoria: CategoriaTicket
+    categoria_otro: Optional[str] = None
+    severidad_percibida: Severidad
+    estado: EstadoTicket
+    sistema_area: str = ""
+    fecha_hecho_aprox: Optional[datetime] = None
+    notificar_correo: bool = False
+    notificar_bandeja: bool = True
+    canal_origen: str = "publico"
+    incidente_id: Optional[int] = None
+    creado_en: datetime
+    actualizado_en: Optional[datetime] = None
+
+
+class TicketDetalle(TicketOut):
+    descripcion: str
+    notas_internas: str = ""
+    adjuntos: List[TicketAdjuntoOut] = []
+
+
+class TicketEstadoUpdate(BaseModel):
+    estado: EstadoTicket
+    notas_internas: Optional[str] = Field(default=None, max_length=5000)
+
+
+class TicketConvertir(BaseModel):
+    categoria_anci: Optional[str] = Field(default=None, max_length=200)
+    severidad: Optional[Severidad] = None
+    alcance: Optional[str] = Field(default=None, max_length=100)
+
+
+class TicketResumen(BaseModel):
+    registrado: int
+    en_analisis: int
+    derivado_a_incidente: int
+    cerrado: int
+    pendientes: int
+
+
+class NotificacionOut(BaseModel):
+    id: int
+    ticket_id: int
+    ticket_codigo: str
+    tipo_ticket: TipoTicket
+    severidad: Severidad
+    medio: MedioNotificacion
+    leida: bool
+    creado_en: datetime

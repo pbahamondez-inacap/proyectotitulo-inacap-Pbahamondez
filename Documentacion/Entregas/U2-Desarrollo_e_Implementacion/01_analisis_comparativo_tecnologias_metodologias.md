@@ -14,7 +14,10 @@ Seleccionar, mediante un análisis **cualitativo y cuantitativo**, las tecnolog�
 frontend, base de datos, infraestructura) y la **metodología de desarrollo** más adecuadas para
 construir el SGSI del Hospital Félix Bulnes Cerda, considerando los **estudios de factibilidad
 técnica, económica e implementativa** y las restricciones del proyecto (equipo de 3 estudiantes,
-un semestre académico, infraestructura hospitalaria existente y obligaciones de la Ley N.º 21.663).
+un semestre académico, infraestructura hospitalaria existente, nueve módulos funcionales y
+obligaciones de la Ley N.º 21.663).
+
+El alcance considera los siete módulos de negocio existentes y dos incorporaciones formalizadas por el Product Owner el 21-10-2026: **Módulo 8 — Usuarios** y **Módulo 9 — Ticketera**.
 
 ---
 
@@ -45,8 +48,10 @@ Para que la comparación sea objetiva y replicable, se definió:
 ## 1.3 Comparación de tecnologías de backend
 
 El backend expone una **API REST** que concentra la lógica de negocio (controles ISO 27001,
-cálculo de madurez, plazos legales de incidentes, terceros, personas, reportería) y gestiona la
-autenticación JWT con control de acceso por roles (RBAC).
+cálculo de madurez, plazos legales de incidentes, terceros, personas, reportería, gestión de usuarios
+y ticketera) y gestiona la autenticación JWT con control de acceso por **RBAC de cinco roles**.
+El formulario público de tickets constituye una excepción deliberada a la autenticación y aplica
+controles específicos de anonimato, validación y limitación de solicitudes.
 
 ### Tabla 2 — Comparación cualitativa de frameworks backend
 
@@ -88,7 +93,8 @@ introducir un segundo lenguaje en el equipo, ya competente en Python.
 ## 1.4 Comparación de tecnologías de frontend
 
 El frontend es una **SPA** con dashboard (gráficos de madurez), formularios de registro y gestión
-por roles.
+por roles; incluye la administración de usuarios y el formulario público de tickets, accesible sin
+autenticación.
 
 ### Tabla 4 — Comparación cualitativa de frameworks/librerías frontend
 
@@ -126,8 +132,9 @@ tiempo de aprendizaje frente al plazo del semestre.
 
 ## 1.5 Comparación de bases de datos
 
-El sistema persiste controles, evidencias, incidentes, contratos/terceros, controles de personas y
-usuarios; requiere **integridad referencial** y **trazabilidad**.
+El sistema persiste controles, evidencias, incidentes, contratos/terceros, controles de personas,
+usuarios y tickets con sus adjuntos, notificaciones y auditoría; requiere **integridad referencial**,
+**trazabilidad** y separación de los datos identificatorios del denunciante.
 
 ### Tabla 6 — Comparación cualitativa de motores de base de datos
 
@@ -189,9 +196,9 @@ la factibilidad implementativa sin sacrificar el camino a producción.
 | C6 Documentación académica exigida | 15 % | 4 | 3 | 5 |
 | **Puntaje ponderado** | | **4.70** | **3.55** | **3.85** |
 
-**Conclusión metodológica:** **Scrum (ágil)**. Los módulos del SGSI (controles, madurez,
-incidentes, terceros, personas, reportería) se validan de forma incremental con el mandante, cuya
-retroalimentación es clave para refinar el catálogo de controles y la taxonomía ANCI. El plazo
+**Conclusión metodológica:** **Scrum (ágil)**. Los nueve módulos del SGSI (controles, evidencias,
+madurez, incidentes, terceros, personas, reportería, usuarios y ticketera) se validan de forma
+incremental con el mandante, cuya retroalimentación es clave para refinar el catálogo de controles y la taxonomía ANCI. El plazo
 acotado del semestre se gestiona con sprints semanales e hitos de entrega (EF2 → ES2). Se descarta
 Cascada porque el alcance se refina a medida que se revisan los controles reales del hospital; y
 Kanban como marco único por su menor estructura de hitos formales, aunque sus tableros se usan como
@@ -206,8 +213,11 @@ herramienta de apoyo dentro del sprint.
 | Aspecto | Evaluación |
 |---|---|
 | Competencias del equipo | Python + TypeScript/React dentro de las competencias del equipo; documentación amplia. |
-| Compatibilidad con infraestructura hospitalaria | Solución web desplegable en servidor propio o nube; no requiere integración en línea con Trakcare. |
-| Seguridad requerida | JWT + RBAC + hash PBKDF2; cifrado en tránsito (HTTPS) y control de acceso por rol. |
+| Alcance y factibilidad funcional | Nueve módulos: los siete de negocio existentes más Usuarios (módulo 8) y Ticketera (módulo 9), incorporados al alcance formal. |
+| Compatibilidad con infraestructura hospitalaria | Solución web desplegable en servidor propio o nube; no requiere integración en línea con Trakcare. El formulario público se sirve por HTTPS desde la red interna hospitalaria. |
+| Seguridad requerida | RBAC de cinco roles: `encargado`, `admin_contratos`, `referente_tecnico`, `director` y `admin_sistema`. Este último solo administra usuarios; solo `encargado` gestiona tickets y procesos de negocio. |
+| Seguridad del formulario público | Acceso anónimo sin JWT; no guardar identidad, IP, user-agent ni token del emisor. Aplicar HTTPS, validación estricta, lista blanca de adjuntos, límite aproximado de 10 MB, rate limiting (Nginx y/o middleware), honeypot/captcha simple y errores genéricos. |
+| Notificaciones | Servicio de correo mediante relay SMTP institucional requerido para habilitar la notificación por email; el fallo de SMTP no bloquea el registro y se conserva la notificación en bandeja interna. |
 | Rendimiento | Volumen transaccional bajo; FastAPI asíncrono y PostgreSQL/SQLite sobran para el alcance. |
 | **Veredicto** | **Viable.** |
 
@@ -219,13 +229,16 @@ herramienta de apoyo dentro del sprint.
 | Infraestructura | Servidor reutilizable del hospital o nube de bajo costo; SQLite elimina costo en desarrollo. |
 | Recursos humanos | Equipo académico (3 estudiantes) sin costo de contratación externa. |
 | Mantenimiento | Comunidad activa y documentación gratuita; bajo costo de soporte futuro. |
+| Notificaciones por correo | El uso del relay SMTP institucional existente evita licencias adicionales; requiere habilitación y configuración por TI. |
 | **Veredicto** | **Viable — costo marginal cercano a $0.** |
 
 ### 1.7.3 Factibilidad implementativa
 
 | Aspecto | Evaluación |
 |---|---|
-| Plazo (un semestre) | Sprints semanales con entregables priorizados; el stack elegido acelera el desarrollo. |
+| Plazo (un semestre) | Sprints semanales con entregables priorizados; el stack elegido acelera el desarrollo. Se implementa primero Usuarios y luego Ticketera, según el acuerdo del 21-10-2026. |
+| Disponibilidad de servicios | La operación de notificaciones por correo requiere que TI habilite una cuenta o relay SMTP institucional y los parámetros de conexión. |
+| Gestión y separación de roles | Cinco roles RBAC; `admin_sistema` administra exclusivamente usuarios y no accede a datos de negocio ni a tickets. |
 | Disponibilidad del mandante | Reuniones periódicas de revisión de sprint con el encargado de ciberseguridad. |
 | Restricciones de datos | Uso de datos ficticios/anonimizados para pruebas (sin acceso a datos clínicos reales). |
 | Riesgo de despliegue | Arquitectura monolítica modular de 3 capas: despliegue y mantenimiento simples. |
@@ -238,7 +251,9 @@ herramienta de apoyo dentro del sprint.
 | Capa | Tecnología seleccionada | Justificación resumida |
 |---|---|---|
 | Backend | **Python 3 + FastAPI + SQLAlchemy** | Tipado Pydantic, Swagger automático, asíncrono, seguridad estándar, curva de aprendizaje adecuada. |
-| Autenticación | **JWT + RBAC (PyJWT, PBKDF2)** | Control de acceso por roles exigido por los perfiles del hospital. |
+| Autenticación | **JWT + RBAC de 5 roles** (PyJWT, PBKDF2) | `encargado`, `admin_contratos`, `referente_tecnico`, `director` y `admin_sistema`; permisos separados por función. |
+| Alcance funcional | **9 módulos** (7 existentes + Usuarios y Ticketera) | Incluye administración de usuarios y formulario público anónimo de denuncias/reportes. |
+| Notificaciones | **Servicio SMTP institucional** + bandeja interna | El correo notifica solo código, tipo, severidad y enlace; no incluye contenido sensible. |
 | Base de datos | **PostgreSQL** (producción) / **SQLite** (desarrollo) | Integridad referencial y auditoría en producción; cero administración en desarrollo vía SQLAlchemy. |
 | Frontend | **React 18 + TypeScript + Vite + Recharts** | Ecosistema maduro de gráficos para el dashboard de madurez; SPA rápida y mantenible. |
 | Metodología | **Scrum (ágil)** | Validación incremental con el mandante y gestión del plazo del semestre. |

@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..deps import get_current_user, require_roles
-from ..models import EstadoIncidente, Incidente, Role, Severidad
+from ..deps import get_business_user, require_roles
+from ..models import EstadoIncidente, Incidente, Role, Severidad, Ticket
 from ..schemas import IncidenteCreate, IncidenteOut, IncidenteUpdate
 from ..services import incidente_to_dict
 from ..utils import now_naive, to_naive
@@ -25,7 +25,7 @@ def list_incidentes(
     estado: str | None = Query(default=None),
     search: str | None = Query(default=None),
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     q = db.query(Incidente)
     if severidad:
@@ -58,7 +58,7 @@ def create_incidente(
 def get_incidente(
     incidente_id: int,
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     return IncidenteOut(**incidente_to_dict(_get_incidente(incidente_id, db)))
 
@@ -90,6 +90,8 @@ def delete_incidente(
     user=Depends(require_roles(Role.encargado)),
 ):
     incidente = _get_incidente(incidente_id, db)
+    # Los tickets derivados conservan su historial sin referencia al incidente eliminado
+    db.query(Ticket).filter(Ticket.incidente_id == incidente.id).update({"incidente_id": None})
     db.delete(incidente)
     db.commit()
     return {"ok": True}

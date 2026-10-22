@@ -2,4 +2,6 @@
 __pycache__/
 *.pyc
 data/
+.pytest_cache/
+tests/.test_data/
 .DS_Store

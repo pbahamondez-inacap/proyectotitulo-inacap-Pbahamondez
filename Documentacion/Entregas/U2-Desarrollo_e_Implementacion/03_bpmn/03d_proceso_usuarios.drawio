@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" agent="SGSI-ES2">
+  <diagram id="p4" name="P4-Gestion-usuarios">
+    <mxGraphModel dx="1200" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="650" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="laneAdmin" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Carril: Administrador de Sistema (admin_sistema)" vertex="1"><mxGeometry height="270" width="840" x="40" y="60" as="geometry" /></mxCell>
+        <mxCell id="p4start" parent="laneAdmin" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="Inicio" vertex="1"><mxGeometry height="40" width="40" x="25" y="105" as="geometry" /></mxCell>
+        <mxCell id="p4action" parent="laneAdmin" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Seleccionar alta, edición, reset o cambio de estado" vertex="1"><mxGeometry height="60" width="190" x="90" y="95" as="geometry" /></mxCell>
+        <mxCell id="p4data" parent="laneAdmin" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Ingresar o actualizar datos de cuenta y rol RBAC" vertex="1"><mxGeometry height="60" width="190" x="310" y="95" as="geometry" /></mxCell>
+        <mxCell id="p4guard" parent="laneAdmin" style="rhombus;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" value="¿Acción permitida?" vertex="1"><mxGeometry height="60" width="60" x="535" y="95" as="geometry" /></mxCell>
+        <mxCell id="p4deny" parent="laneAdmin" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" value="Rechazar auto-desactivación o baja del último admin activo" vertex="1"><mxGeometry height="55" width="220" x="475" y="185" as="geometry" /></mxCell>
+        <mxCell id="p4enddeny" parent="laneAdmin" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="Fin sin cambio" vertex="1"><mxGeometry height="40" width="80" x="720" y="192" as="geometry" /></mxCell>
+        <mxCell id="laneSystem" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Carril: Sistema SGSI" vertex="1"><mxGeometry height="210" width="840" x="40" y="360" as="geometry" /></mxCell>
+        <mxCell id="p4apply" parent="laneSystem" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Aplicar cambio; baja lógica, nunca borrado físico" vertex="1"><mxGeometry height="60" width="200" x="55" y="70" as="geometry" /></mxCell>
+        <mxCell id="p4audit" parent="laneSystem" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" value="Auditar quién, qué, cuándo y detalle" vertex="1"><mxGeometry height="60" width="190" x="290" y="70" as="geometry" /></mxCell>
+        <mxCell id="p4confirm" parent="laneSystem" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Confirmar resultado" vertex="1"><mxGeometry height="60" width="155" x="515" y="70" as="geometry" /></mxCell>
+        <mxCell id="p4end" parent="laneSystem" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" value="Fin" vertex="1"><mxGeometry height="40" width="40" x="710" y="80" as="geometry" /></mxCell>
+        <mxCell id="p4e1" edge="1" parent="1" source="p4start" target="p4action" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="p4e2" edge="1" parent="1" source="p4action" target="p4data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="p4e3" edge="1" parent="1" source="p4data" target="p4guard" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="p4e4" edge="1" parent="1" source="p4guard" target="p4deny" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="605" y="220" /></Array></mxGeometry></mxCell>
+        <mxCell id="p4e5" edge="1" parent="1" source="p4deny" target="p4enddeny" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="p4e6" edge="1" parent="1" source="p4guard" target="p4apply" value="Sí" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="625" y="300" /><mxPoint x="195" y="300" /></Array></mxGeometry></mxCell>
+        <mxCell id="p4e7" edge="1" parent="1" source="p4apply" target="p4audit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="p4e8" edge="1" parent="1" source="p4audit" target="p4confirm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="p4e9" edge="1" parent="1" source="p4confirm" target="p4end" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

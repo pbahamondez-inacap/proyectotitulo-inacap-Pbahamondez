@@ -22,7 +22,7 @@ unitarias, de integración, de sistema, de aceptación (UAT) y no funcionales (s
 | Integración | Validar la interacción API ↔ ORM ↔ BD y el flujo JWT/RBAC | Equipo de desarrollo | Al integrar módulos |
 | Sistema | Validar flujos completos de cada módulo | Equipo de desarrollo | Antes de la entrega |
 | Aceptación (UAT) | Validar con el mandante los flujos de negocio clave | Encargado de Ciberseguridad | Antes del cierre |
-| Seguridad | Validar autenticación, RBAC y confidencialidad | Equipo de desarrollo | Fase final |
+| Seguridad | Validar autenticación, RBAC, anonimato del canal público, rate limiting, manejo seguro de adjuntos y confidencialidad de denuncias | Equipo de desarrollo | Fase final |
 | Rendimiento | Validar tiempos de respuesta y carga concurrente | Equipo de desarrollo | Fase final |
 
 ## 11.3 Ambiente de pruebas
@@ -32,7 +32,8 @@ unitarias, de integración, de sistema, de aceptación (UAT) y no funcionales (s
 | Backend | FastAPI + Uvicorn (puerto 8000), SQLite de prueba (BD desechable) |
 | Frontend | Vite (puerto 5173) con proxy `/api` → 8000 |
 | Datos | Datos de demostración generados por `python -m app.seed` |
-| Usuarios de prueba | `miguel.godoy` (encargado), `maria.perez` (admin contratos), `juan.rojas` (referente), `patricia.silva` (director) — contraseña `demo123` |
+| Correo | SMTP simulado (mock/relay de pruebas) para validar notificaciones sin enviar correo institucional real |
+| Usuarios de prueba | `miguel.godoy` (`encargado`), `maria.perez` (`admin_contratos`), `juan.rojas` (`referente_tecnico`), `patricia.silva` (`director`) y `admin.sistema` (`admin_sistema`) — contraseña de demostración `demo123`; no reutilizar credenciales demo en producción |
 
 ## 11.4 Casos de prueba (principales)
 
@@ -83,13 +84,41 @@ unitarias, de integración, de sistema, de aceptación (UAT) y no funcionales (s
 |---|---|---|
 | CP-17 | Rendimiento API | p95 ≤ 500 ms en operaciones CRUD típicas |
 | CP-18 | Carga concurrente | ≥ 10 usuarios simultáneos sin degradación |
-| CP-19 | Seguridad | Sin acceso anónimo; RBAC aplicado; hash PBKDF2 en contraseñas |
+| CP-19 | Seguridad general | El acceso anónimo se deniega para todos los recursos salvo el formulario público de tickets, sus categorías y la consulta de estado por código; RBAC aplicado; contraseñas con hash PBKDF2 |
+
+### Módulo Usuarios
+
+| ID | Caso | Pasos | Resultado esperado |
+|---|---|---|---|
+| CP-20 | Crear usuario | Autenticarse como `admin.sistema` y crear usuario con `username`, nombre completo, clave inicial y rol | Usuario creado con rol asignado; la acción queda auditada |
+| CP-21 | Editar rol/datos | Como `admin.sistema`, cambiar nombre, `username` o rol de una cuenta existente | Datos actualizados y cambio registrado en `auditoria_usuarios` |
+| CP-22 | Deshabilitar usuario | Deshabilitar una cuenta de prueba e intentar iniciar sesión y usar un token previo | Baja lógica; login y token de usuario inactivo rechazados |
+| CP-23 | Impedir autodeshabilitación | Intentar deshabilitar la propia cuenta activa de `admin.sistema` | Operación rechazada; sesión y cuenta se mantienen activas |
+| CP-24 | Proteger último `admin_sistema` | Intentar deshabilitar o degradar el último administrador de sistema activo | Operación rechazada; se mantiene al menos un `admin_sistema` activo |
+| CP-25 | Restringir administración de usuarios | Llamar `/api/usuarios` con cada rol distinto de `admin_sistema` | Acceso denegado con HTTP 403 |
+| CP-26 | Auditar cambios de usuarios | Crear, editar rol/datos, restablecer contraseña y habilitar/deshabilitar una cuenta | `auditoria_usuarios` registra actor, acción, fecha y detalle, sin guardar contraseñas en claro |
+
+### Módulo Ticketera
+
+| ID | Caso | Pasos | Resultado esperado |
+|---|---|---|---|
+| CP-27 | Crear ticket público sin token | Enviar formulario público sin JWT con datos válidos | HTTP 201; se asigna código y el ticket no queda asociado a un usuario |
+| CP-28 | Validar categoría Otros | Enviar categoría `otros` primero sin y luego con texto libre | Sin `categoria_otro` se rechaza; con descripción se acepta |
+| CP-29 | Verificar anonimato con sesión activa | Crear ticket mientras existe una sesión autenticada y revisar registro, adjuntos y logs de aplicación | No se guarda identidad, FK a usuario, token, IP ni user-agent del emisor; anonimato se conserva aun con sesión activa |
+| CP-30 | Notificación por bandeja | Crear ticket con notificación interna seleccionada | Notificación pendiente visible para destinatarios `encargado` |
+| CP-31 | Notificación por correo | Crear ticket con correo seleccionado usando SMTP simulado | Relay de prueba recibe correo con código, tipo, severidad y enlace; sin contenido sensible |
+| CP-32 | Seleccionar ambos medios | Crear ticket con correo y bandeja seleccionados | Se generan ambas notificaciones; fallo SMTP no impide crear ni conservar el ticket en la bandeja |
+| CP-33 | Confidencialidad de la bandeja | Consultar y gestionar tickets como `encargado`, otro rol y `admin_sistema` | Solo `encargado` accede al contenido; los demás reciben HTTP 403 |
+| CP-34 | Cambiar estado | Como `encargado`, mover ticket por el ciclo registrado → en análisis → cerrado | Estado válido persistido con trazabilidad; otros roles no pueden modificarlo |
+| CP-35 | Convertir ticket en incidente | Como `encargado`, derivar ticket a incidente y completar taxonomía ANCI | Incidente vinculado; ticket pasa a `derivado_a_incidente`; se calculan plazos legales de 3 h, 72 h o 15 días según corresponda |
+| CP-36 | Validar adjuntos | Enviar archivos permitidos y luego un tipo no permitido o que exceda el límite configurado | Archivos válidos aceptados; tipo/tamaño inválido rechazado sin exponer ruta interna |
+| CP-37 | Limitar abuso del formulario | Superar el umbral configurado de solicitudes públicas | Rate limiting bloquea o ralentiza solicitudes excedentes sin afectar tickets válidos |
+| CP-38 | Consultar estado por código | Consultar con código de seguimiento válido e inválido | Se informa solo estado/código; nunca identidad, descripción ni datos sensibles del ticket |
 
 ## 11.5 Criterios de entrada y salida
 
-- **Entrada:** código compilado (`tsc --noEmit` sin errores), BD de prueba cargada con `app.seed`.
-- **Salida:** 100 % de casos funcionales críticos (CP-01 a CP-16) aprobados; defectos severos
-  corregidos y re-ejecutados; aprobación UAT del Encargado de Ciberseguridad.
+- **Entrada:** compilación y validaciones estáticas sin errores; BD desechable cargada con datos ficticios; cinco cuentas de prueba disponibles, incluida `admin.sistema`; SMTP simulado operativo; almacenamiento de adjuntos aislado; límites de solicitudes del endpoint público configurados.
+- **Salida:** CP-01 a CP-16 y CP-20 a CP-38 funcionales críticos aprobados; anonimato, controles de acceso, rate limiting y validación de adjuntos verificados; defectos severos corregidos y re-ejecutados; aprobación UAT del Encargado de Ciberseguridad. CP-17 a CP-19 se aprueban según sus criterios no funcionales.
 
 ## 11.6 Matriz de trazabilidad (requisito ↔ prueba)
 
@@ -101,7 +130,10 @@ unitarias, de integración, de sistema, de aceptación (UAT) y no funcionales (s
 | Gestionar incidentes con plazos | CP-10, CP-11, CP-12 |
 | Gestionar terceros y personas | CP-13, CP-14, CP-15 |
 | Exportar reportes | CP-16 |
-| Rendimiento y seguridad | CP-17, CP-18, CP-19 |
+| Gestionar usuarios, roles y auditoría | CP-20 a CP-26 |
+| Crear, notificar y gestionar tickets de forma confidencial | CP-27 a CP-36 |
+| Protección del canal público y consulta anónima | CP-29, CP-36 a CP-38 |
+| Rendimiento y seguridad | CP-17, CP-18, CP-19, CP-25, CP-29, CP-33, CP-36, CP-37 |
 
 ## 11.7 Herramientas de prueba
 

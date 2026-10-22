@@ -1,4 +1,4 @@
-export type Role = 'encargado' | 'admin_contratos' | 'referente_tecnico' | 'director'
+export type Role = 'encargado' | 'admin_contratos' | 'referente_tecnico' | 'director' | 'admin_sistema'
 export type Dominio = 'organizacional' | 'personas' | 'fisico' | 'tecnologico'
 export type EstadoControl = 'no_iniciado' | 'iniciado' | 'implementado' | 'gestionado'
 export type Severidad = 'baja' | 'media' | 'alta' | 'critica'
@@ -17,12 +17,135 @@ export type TipoPersonaControl =
   | 'disciplinario'
   | 'termino_contrato'
   | 'confidencialidad'
+export type TipoTicket = 'denuncia' | 'reporte_incidente'
+export type EstadoTicket = 'registrado' | 'en_analisis' | 'derivado_a_incidente' | 'cerrado'
+export type MedioNotificacion = 'correo' | 'bandeja'
 
 export interface Usuario {
   id: number
   username: string
   nombre_completo: string
   rol: Role
+  activo: boolean
+}
+
+export interface UsuarioCreate {
+  username: string
+  nombre_completo: string
+  password: string
+  rol: Role
+}
+
+export interface UsuarioUpdate {
+  username?: string
+  nombre_completo?: string
+  rol?: Role
+}
+
+export interface AuditoriaOut {
+  id: number
+  actor_id: number
+  actor_username: string
+  usuario_objetivo_id: number
+  usuario_objetivo_username: string
+  accion: string
+  detalle: string
+  creado_en: string
+}
+
+export interface TicketAdjunto {
+  id: number
+  nombre_archivo: string
+  mime: string
+  tamano_bytes: number
+}
+
+export interface TicketOut {
+  id: number
+  codigo: string
+  tipo: TipoTicket
+  categoria: string
+  categoria_otro: string | null
+  severidad_percibida: Severidad
+  estado: EstadoTicket
+  sistema_area: string | null
+  fecha_hecho_aprox: string | null
+  notificar_correo: boolean
+  notificar_bandeja: boolean
+  canal_origen: string
+  incidente_id: number | null
+  creado_en: string
+  actualizado_en: string
+}
+
+export interface TicketDetalle extends TicketOut {
+  descripcion: string
+  notas_internas: string | null
+  adjuntos: TicketAdjunto[]
+}
+
+export interface TicketResumen {
+  registrado: number
+  en_analisis: number
+  derivado_a_incidente: number
+  cerrado: number
+  pendientes: number
+}
+
+export interface CategoriaOption {
+  value: string
+  label: string
+}
+
+export interface TicketCatalogo {
+  tipos: CategoriaOption[]
+  categorias: CategoriaOption[]
+  severidades: CategoriaOption[]
+  medios: CategoriaOption[]
+}
+
+export interface PublicTicketResponse {
+  codigo: string
+  codigo_seguimiento: string
+  estado: EstadoTicket
+  mensaje: string
+}
+
+export interface TicketSeguimiento {
+  codigo: string
+  tipo: TipoTicket
+  estado: EstadoTicket
+  creado_en: string
+  actualizado_en: string
+}
+
+export interface Notificacion {
+  id: number
+  ticket_id: number
+  ticket_codigo: string
+  tipo_ticket: TipoTicket
+  severidad: Severidad
+  medio: MedioNotificacion
+  leida: boolean
+  creado_en: string
+}
+
+export interface Incidente {
+  id: number
+  titulo: string
+  descripcion: string
+  categoria: string
+  severidad: Severidad
+  alcance: string
+  sistema_afectado: string
+  fecha_deteccion: string
+  fecha_reporte: string | null
+  estado: EstadoIncidente
+  reportado_anci: boolean
+  notas: string
+  alerta_temprana: string
+  plazo_reporte: string
+  vencido: boolean
 }
 
 export interface Evidencia {
@@ -47,24 +170,6 @@ export interface Control {
   notas: string
   fecha_actualizacion: string | null
   evidencias: Evidencia[]
-}
-
-export interface Incidente {
-  id: number
-  titulo: string
-  descripcion: string
-  categoria: string
-  severidad: Severidad
-  alcance: string
-  sistema_afectado: string
-  fecha_deteccion: string
-  fecha_reporte: string | null
-  estado: EstadoIncidente
-  reportado_anci: boolean
-  notas: string
-  alerta_temprana: string
-  plazo_reporte: string
-  vencido: boolean
 }
 
 export interface Clausula {

@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from .database import Base, SessionLocal, engine
 from .models import (
+    CategoriaTicket,
     Control,
     Dominio,
     EstadoControl,
@@ -13,13 +14,50 @@ from .models import (
     Role,
     Severidad,
     Tercero,
+    Ticket,
     TipoPersonaControl,
+    TipoTicket,
     Usuario,
 )
+from .notificaciones import crear_notificaciones
 from .security import hash_password
+from .tickets_service import crear_ticket
 from .utils import now_naive
 
 DEMO_PASSWORD = "demo123"
+
+
+def _asegurar_modulos_usuarios_y_tickets(db) -> None:
+    """Idempotente: agrega admin.sistema y tickets demo aunque la base ya tenga datos previos."""
+    if not db.query(Usuario).filter(Usuario.username == "admin.sistema").first():
+        db.add(Usuario(username="admin.sistema", password_hash=hash_password(DEMO_PASSWORD),
+                       nombre_completo="Administrador de Sistema", rol=Role.admin_sistema))
+        db.commit()
+        print("Usuario demo creado: admin.sistema (admin_sistema)")
+
+    if db.query(Ticket).count() > 0:
+        return
+    demos = [
+        dict(tipo=TipoTicket.reporte_incidente, categoria=CategoriaTicket.phishing,
+             descripcion="Recibí un correo que simula ser de Mesa de Ayuda solicitando mi clave "
+                         "de acceso al sistema de fichas clínicas.",
+             sistema_area="Correo institucional", severidad_percibida=Severidad.alta),
+        dict(tipo=TipoTicket.denuncia, categoria=CategoriaTicket.uso_indebido_de_datos,
+             descripcion="Se observó que se comparten datos de pacientes por mensajería "
+                         "personal fuera de los canales autorizados.",
+             sistema_area="Unidad de Urgencia", severidad_percibida=Severidad.media),
+        dict(tipo=TipoTicket.reporte_incidente, categoria=CategoriaTicket.otros,
+             categoria_otro="Equipo de red sin etiquetar",
+             descripcion="Se encontró un equipo de red desconocido conectado en la sala de "
+                         "servidores del segundo piso.",
+             sistema_area="Sala de servidores", severidad_percibida=Severidad.baja),
+    ]
+    for demo in demos:
+        ticket = crear_ticket(db, canal_origen="publico", notificar_bandeja=True,
+                              notificar_correo=False, **demo)
+        crear_notificaciones(db, ticket)
+        db.commit()
+    print("Tickets demo creados: 3")
 
 
 def run_seed() -> None:
@@ -27,7 +65,8 @@ def run_seed() -> None:
     db = SessionLocal()
     try:
         if db.query(Usuario).count() > 0:
-            print("La base ya contiene datos; se omite el seed.")
+            print("La base ya contiene datos; se omite el seed de datos base.")
+            _asegurar_modulos_usuarios_y_tickets(db)
             return
 
         # ---- Usuarios (RBAC) ----
@@ -196,9 +235,11 @@ def run_seed() -> None:
         db.add_all(personas)
 
         db.commit()
+        _asegurar_modulos_usuarios_y_tickets(db)
         print(f"Seed completado. Usuarios (contraseña: {DEMO_PASSWORD}):")
         print("  miguel.godoy (encargado), maria.perez (admin_contratos), "
-              "juan.rojas (referente_tecnico), patricia.silva (director)")
+              "juan.rojas (referente_tecnico), patricia.silva (director), "
+              "admin.sistema (admin_sistema)")
     finally:
         db.close()
 

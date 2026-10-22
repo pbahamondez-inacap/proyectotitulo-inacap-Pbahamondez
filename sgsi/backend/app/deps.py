@@ -42,3 +42,15 @@ def require_roles(*roles: Role):
         return user
 
     return checker
+
+
+# Roles de negocio: todos salvo admin_sistema (administración técnica, sin acceso a datos de negocio)
+BUSINESS_ROLES = (
+    Role.encargado,
+    Role.admin_contratos,
+    Role.referente_tecnico,
+    Role.director,
+)
+
+# Lectura de módulos de negocio: cualquier rol de negocio autenticado; admin_sistema recibe 403.
+get_business_user = require_roles(*BUSINESS_ROLES)

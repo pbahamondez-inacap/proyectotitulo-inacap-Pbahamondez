@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from ..config import MATURITY_WEIGHTS
 from ..database import get_db
-from ..deps import get_current_user
+from ..deps import get_business_user
 from ..models import Control, Dominio, EstadoControl
 from ..schemas import MadurezDominio, MadurezOut
 
@@ -12,7 +12,7 @@ router = APIRouter(prefix="/madurez", tags=["madurez"])
 
 
 @router.get("", response_model=MadurezOut)
-def get_madurez(db: Session = Depends(get_db), user=Depends(get_current_user)):
+def get_madurez(db: Session = Depends(get_db), user=Depends(get_business_user)):
     controles = db.query(Control).all()
     total_controles = len(controles)
     pesos_estado = {estado.value: MATURITY_WEIGHTS[estado.value] for estado in EstadoControl}

@@ -20,9 +20,9 @@ estructura de la plantilla **ABPro**. Sirve de guía para armar el documento Wor
 | 1. Formulación y alcance | Problema, objetivos, alcance y restricciones | `borrador_informe_formulacion.md` |
 | 2. Análisis comparativo | Selección de tecnologías y metodología (factibilidad) | `01_análisis...` |
 | 3. Requerimientos de recursos | Herramientas, lenguajes, hardware y servicios TI | `02_herramientas...` |
-| 4. Modelamiento de procesos | BPMN de 3 procesos con subprocesos | `03_bpmn...` |
+| 4. Modelamiento de procesos | BPMN de 5 procesos con subprocesos (P1–P5; incluye Usuarios y Ticketera) | `03_bpmn...` |
 | 5. Diseño UML | Casos de uso y componentes | `04_uml...` |
-| 6. Modelo de datos | ER + diccionario de datos | `05_modelo_datos...` |
+| 6. Modelo de datos | ER + diccionario de datos; 10 tablas, incluidas `tickets`, `ticket_adjuntos`, `notificaciones` y `auditoria_usuarios` | `05_modelo_datos...` |
 | 7. Red e infraestructura | Topología, infraestructura y arquitectura | `06_…`, `07_…`, `08_…` |
 | 8. Indicadores y servicios | KPI SMART y SLA | `09_kpi...`, `10_sla...` |
 | 9. Calidad y pruebas | Plan de pruebas | `11_plan_de_pruebas...` |
@@ -34,13 +34,9 @@ estructura de la plantilla **ABPro**. Sirve de guía para armar el documento Wor
 
 ## 17.2 Resumen ejecutivo
 
-El Hospital Félix Bulnes Cerda, en su calidad de Operador de Importancia Vital (Ley N.º 21.663),
-requiere demostrar la madurez de sus controles ISO/IEC 27001 y gestionar los incidentes de
-ciberseguridad dentro de plazos legales. El proyecto desarrolló un **Sistema de Gestión de Seguridad
-de la Información (SGSI)** de tipo GRC, compuesto por una **SPA en React** y una **API REST en
-FastAPI**, que centraliza controles, evidencias, madurez, incidentes, terceros y personas, con
-reportería exportable. La solución reemplaza el trabajo manual disperso por un sistema único,
-auditable y con visualización gráfica del avance.
+El Hospital Félix Bulnes Cerda, en su calidad de Operador de Importancia Vital (Ley N.º 21.663), requiere demostrar la madurez de sus controles ISO/IEC 27001 y gestionar los incidentes de ciberseguridad dentro de plazos legales. El SGSI desarrollado como solución GRC se compone de una SPA React y una API REST FastAPI; integra controles, evidencias, madurez, incidentes, terceros, personas, reportería, administración de usuarios y una ticketera de denuncias/reportes con formulario público.
+
+El cambio de alcance acordado con el Product Owner el 21-10-2026 incorpora el módulo Usuarios (administrado solo por `admin_sistema`) y la Ticketera, cuyo contenido queda restringido al equipo de ciberseguridad (`encargado`) y cuyo formulario público no requiere autenticación ni registra identidad del emisor. El sistema considera cinco roles y separación de funciones; la solución centraliza trazabilidad, controles y visualización de madurez, y habilita un canal interno para recibir y evaluar reportes de ciberseguridad.
 
 ## 17.3 Justificación de la adecuación del cronograma
 
@@ -48,28 +44,23 @@ auditable y con visualización gráfica del avance.
 
 | Fase (Entregable 16) | Cómo habilita la funcionalidad de la solución |
 |---|---|
-| F1 Formulación y requisitos | Asegura que los módulos construidos responden a las necesidades del mandante (controles, incidentes, terceros, personas) |
-| F2 Diseño | Produce los modelos (BPMN, UML, datos, arquitectura) que guían el desarrollo y evitan retrabajo |
-| F3–F4 Desarrollo | Entrega el backend (API + reglas) y el frontend (dashboard), que son el núcleo funcional |
-| F5 Pruebas | Valida que la solución resuelve el problema (CP-01 a CP-16) |
+| F1 Formulación y requisitos | Define el alcance original y registra el cambio Mayor aprobado el 21-10-2026 para incorporar Usuarios y Ticketera |
+| F2 Diseño | Actualiza BPMN, UML, datos, arquitectura, privacidad y operación del canal público antes de construir |
+| F3 Sprint Usuarios | Entrega CRUD, RBAC para `admin_sistema`, baja lógica y auditoría; es prerrequisito de la Ticketera |
+| F4 Sprint Ticketera | Entrega formulario público, bandeja confidencial, adjuntos, notificaciones SMTP/internas y conversión a incidente |
+| F5 Pruebas | Valida módulos y controles de seguridad, incluidos CP-20 a CP-38, anonimato, rate limiting y adjuntos |
 | F6 Documentación | Aporta los planes (KPI, SLA, continuidad, mantención) que hacen operativa la solución |
 | F7 Cierre | Consolida el informe y la demo para la defensa |
 
 ### 17.3.2 Justificación de la duración y holgura
 
-- **Duración total: 11 semanas**, acorde al plazo de la Unidad 2 y a los hitos EF2 → ES2.
-- **1 semana de holgura** en las fases de desarrollo permite absorber ajustes del mandante
-  (refinamiento del catálogo de controles y de la taxonomía ANCI) sin comprometer la entrega.
-- El **orden de fases** es secuencial donde existe dependencia (diseño antes de desarrollo, pruebas
-  después de desarrollo) y **solapado** donde es posible (backend y frontend en paralelo), lo que
-  optimiza el uso del equipo de 3 integrantes.
+- **Duración total: 11 semanas**, alineada con los hitos EF2 y ES2 del 11-12-2026; la ampliación de alcance fue formalizada el 21-10-2026 y aprobada por el Product Owner como cambio Mayor.
+- Se agregan dos sprints completos, en orden: Usuarios (26-10 al 06-11) y Ticketera (09-11 al 20-11). Este orden habilita la asignación de roles antes de construir la bandeja y conserva separación entre `admin_sistema` y `encargado`.
+- Las pruebas CP-20 a CP-38 y UAT se extienden hasta el 04-12; la actualización documental y el informe ABPro se solapan con la validación final. El solapamiento y la holgura protegen la fecha ES2 sin omitir anonimato, confidencialidad, SMTP ni validación de adjuntos.
 
 ### 17.3.3 Adecuación al problema
 
-El cronograma prioriza los módulos que **resuelven directamente el problema** identificado: primero el
-registro de controles y el cálculo de madurez (indicador "15.4"), luego la gestión de incidentes con
-plazos legales, y finalmente terceros/personas y reportería. Esta secuencia garantiza que, incluso
-ante un recorte de plazo, el entregable mínimo viable cubra el cumplimiento normativo central.
+El cronograma conserva la prioridad del núcleo GRC (controles, madurez e incidentes) y agrega, en respuesta al cambio aprobado, Usuarios antes de Ticketera. La Ticketera incorpora el formulario público y la bandeja de ciberseguridad, sin asociar identidad del emisor, y permite derivar reportes a incidentes formales con plazos legales. Los hitos de prueba verifican además que el canal público esté disponible y protegido frente al abuso.
 
 ## 17.4 Conclusiones y trabajos futuros
 
@@ -80,10 +71,12 @@ ante un recorte de plazo, el entregable mínimo viable cubra el cumplimiento nor
   implementativamente viable (Entregable 1).
 
 **Trabajos futuros (fuera del alcance actual):**
-- Integración automatizada con la plataforma de la ANCI (API oficial).
-- Módulo de auditoría de cambios con firma electrónica.
-- Integración con el directorio institucional (SSO/LDAP).
-- Migración a nube y alta disponibilidad multi-sitio.
+- Integración con SSO/LDAP para aprovisionamiento y ciclo de vida de usuarios, manteniendo RBAC y auditoría.
+- Integración de tickets con la mesa de ayuda institucional, con clasificación y derivación controladas.
+- Cifrado de adjuntos en reposo y gestión de llaves; análisis antivirus automatizado antes de su consulta.
+- Integración automatizada con la plataforma de la ANCI cuando exista API oficial habilitada.
+- Alta disponibilidad multi-sitio y fortalecimiento del monitoreo, rate limiting y protección anti-spam del formulario público.
+- Extensión de auditoría de cambios con firma electrónica, sujeto a evaluación institucional.
 
 ## 17.5 Anexos
 

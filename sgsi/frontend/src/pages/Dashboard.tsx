@@ -26,12 +26,12 @@ import {
 import { fmtDate } from '../helpers'
 import type { Incidente, Madurez, Resumen } from '../types'
 
-const PIE_COLORS = ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b']
+const PIE_COLORS = ['#000098', '#e80b46', '#278457', '#dfa326']
 const ESTADO_BAR_COLORS: Record<string, string> = {
-  no_iniciado: '#94a3b8',
-  iniciado: '#f59e0b',
-  implementado: '#3b82f6',
-  gestionado: '#10b981',
+  no_iniciado: '#a1a1a1',
+  iniciado: '#dfa326',
+  implementado: '#000098',
+  gestionado: '#278457',
 }
 
 export default function Dashboard() {
@@ -60,7 +60,7 @@ export default function Dashboard() {
     ? madurez.dominios.map((d) => ({ name: DOMINIO_LABELS[d.dominio], value: d.total }))
     : []
   const estadoBar = resumen
-    ? Object.entries(resumen.por_estado).map(([k, v]) => ({ name: ESTADO_LABELS[k], value: v }))
+    ? Object.entries(resumen.por_estado).map(([k, v]) => ({ key: k, name: ESTADO_LABELS[k], value: v }))
     : []
   const madurezBar = madurez
     ? madurez.dominios.map((d) => ({ name: DOMINIO_LABELS[d.dominio], pct: d.pct }))
@@ -106,10 +106,10 @@ export default function Dashboard() {
             <ResponsiveContainer width="100%" height={260}>
               <BarChart data={madurezBar}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={0} />
                 <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
                 <Tooltip formatter={(v) => [`${v}%`, 'Madurez']} />
-                <Bar dataKey="pct" radius={[6, 6, 0, 0]} fill="#4f46e5" />
+                <Bar dataKey="pct" radius={[6, 6, 0, 0]} fill="#e80b46" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -121,12 +121,12 @@ export default function Dashboard() {
             <ResponsiveContainer width="100%" height={260}>
               <BarChart data={estadoBar}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={0} />
                 <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                   {estadoBar.map((entry) => (
-                    <Cell key={entry.name} fill={ESTADO_BAR_COLORS[entry.name] || '#94a3b8'} />
+                    <Cell key={entry.name} fill={ESTADO_BAR_COLORS[entry.key] || '#a1a1a1'} />
                   ))}
                 </Bar>
               </BarChart>

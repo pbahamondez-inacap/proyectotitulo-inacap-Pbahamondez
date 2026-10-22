@@ -18,12 +18,15 @@ Ley N.º 21.663 (taxonomía ANCI y plazos legales de reporte).
 | **Terceros / Proveedores** | Registro de contratos con checklist de cláusulas de seguridad y estado de cumplimiento. |
 | **Controles de Personas** | Ciclo de vida del personal: capacitación, antecedentes, condiciones de empleo, disciplinario, término de contrato y confidencialidad. |
 | **Reportería** | Resumen ejecutivo y exportación a CSV (compatible con Excel) para sustentar el indicador de gestión y auditorías. |
+| **Usuarios** | CRUD de usuarios, asignación de roles, restablecimiento de contraseña, baja lógica de personal desvinculado y auditoría de cambios. Solo `admin_sistema`. |
+| **Ticketera** | Denuncias y reportes de incidentes de ciberseguridad enviados por funcionarios mediante un **formulario público, sin autenticación y anónimo** (`/reportar`). Categorías predefinidas + "Otros" (texto libre), adjuntos, código de seguimiento privado, notificación al equipo por correo y/o bandeja interna (a elección del emisor) y conversión del ticket en incidente formal. Gestión por el `encargado`. |
 
 ## Stack tecnológico
 
 - **Backend:** Python 3.14 + FastAPI + SQLAlchemy + SQLite (compatible con PostgreSQL vía variable de entorno).
-- **Autenticación:** JWT con control de acceso basado en roles (RBAC) y hash de contraseñas PBKDF2.
-- **Frontend:** React 18 + TypeScript + Vite + Recharts (gráficos).
+- **Autenticación:** JWT con control de acceso basado en roles (RBAC, 5 roles) y hash de contraseñas PBKDF2.
+- **Frontend:** React 18 + TypeScript + Vite + Recharts (gráficos). Identidad visual del Hospital Clínico Félix Bulnes (paleta carmesí/azul institucional, Roboto / Open Sans / Playfair Display) con modo oscuro persistente.
+- **Correo:** SMTP opcional para notificar tickets (si no se configura, el envío se simula).
 
 ## Estructura del proyecto
 
@@ -40,11 +43,14 @@ sgsi/
 │   │   ├── deps.py          # Dependencias de auth/roles
 │   │   ├── services.py      # Plazos legales y reglas de madurez
 │   │   ├── seed.py          # Datos de demostración
-│   │   └── routers/         # Endpoints por módulo
-│   └── requirements.txt
+│   │   ├── tickets_service.py / notificaciones.py / ratelimit.py  # Ticketera, correo/bandeja, límite de tasa
+│   │   └── routers/         # Endpoints por módulo (incl. usuarios, tickets, public_tickets, notificaciones)
+│   ├── tests/               # Pruebas (pytest)
+│   ├── requirements.txt
+│   └── requirements-dev.txt
 └── frontend/
     └── src/
-        ├── pages/           # Login, Dashboard, Controles, Incidentes, Terceros, Personas, Reportes
+        ├── pages/           # Login, Dashboard, Controles, Incidentes, Terceros, Personas, Reportes, Usuarios, Tickets, Reportar (público), SeguimientoTicket (público)
         ├── components/      # Layout, Modal, Badge
         ├── api.ts           # Cliente HTTP con token
         └── constants.ts     # Etiquetas y catálogos
@@ -77,10 +83,22 @@ Abre http://localhost:5173 (el servidor de desarrollo redirige `/api` al backend
 
 | Usuario | Rol | Permisos |
 |---|---|---|
-| `miguel.godoy` | Encargado de Ciberseguridad | Acceso total (escritura en todos los módulos) |
+| `miguel.godoy` | Encargado de Ciberseguridad | Acceso total a módulos de negocio; gestiona la Ticketera y recibe notificaciones |
 | `maria.perez` | Administrador de Contratos | Escritura en Terceros; lectura en el resto |
 | `juan.rojas` | Referente Técnico | Solo lectura |
 | `patricia.silva` | Director/a | Solo lectura |
+| `admin.sistema` | Administrador de Sistema | Solo módulo Usuarios (sin acceso a módulos de negocio ni tickets) |
+
+El **formulario público** de reporte está disponible sin iniciar sesión en http://localhost:5173/reportar
+(seguimiento por código en `/reportar/seguimiento`).
+
+### Pruebas del backend
+
+```bash
+cd sgsi/backend
+pip install -r requirements-dev.txt
+python -m pytest
+```
 
 ## Endpoints principales
 
@@ -101,6 +119,24 @@ GET    /api/terceros             (filtros: ?estado=&search=)
 GET    /api/personas             (filtros: ?tipo=&estado=)
 GET    /api/reportes/resumen
 GET    /api/reportes/{controles,incidentes,terceros,personas}.csv
+
+# Usuarios (solo admin_sistema)
+GET/POST          /api/usuarios
+PUT               /api/usuarios/{id}
+POST              /api/usuarios/{id}/reset-password
+POST              /api/usuarios/{id}/deshabilitar | /habilitar
+GET               /api/usuarios/auditoria
+
+# Ticketera (solo encargado)
+GET               /api/tickets, /api/tickets/resumen
+GET/PUT           /api/tickets/{id}
+POST              /api/tickets/{id}/convertir-incidente
+GET               /api/notificaciones
+
+# Públicos (sin autenticación)
+GET    /api/public/tickets/categorias
+POST   /api/public/tickets                       (multipart, con límite de tasa)
+GET    /api/public/tickets/{codigo_seguimiento}
 ```
 
 La documentación interactiva (Swagger) está disponible en http://localhost:8000/docs.
@@ -115,8 +151,18 @@ Variables de entorno opcionales:
 | `SGSI_SECRET_KEY` | clave de desarrollo | Clave para firmar los tokens JWT |
 | `SGSI_TOKEN_EXPIRE` | `480` | Validez del token en minutos |
 | `SGSI_DATA_DIR` | `backend/data` | Carpeta de datos y evidencias |
+| `SGSI_UPLOAD_DIR` | `backend/data/evidencias` | Carpeta base de adjuntos de tickets (`tickets/<código>/`) |
+| `SGSI_SMTP_HOST`, `SGSI_SMTP_PORT` (587), `SGSI_SMTP_USER`, `SGSI_SMTP_PASSWORD`, `SGSI_SMTP_FROM`, `SGSI_SMTP_TO`, `SGSI_SMTP_STARTTLS` (1) | sin configurar (envío simulado) | Notificación por correo de tickets (`SGSI_SMTP_TO` admite lista separada por comas; el correo solo incluye código, tipo y severidad) |
+| `SGSI_PUBLIC_RATE_LIMIT` | `5/600` | Envíos públicos permitidos por cliente (cantidad/segundos) |
+| `SGSI_PUBLIC_LOOKUP_RATE_LIMIT` | `30/600` | Consultas públicas de seguimiento por cliente |
+| `SGSI_TRUST_PROXY` | `0` | Usar `X-Forwarded-For` para el límite de tasa tras un proxy (la IP nunca se almacena) |
+| `SGSI_APP_URL` | `http://localhost:5173` | URL base usada en los enlaces de las notificaciones |
 
 > Los archivos de evidencia se guardan en `backend/data/evidencias/`.
+> **Anonimato:** los tickets públicos no almacenan IP, user-agent ni identidad del emisor; el límite de
+> tasa usa un hash con sal aleatoria en memoria. Se recomienda complementar con `limit_req` de Nginx y
+> restringir el formulario a la red interna del hospital.
+> **PostgreSQL existente:** si el rol es un enum nativo, ejecutar `ALTER TYPE ... ADD VALUE 'admin_sistema'`.
 
 ## Notas
 

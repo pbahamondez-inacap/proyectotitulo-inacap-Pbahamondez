@@ -37,7 +37,10 @@ Entregable 1.
 | **Pydantic** | (incluido en FastAPI) | Validación de esquemas de entrada/salida (`schemas.py`). |
 | **PyJWT** | actual | Emisión y verificación de tokens JWT (HS256). |
 | **passlib/PBKDF2** | actual | Hash de contraseñas para autenticación segura. |
-| **python-multipart** | actual | Carga de archivos (evidencias) vía `multipart/form-data`. |
+| **python-multipart** | actual | Carga de archivos (evidencias y adjuntos de tickets) vía `multipart/form-data`. |
+| **Validación de adjuntos** (Pydantic + utilidades estándar) | según stack existente | Lista blanca de extensiones y tipos MIME, tamaño máximo aproximado de 10 MB, nombre seguro y rechazo de formatos no permitidos; escaneo antivirus recomendado. |
+| **smtplib** (biblioteca estándar) / **aiosmtplib** (opcional) | estándar / opcional | Envío de avisos mediante el servicio de notificaciones con relay SMTP institucional; mantener credenciales en configuración protegida (`SGSI_SMTP_*`). |
+| **slowapi** (opcional) | opcional | Rate limiting de endpoints públicos; Nginx `limit_req` es una alternativa de infraestructura. |
 | **psycopg** | (al desplegar PostgreSQL) | Driver para conectar `postgresql+psycopg://` en producción. |
 
 ### Frontend
@@ -46,7 +49,7 @@ Entregable 1.
 |---|---|---|
 | **React** | 18.3 | Librería de interfaz de usuario (componentes y estado). |
 | **react-dom** | 18.3 | Renderizado de React en el navegador. |
-| **react-router-dom** | 6.30 | Enrutamiento de páginas (Login, Dashboard, Controles, etc.). |
+| **react-router-dom** | 6.30 | Enrutamiento de páginas (Login, Dashboard, Controles, Usuarios, Tickets y formulario público `/reportar`). |
 | **Recharts** | 2.15 | Gráficos de barras y torta para el dashboard de madurez. |
 | **Vite** | 6.2 | Herramienta de build y servidor de desarrollo (puerto 5173, proxy `/api` → 8000). |
 | **@vitejs/plugin-react** | 4.3 | Soporte de JSX/TSX en Vite. |
@@ -87,13 +90,18 @@ Entregable 1.
 
 | Módulo | Funcionalidad |
 |---|---|
-| **Autenticación y roles** | Login JWT, control de acceso RBAC (encargado de ciberseguridad, administrador de contratos, referente técnico, director/a). |
-| **Controles ISO/IEC 27001** | Catálogo de controles del Anexo A por dominio, estado y evidencias adjuntas. |
+| **Autenticación y roles (transversal)** | Login JWT y control RBAC de cinco roles: `encargado`, `admin_contratos`, `referente_tecnico`, `director` y `admin_sistema`. El último administra usuarios, pero no ve tickets ni datos de negocio; no se contabiliza como módulo de negocio. |
+| **Controles ISO/IEC 27001 (módulo 1)** | Catálogo de controles del Anexo A por dominio y estado. |
+| **Evidencias (módulo 2)** | Carga y gestión de respaldos asociados a controles, con acceso restringido por rol. |
 | **Madurez del SGSI** | Cálculo y visualización del % de madurez por dominio y global (gráficos). |
 | **Incidentes** | Registro y clasificación según taxonomía ANCI; cómputo de plazos legales (3 h / 72 h / 15 días). |
 | **Terceros / Proveedores** | Contratos y checklist de cláusulas de seguridad con estado de cumplimiento. |
 | **Controles de Personas** | Ciclo de vida del personal (capacitación, antecedentes, confidencialidad, término). |
 | **Reportería** | Resumen ejecutivo y exportación a CSV (compatible con Excel). |
+| **Usuarios (módulo 8)** | CRUD de cuentas, asignación de rol, restablecimiento de contraseña, habilitación/deshabilitación lógica y auditoría; exclusivo de `admin_sistema`. |
+| **Ticketera (módulo 9)** | Formulario público `/reportar` sin autenticación, denuncias/reportes anónimos, adjuntos validados, bandeja confidencial para `encargado`, notificaciones y derivación a incidentes. |
+
+**Conteo del alcance:** 9 módulos funcionales (controles, evidencias, madurez, incidentes, terceros, personas, reportería, usuarios y ticketera) y 5 roles RBAC. El formulario público no recoge ni registra identidad, IP, user-agent o token del emisor; queda accesible por HTTPS en la red interna del hospital y protegido contra abuso.
 
 ### 2.5.2 Aplicaciones de apoyo y externas
 
@@ -128,7 +136,7 @@ Entregable 1.
 |---|---|---|
 | Servidor de aplicaciones | 2 vCPU, 4 GB RAM, 40 GB SSD | Ejecuta FastAPI (uvicorn) + sirve la SPA compilada. |
 | Servidor de base de datos | 2 vCPU, 4 GB RAM, 100 GB SSD (RAID) | PostgreSQL con respaldo; puede convivir con el de aplicaciones en fase piloto. |
-| Almacenamiento de evidencias | 100+ GB | Repositorio de archivos de evidencia (documentos, actas, certificados). |
+| Almacenamiento de evidencias y adjuntos | 100+ GB | NAS/repositorio; evidencias y tickets en carpetas separadas (por ejemplo, `/evidencias/tickets/`) con permisos restringidos. |
 | Red local / DMZ | Conmutador + firewall | Aislamiento de la zona del SGSI respecto de la red clínica. |
 | Respaldo | Disco externo/NAS o almacenamiento en nube | Copias periódicas de BD y evidencias (plan de continuidad, Entregable 14). |
 
@@ -143,9 +151,10 @@ Entregable 1.
 | **Certificado TLS/HTTPS** | Cifrado en tránsito de credenciales y datos del SGSI. |
 | **Respaldo (backup)** | Copias automáticas de base de datos y evidencias, con retención definida. |
 | **Monitoreo** | Vigilancia de disponibilidad y errores del servicio (logs, health check `/api/health`). |
-| **Gestión de usuarios y roles** | Alta/baja de cuentas y asignación de roles (RBAC) por la unidad de TI. |
+| **Gestión de usuarios y roles** | Gobierno de cuentas y asignación RBAC de 5 roles; el CRUD del SGSI corresponde exclusivamente a `admin_sistema`. |
 | **Mesa de ayuda / soporte** | Soporte a usuarios del SGSI dentro del horario institucional. |
-| **Correo institucional** | Notificaciones de alertas de vencimiento de plazos de incidentes (opcional). |
+| **Correo institucional / relay SMTP** | Servicio **requerido** para habilitar avisos por correo al equipo de ciberseguridad; TI provee relay, cuenta y parámetros SMTP. El mensaje contiene solo código, tipo, severidad y enlace; ante una falla, el ticket se crea y queda en la bandeja interna. |
+| **Protección del formulario público** | HTTPS en red hospitalaria, límites de solicitudes, validación de entradas y adjuntos y logs sin datos que identifiquen al emisor. |
 | **Gestión de cambios y configuraciones** | Procedimientos de actualización controlada de la aplicación (Entregable 15). |
 
 ---
@@ -160,4 +169,6 @@ Entregable 1.
 | Base de datos | PostgreSQL (producción) / SQLite (desarrollo) vía SQLAlchemy |
 | Herramientas | VS Code, Git/GitHub, venv/pip, Node/npm, Swagger UI, DBeaver, Draw.io, Mermaid |
 | Hardware | Equipos de desarrollo (8 GB RAM/SSD) + servidores referenciales de producción |
-| Servicios TI | Hosting, DNS, TLS, respaldo, monitoreo, mesa de ayuda, gestión de usuarios/cambios |
+| Servicios TI | Hosting, DNS, TLS, respaldo, monitoreo, mesa de ayuda, gestión de usuarios/cambios y relay SMTP institucional requerido para correo |
+| Alcance funcional | 9 módulos y 5 roles RBAC; CRUD Usuarios exclusivo de `admin_sistema`, tickets visibles y gestionables solo por `encargado` |
+| Librerías/controles nuevos | `smtplib` estándar o `aiosmtplib` opcional, `slowapi` opcional, validación de extensión/MIME/tamaño de adjuntos |

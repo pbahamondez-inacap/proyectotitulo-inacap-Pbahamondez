@@ -8,7 +8,7 @@
           <mxGeometry height="56" width="340" x="430" y="40" as="geometry" />
         </mxCell>
         <mxCell id="zLAN" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#666666;fontStyle=1;verticalAlign=top;fontSize=12;" value="Zona de usuarios (LAN hospitalaria)" vertex="1">
-          <mxGeometry height="520" width="320" x="40" y="120" as="geometry" />
+          <mxGeometry height="620" width="320" x="40" y="120" as="geometry" />
         </mxCell>
         <mxCell id="u1" parent="zLAN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Encargado de Ciberseguridad" vertex="1">
           <mxGeometry height="54" width="220" x="40" y="60" as="geometry" />
@@ -22,13 +22,19 @@
         <mxCell id="u4" parent="zLAN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Director/a" vertex="1">
           <mxGeometry height="54" width="220" x="40" y="300" as="geometry" />
         </mxCell>
+        <mxCell id="u5" parent="zLAN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Administrador de Sistema (admin_sistema)" vertex="1">
+          <mxGeometry height="54" width="260" x="30" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="u6" parent="zLAN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Funcionarios del hospital / denunciantes anónimos (formulario público)" vertex="1">
+          <mxGeometry height="64" width="260" x="30" y="440" as="geometry" />
+        </mxCell>
         <mxCell id="sw" parent="zLAN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Switch de acceso" vertex="1">
-          <mxGeometry height="54" width="220" x="40" y="410" as="geometry" />
+          <mxGeometry height="54" width="220" x="40" y="530" as="geometry" />
         </mxCell>
         <mxCell id="zDMZ" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#666666;fontStyle=1;verticalAlign=top;fontSize=12;" value="Zona DMZ (servidores)" vertex="1">
           <mxGeometry height="520" width="340" x="430" y="120" as="geometry" />
         </mxCell>
-        <mxCell id="fw1" parent="zDMZ" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;" value="Firewall perimetral" vertex="1">
+        <mxCell id="fw1" parent="zDMZ" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;" value="FW-01 · HTTPS 443 desde LAN; salida SMTP 587 solo a SMTP-01" vertex="1">
           <mxGeometry height="54" width="220" x="50" y="60" as="geometry" />
         </mxCell>
         <mxCell id="web" parent="zDMZ" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Servidor web/aplicación&#xa;(Frontend SPA + FastAPI/uvicorn)" vertex="1">
@@ -43,16 +49,16 @@
         <mxCell id="db" parent="zDAT" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="PostgreSQL" vertex="1">
           <mxGeometry height="80" width="180" x="60" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="nas" parent="zDAT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Almacenamiento de evidencias (NAS)" vertex="1">
+        <mxCell id="nas" parent="zDAT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="NAS · evidencias/ + evidencias/tickets/ (acceso restringido)" vertex="1">
           <mxGeometry height="60" width="200" x="50" y="200" as="geometry" />
         </mxCell>
         <mxCell id="bk" parent="zDAT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Servidor de respaldo" vertex="1">
           <mxGeometry height="60" width="200" x="50" y="330" as="geometry" />
         </mxCell>
-        <mxCell id="e1" edge="1" parent="1" source="sw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="fw1" value="HTTPS 443">
+        <mxCell id="e1" edge="1" parent="1" source="sw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="fw1" value="HTTPS 443 · SPA + /reportar sin autenticación">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="390" y="557" />
+              <mxPoint x="390" y="677" />
               <mxPoint x="390" y="207" />
             </Array>
           </mxGeometry>
@@ -84,6 +90,12 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="e7" edge="1" parent="1" source="u1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;fontSize=10;" target="ext" value="reporte vía portal (manual)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mail" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="SMTP-01 · relay/correo institucional existente" vertex="1">
+          <mxGeometry height="56" width="340" x="840" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="web" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="mail" value="TCP 587 · SMTP STARTTLS">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useId, type ReactNode } from 'react'
 
 interface ModalProps {
   title: string
@@ -9,18 +9,26 @@ interface ModalProps {
 }
 
 export default function Modal({ title, open, onClose, children, wide }: ModalProps) {
+  const titleId = useId()
+  useEffect(() => {
+    if (!open) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [open, onClose])
+
   if (!open) return null
   return (
-    <div className="modal-overlay" onMouseDown={onClose}>
-      <div className={`modal${wide ? ' modal-wide' : ''}`} onMouseDown={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <section className={`modal${wide ? ' modal-wide' : ''}`} role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <div className="modal-head">
-          <h2>{title}</h2>
-          <button className="icon-btn" onClick={onClose} aria-label="Cerrar">
-            ✕
-          </button>
+          <h2 id={titleId}>{title}</h2>
+          <button type="button" className="icon-btn" onClick={onClose} aria-label="Cerrar ventana">×</button>
         </div>
         <div className="modal-body">{children}</div>
-      </div>
+      </section>
     </div>
   )
 }

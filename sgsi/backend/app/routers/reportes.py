@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from ..config import MATURITY_WEIGHTS
 from ..database import get_db
-from ..deps import get_current_user
+from ..deps import get_business_user
 from ..models import (
     Control,
     EstadoControl,
@@ -38,7 +38,7 @@ def _csv(headers: list[str], rows: list[list], filename: str) -> StreamingRespon
 
 
 @router.get("/resumen")
-def resumen(db: Session = Depends(get_db), user=Depends(get_current_user)):
+def resumen(db: Session = Depends(get_db), user=Depends(get_business_user)):
     controles = db.query(Control).all()
     total = len(controles)
     por_estado = {e.value: 0 for e in EstadoControl}
@@ -73,7 +73,7 @@ def resumen(db: Session = Depends(get_db), user=Depends(get_current_user)):
 
 
 @router.get("/controles.csv")
-def export_controles(db: Session = Depends(get_db), user=Depends(get_current_user)):
+def export_controles(db: Session = Depends(get_db), user=Depends(get_business_user)):
     rows = [
         [c.codigo, c.titulo, c.dominio.value, c.grupo, c.estado.value, c.responsable, len(c.evidencias)]
         for c in db.query(Control).order_by(Control.codigo).all()
@@ -86,7 +86,7 @@ def export_controles(db: Session = Depends(get_db), user=Depends(get_current_use
 
 
 @router.get("/incidentes.csv")
-def export_incidentes(db: Session = Depends(get_db), user=Depends(get_current_user)):
+def export_incidentes(db: Session = Depends(get_db), user=Depends(get_business_user)):
     rows = [
         [
             i.id,
@@ -111,7 +111,7 @@ def export_incidentes(db: Session = Depends(get_db), user=Depends(get_current_us
 
 
 @router.get("/terceros.csv")
-def export_terceros(db: Session = Depends(get_db), user=Depends(get_current_user)):
+def export_terceros(db: Session = Depends(get_db), user=Depends(get_business_user)):
     rows = [
         [
             t.nombre,
@@ -133,7 +133,7 @@ def export_terceros(db: Session = Depends(get_db), user=Depends(get_current_user
 
 
 @router.get("/personas.csv")
-def export_personas(db: Session = Depends(get_db), user=Depends(get_current_user)):
+def export_personas(db: Session = Depends(get_db), user=Depends(get_business_user)):
     from ..models import PersonaControl
 
     rows = [

@@ -1,4 +1,4 @@
-# 9. Definición de KPI con detalle SMART
+# 9. Definición de 11 KPI con detalle SMART
 
 > **Entregable 9 — Evaluación Sumativa 2 (ES2), Unidad 2 (Desarrollo e Implementación)**
 > **Proyecto:** SGSI — Sistema de Gestión de Seguridad de la Información
@@ -6,7 +6,7 @@
 > **Criterio evaluado:** `2.1.3.9` — Detalle SMART de los indicadores clave de desempeño (KPI) que
 > permitan medir la eficiencia de la solución desarrollada.
 
-Este entregable define **8 KPI** con detalle **SMART** (Específico, Medible, Alcanzable, Relevante y
+Este entregable define **11 KPI** con detalle **SMART** (Específico, Medible, Alcanzable, Relevante y
 Acotado en el tiempo), cada uno vinculado a un módulo concreto del SGSI y a su fuente de datos real.
 
 ---
@@ -23,6 +23,9 @@ Acotado en el tiempo), cada uno vinculado a un módulo concreto del SGSI y a su 
 | KPI-06 | Disponibilidad del sistema (uptime) | Infraestructura/monitoreo | ≥ 99 % horario administrativo |
 | KPI-07 | Tiempo medio de registro de incidente desde la detección | Incidentes | ≤ 30 minutos |
 | KPI-08 | Adopción de la herramienta (sesiones/semana) | Autenticación | ≥ 20 sesiones/semana |
+| KPI-09 | Tiempo medio de primera respuesta a tickets | Ticketera (`tickets`) | ≤ 24 h hábiles |
+| KPI-10 | % de tickets gestionados dentro de SLA | Ticketera (`tickets`) | ≥ 90 % |
+| KPI-11 | Deshabilitación oportuna de cuentas desvinculadas | Usuarios (`auditoria_usuarios`) | 100 % en ≤ 1 día hábil |
 
 ---
 
@@ -104,9 +107,41 @@ Acotado en el tiempo), cada uno vinculado a un módulo concreto del SGSI y a su 
 |---|---|
 | **S** | Número de sesiones iniciadas (logins) por semana en el SGSI. |
 | **M** | Conteo de accesos vía autenticación JWT (`POST /api/auth/login`). Fuente: Autenticación/logs. |
-| **A** | Meta ≥ 20 sesiones/semana (4 roles activos). |
+| **A** | Meta ≥ 20 sesiones/semana (5 roles activos). |
 | **R** | Mide que la herramienta reemplaza efectivamente las planillas manuales. |
 | **T** | Medición semanal. |
+
+---
+
+### KPI-09 — Tiempo medio de primera respuesta a tickets
+
+| Criterio | Detalle |
+|---|---|
+| **S** — Específico | Tiempo promedio desde el registro de un ticket hasta que el equipo de ciberseguridad lo toma en análisis (`registrado` → `en_analisis`). |
+| **M** — Medible | `Σ(fecha_primera_respuesta − creado_en) / n tickets`, expresado en horas hábiles. Fuente: `tickets.estado`, `tickets.creado_en` y el instante de transición a `en_analisis`; registrar ese instante para cada cambio de estado. |
+| **A** — Alcanzable | Meta ≤ 24 horas hábiles; se monitorea la bandeja interna y se priorizan denuncias críticas/altas. |
+| **R** — Relevante | Permite detectar oportunamente reportes y denuncias, manteniendo la gestión del ciclo de vida en el equipo de ciberseguridad. Los incidentes reportables conservan los plazos del KPI-03. |
+| **T** — Temporal | Medición por ticket y consolidado mensual. |
+
+### KPI-10 — Porcentaje de tickets gestionados dentro de SLA
+
+| Criterio | Detalle |
+|---|---|
+| **S** — Específico | Proporción de tickets que pasan de `registrado` a un estado de gestión dentro del plazo de servicio aplicable. |
+| **M** — Medible | `(tickets no registrados gestionados dentro de SLA / tickets con SLA vencido o atendidos en el período) × 100`. Fuente: `tickets.estado`, `creado_en` y marcas temporales de transición; se excluyen del numerador los tickets que excedan el plazo. |
+| **A** — Alcanzable | Meta ≥ 90 %, con revisión de pendientes y priorización de tickets de severidad alta o crítica. |
+| **R** — Relevante | Mide la capacidad de respuesta del canal de denuncias/reportes y permite gestionar acumulación en la bandeja. |
+| **T** — Temporal | Revisión mensual, con seguimiento diario de tickets pendientes y cumplimiento por severidad. |
+
+### KPI-11 — Cobertura de deshabilitación de cuentas desvinculadas
+
+| Criterio | Detalle |
+|---|---|
+| **S** — Específico | Porcentaje de usuarios cuya desvinculación se informa y cuya cuenta queda deshabilitada dentro de un día hábil. |
+| **M** — Medible | `(usuarios desvinculados deshabilitados dentro de 1 día hábil / usuarios desvinculados informados en el período) × 100`. Fuente: `auditoria_usuarios` (fecha de solicitud y acción de deshabilitación), verificada contra el estado `activo` del usuario. |
+| **A** — Alcanzable | Meta 100 %, mediante atención prioritaria de la solicitud por `admin_sistema` y baja lógica sin borrar trazabilidad. |
+| **R** — Relevante | Reduce el riesgo de acceso por cuentas de personas desvinculadas y sustenta la gestión de identidad y derechos de acceso. |
+| **T** — Temporal | Medición por solicitud y consolidado mensual. |
 
 ---
 
@@ -119,7 +154,10 @@ Acotado en el tiempo), cada uno vinculado a un módulo concreto del SGSI y a su 
 | KPI-04 | Terceros | `terceros.estado_cumplimiento` |
 | KPI-05 | Personas | `persona_controles.estado` |
 | KPI-06 | Infraestructura | Endpoint `GET /api/health` + monitoreo |
-| KPI-08 | Autenticación | `POST /api/auth/login` + logs |
+| KPI-08 | Autenticación | `POST /api/auth/login` + logs; cinco roles habilitados |
+| KPI-09 | Ticketera | `tickets.creado_en`, `tickets.estado` y primera transición a `en_analisis` |
+| KPI-10 | Ticketera | `tickets.estado`, fechas de creación y transiciones de gestión |
+| KPI-11 | Usuarios / Auditoría | `auditoria_usuarios` (solicitud y deshabilitación) + estado `activo` |
 
 ---
 

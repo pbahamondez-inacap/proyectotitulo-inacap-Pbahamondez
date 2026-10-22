@@ -1,0 +1,126 @@
+MINUTA DE REUNIÓN — PROYECTO SGSI
+Hospital Félix Bulnes Cerda
+
+Fecha: 21 de octubre de 2026
+Hora: 17:00 hrs
+Modalidad: Reunión de trabajo con el Product Owner
+Proyecto: SGSI — Sistema de Gestión de Seguridad de la Información
+Marco de referencia: ISO/IEC 27001:2022 y Ley N.º 21.663 (Ciberseguridad)
+
+Participantes:
+- Miguel Godoy — Product Owner / Encargado de Seguridad de la Información y Ciberseguridad (CISO) del Hospital Félix Bulnes Cerda.
+- Priscila Bahamondez — Desarrolladora a cargo del proyecto de título.
+
+Objetivo de la reunión:
+Revisión del alcance actual de la plataforma SGSI. El Product Owner solicita incorporar
+dos cambios mayores al sistema, que impactan la gestión de accesos y el flujo de reporte
+de incidentes. Ambos cambios se incorporan formalmente al alcance del proyecto.
+
+--------------------------------------------------------------------------------
+
+1. CAMBIO 1 — MÓDULO DE USUARIOS (CRUD)
+
+Contexto:
+Actualmente los usuarios se crean de forma manual (carga inicial / seed) y no existe una
+interfaz para administrarlos. Se requiere un módulo completo de administración de usuarios.
+
+Requerimientos:
+1.1. CRUD de usuarios: listar, crear, editar y deshabilitar/habilitar usuarios.
+1.2. Asignación de roles: cada usuario debe tener un rol que determine sus permisos (RBAC).
+     Se mantienen los roles existentes (encargado de ciberseguridad, administrador de
+     contratos, referente técnico, director/a) y se incorpora un nuevo rol:
+     "admin_sistema" (Administrador de Sistema).
+1.3. Administración de usuarios existentes: permitir modificar datos básicos
+     (nombre completo, nombre de usuario y rol) de los usuarios ya registrados.
+1.4. Creación de nuevos usuarios: alta de usuarios con credenciales y rol asignado.
+1.5. Deshabilitación de usuarios desvinculados: cuando una persona deja de pertenecer al
+     hospital, el usuario debe quedar deshabilitado (baja lógica), sin eliminar sus datos
+     ni el historial/trazabilidad de sus acciones. No se realiza borrado físico.
+1.6. Permisos: SOLO el Administrador de Sistema (admin_sistema) puede ejecutar la
+     administración de usuarios. El resto de los roles no tiene acceso a este módulo.
+
+Reglas de negocio:
+- No se podrá deshabilitar el propio usuario en sesión.
+- No se podrá deshabilitar al último usuario con rol de administrador de sistema activo,
+  para evitar dejar el sistema sin administración.
+- Todo cambio de usuarios (alta, edición de rol, deshabilitación) debe quedar registrado
+  en un log de auditoría (quién, qué, cuándo).
+- Un usuario deshabilitado no puede iniciar sesión ni acceder al sistema.
+- El campo de estado activo/inactivo ya está contemplado en el modelo de datos actual
+  (campo "activo"), por lo que el cambio consiste principalmente en exponerlo y
+  administrarlo mediante la interfaz y endpoints de API.
+
+--------------------------------------------------------------------------------
+
+2. CAMBIO 2 — MÓDULO DE TICKETERA (denuncias y reportes de incidentes)
+
+Contexto:
+Hoy el módulo de incidentes es alimentado exclusivamente por el analista del CISO
+(encargado de ciberseguridad). Se requiere habilitar un canal adicional para que cualquier
+usuario dentro del Hospital Félix Bulnes Cerda pueda reportar incidentes o presentar
+denuncias de ciberseguridad mediante formularios.
+
+Requerimientos:
+2.1. Creación de tickets por formulario: un usuario interno del hospital podrá crear un
+     "ticket" de dos tipos:
+       a) Denuncia (por ejemplo: sospecha de fuga de información, uso indebido de datos,
+          conductas que vulneren la seguridad de la información).
+       b) Reporte de incidente de ciberseguridad (por ejemplo: falla de sistemas, malware,
+          phishing, acceso no autorizado, caída de servicios).
+2.2. Contenido del formulario: tipo (denuncia / reporte), categoría del hecho, descripción
+     del hecho, sistema o área afectada, fecha y hora aproximada del suceso, severidad
+     percibida y adjuntos opcionales (capturas, correos, archivos).
+     La categoría se selecciona desde un catálogo predefinido, con una opción "Otros" que
+     habilita un campo de texto libre para describir una categoría no contemplada.
+2.3. Anonimato: el ticket debe poder registrarse de forma anónima. El sistema NO debe
+     almacenar ni exponer la identidad de la persona que reporta. Si el usuario decide
+     reportar de forma identificada, su identidad no será visible para el equipo de
+     ciberseguridad ni asociada al ticket.
+2.4. Notificación al equipo de ciberseguridad: al crearse un ticket, el sistema debe
+     notificar automáticamente al encargado y al equipo de ciberseguridad. La notificación
+     podrá realizarse por correo electrónico y/o por bandeja interna de tickets pendientes;
+     ambos medios deben estar disponibles y ser seleccionables por el usuario al momento
+     de enviar el ticket.
+2.5. Integración con el módulo de incidentes: el equipo de ciberseguridad podrá revisar el
+     ticket y, cuando corresponda, convertirlo en un incidente formal, aplicando la
+     taxonomía ANCI y los plazos legales de reporte de la Ley 21.663 (alerta temprana de
+     3 horas; reporte de 72 horas para severidad alta/crítica y 15 días para media/baja).
+2.6. Versión pública del formulario: debe existir una versión pública del formulario de
+     tickets, accesible SIN requerir autenticación en el sistema. Cualquier persona del
+     hospital podrá ingresar al formulario público y registrar su denuncia o reporte sin
+     necesidad de iniciar sesión ni disponer de credenciales de la plataforma.
+
+Reglas de negocio:
+- La identidad del denunciante nunca debe exponerse (principio de anonimato y protección
+  de datos personales).
+- El ticket anónimo debe poder trazarse internamente (número de ticket, fecha, estado)
+  sin vincular datos identificatorios del emisor.
+- El equipo de ciberseguridad es el único que puede gestionar el ciclo de vida del ticket
+  (registrado, en análisis, derivado a incidente, cerrado).
+- Se debe mantener confidencialidad del contenido de las denuncias, restringiendo su
+  visualización al equipo de ciberseguridad.
+- El formulario público no requiere autenticación; la creación del ticket público no debe
+  solicitar ni registrar credenciales o identidad del emisor.
+
+--------------------------------------------------------------------------------
+
+ACUERDOS Y PRÓXIMOS PASOS:
+- Ambos módulos se incorporan al alcance del proyecto.
+- Orden de implementación propuesto: 1) Módulo de Usuarios; 2) Módulo de Ticketera.
+- Actualizar la documentación del proyecto: casos de uso (UML), modelo de datos y
+  diccionario, arquitectura, plan de pruebas y carta Gantt, para reflejar los nuevos
+  módulos y el nuevo rol "admin_sistema".
+- Definidos en esta reunión: notificación por correo electrónico y/o bandeja interna
+  (ambos medios seleccionables por el usuario); catálogo predefinido de categorías con
+  opción "Otros" que habilita texto libre; y versión pública del formulario sin
+  autenticación.
+
+NOTAS / SUPUESTOS:
+- La deshabilitación de usuarios es baja lógica (sin eliminación física) para preservar
+  la trazabilidad y auditoría.
+- El rol "admin_sistema" es de administración técnica del sistema y es distinto del rol
+  de negocio "encargado de ciberseguridad".
+- El anonimato es un requisito habilitante del módulo de ticketera y prima sobre cualquier
+  dato que permita identificar al emisor del ticket.
+
+(Fin de la minuta)

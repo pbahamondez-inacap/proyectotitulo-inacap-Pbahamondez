@@ -7,10 +7,10 @@
         <mxCell id="sala" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#666666;fontStyle=1;verticalAlign=top;fontSize=12;" value="Sala de servidores (hospital)" vertex="1">
           <mxGeometry height="620" width="660" x="40" y="80" as="geometry" />
         </mxCell>
-        <mxCell id="fw1" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;" value="FW-01 · Firewall perimetral" vertex="1">
+        <mxCell id="fw1" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;" value="FW-01 · Firewall perimetral&#xa;LAN→APP TCP 443; salida SMTP-01 TCP 587" vertex="1">
           <mxGeometry height="50" width="240" x="50" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="app" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="APP-01 · Servidor de aplicaciones&#xa;2 vCPU · 4 GB RAM · 40 GB SSD&#xa;Linux: Nginx (SPA) + uvicorn (FastAPI)" vertex="1">
+        <mxCell id="app" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="APP-01 · Servidor de aplicaciones&#xa;2 vCPU · 4 GB RAM · 40 GB SSD&#xa;Linux: Nginx (SPA + limit_req) + uvicorn (FastAPI)" vertex="1">
           <mxGeometry height="90" width="240" x="50" y="130" as="geometry" />
         </mxCell>
         <mxCell id="fw2" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;" value="FW-02 · Firewall interno (BD)" vertex="1">
@@ -19,13 +19,13 @@
         <mxCell id="db" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="DB-01 · Servidor de base de datos&#xa;2 vCPU · 4 GB RAM · 100 GB SSD (RAID1)&#xa;PostgreSQL 16" vertex="1">
           <mxGeometry height="90" width="250" x="380" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="nas" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="NAS-01 · Almacenamiento de evidencias&#xa;100+ GB · SMB/NFS" vertex="1">
+        <mxCell id="nas" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="NAS-01 · Almacenamiento&#xa;100+ GB · evidencias/&#xa;evidencias/tickets/ restringida" vertex="1">
           <mxGeometry height="70" width="250" x="380" y="180" as="geometry" />
         </mxCell>
-        <mxCell id="bk" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="BK-01 · Servidor de respaldo&#xa;copias programadas" vertex="1">
+        <mxCell id="bk" parent="sala" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="BK-01 · Servidor de respaldo&#xa;PostgreSQL + tablas nuevas&#xa;evidencias/ y adjuntos de tickets" vertex="1">
           <mxGeometry height="70" width="250" x="380" y="290" as="geometry" />
         </mxCell>
-        <mxCell id="usr" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#666666;fontStyle=1;verticalAlign=top;fontSize=12;" value="Zona de usuarios" vertex="1">
+        <mxCell id="usr" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#666666;fontStyle=1;verticalAlign=top;fontSize=12;" value="Zona de usuarios · admin_sistema + funcionarios del hospital" vertex="1">
           <mxGeometry height="420" width="340" x="740" y="80" as="geometry" />
         </mxCell>
         <mxCell id="sw" parent="usr" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="SW-01 · Switch de acceso" vertex="1">
@@ -53,7 +53,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e2" edge="1" parent="1" source="fw1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="app" value="HTTPS 443">
+        <mxCell id="e2" edge="1" parent="1" source="fw1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="app" value="HTTPS 443 · /reportar sin login + SPA">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e3" edge="1" parent="1" source="app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="fw2" value="TCP 5432">
@@ -78,6 +78,12 @@
               <mxPoint x="680" y="405" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="smtp" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="SMTP-01 · Relay de correo institucional existente" vertex="1">
+          <mxGeometry height="70" width="340" x="740" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="smtp" value="TCP 587 · STARTTLS">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

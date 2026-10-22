@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..deps import get_current_user, require_roles
+from ..deps import get_business_user, require_roles
 from ..models import EstadoControl, PersonaControl, Role, TipoPersonaControl
 from ..schemas import PersonaControlCreate, PersonaControlOut, PersonaControlUpdate
 from ..utils import to_naive
@@ -23,7 +23,7 @@ def list_personas(
     tipo: str | None = Query(default=None),
     estado: str | None = Query(default=None),
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     q = db.query(PersonaControl)
     if tipo:
@@ -52,7 +52,7 @@ def create_persona(
 def get_persona(
     persona_id: int,
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     return _get_persona(persona_id, db)
 

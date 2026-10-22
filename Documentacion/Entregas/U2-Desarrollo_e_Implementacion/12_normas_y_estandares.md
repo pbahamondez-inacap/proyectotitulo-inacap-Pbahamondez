@@ -22,6 +22,11 @@
 | N8 | ISO/IEC 20000 / ITIL | Gestión de servicios TI | Planes de disponibilidad, continuidad y mantención (E.13–15) |
 | N9 | PMBOK (PMI) | Gestión de proyectos | Cronograma, interesados y gestión del alcance |
 | N10 | OpenAPI / Swagger | Especificación de API | Documentación de la API REST (`/docs`) |
+| N11 | ISO/IEC 27001:2022 Anexo A 6.8 y 5.24–5.28 | Eventos e incidentes de seguridad | Recepción, evaluación, respuesta y aprendizaje de reportes; derivación de tickets a incidentes formales |
+| N12 | ISO/IEC 27001:2022 Anexo A 5.15–5.18 y 8.2 | Acceso e identidades privilegiadas | RBAC, altas/bajas de usuarios y separación del rol `admin_sistema` |
+| N13 | ISO/IEC 27001:2022 Anexo A 8.15 y 6.5 | Registro y responsabilidades al término/cambio | Auditoría de acciones y deshabilitación oportuna de usuarios desvinculados |
+| N14 | OWASP ASVS / OWASP API Security | Seguridad de aplicaciones y API | Validación, control de acceso, carga de archivos, rate limiting y protección contra asignación masiva |
+| N15 | Ley N.º 21.719 / Ley N.º 19.628 | Protección y minimización de datos personales | No recolectar ni asociar la identidad de quien reporta por el canal público |
 
 ## 12.2 Justificación detallada
 
@@ -67,13 +72,49 @@ y justificación del alcance.
 **Motivo:** la API se documenta automáticamente en `/docs`, facilitando pruebas, integración y
 auditoría del SGSI.
 
+### N11 — ISO/IEC 27001:2022 Anexo A 6.8 y 5.24–5.28
+**Motivo:** el control 6.8 sustenta la notificación de eventos de seguridad; los controles 5.24–5.28
+orientan la preparación, evaluación, respuesta y aprendizaje ante incidentes. Se aplican al formulario,
+a la bandeja de tickets y a la conversión de un ticket en incidente, sin confundir el reporte ciudadano
+con un incidente formal hasta que el equipo de ciberseguridad lo evalúe.
+
+### N12 — ISO/IEC 27001:2022 Anexo A 5.15–5.18 y 8.2
+**Motivo:** fundamentan el control de acceso, la gestión de identidades y derechos, y la protección de
+accesos privilegiados. El acceso a `/api/usuarios` se limita a `admin_sistema`; la gestión de tickets
+se limita a `encargado`, con separación de funciones y mínimo privilegio.
+
+### N13 — ISO/IEC 27001:2022 Anexo A 8.15 y 6.5
+**Motivo:** 8.15 respalda el registro y monitoreo de actividad, aplicado a la auditoría de altas, cambios
+y bajas de usuarios; 6.5 orienta responsabilidades ante término o cambio de funciones, materializadas
+en la deshabilitación lógica oportuna de cuentas sin borrar su historial. Los registros no deben
+contener contraseñas ni datos identificadores del emisor del formulario público.
+
+### N14 — OWASP ASVS / OWASP API Security
+**Motivo:** ASVS orienta la verificación de autenticación, autorización y manejo de archivos; OWASP API
+Security guía la validación de entradas, autorización a nivel de función/objeto, protección frente a
+rate abuse y asignación masiva. Para el formulario público se aplican límites de solicitudes, validación
+estricta, sanitización y controles de tipo/tamaño de adjuntos.
+
+### N15 — Ley N.º 21.719 / Ley N.º 19.628
+**Motivo:** el principio de minimización exige no solicitar ni registrar datos identificatorios de quien
+utiliza el formulario público. La tabla `tickets` no mantiene FK a usuarios; tampoco se registran token,
+IP ni user-agent del emisor. Los datos de contacto internos del SGSI se mantienen sujetos a acceso mínimo.
+
+> **Validación jurídica:** el canal de ticketera es un canal de reporte de ciberseguridad y no sustituye
+> los canales formales de denuncia laboral o funcionaria. El alcance y los textos informativos del
+> formulario deben validarse con el área jurídica del hospital antes de producción. No se presume la
+> incorporación de legislación específica sobre denuncias.
+
 ## 12.3 Aplicación por componente
 
 | Componente | Normas aplicadas |
 |---|---|
 | Catálogo de controles y madurez | N1, N2 |
-| Módulo de incidentes | N3 |
-| Autenticación y RBAC | N4, N7, N10 |
+| Módulo de incidentes | N3, N11 |
+| Ticketera y conversión a incidente | N3, N7, N11, N14, N15 |
+| Formulario público y adjuntos | N4, N7, N14, N15 |
+| Administración de usuarios y auditoría | N4, N12, N13, N15 |
+| Autenticación y RBAC | N4, N7, N10, N12 |
 | Diseño y calidad del software | N5, N6 |
 | Operación del servicio | N8 |
 | Gestión del proyecto | N9 |

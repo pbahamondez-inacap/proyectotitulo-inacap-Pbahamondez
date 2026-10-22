@@ -39,8 +39,9 @@ Información (SGSI) se realiza de manera manual y dispersa (planillas, correos, 
 herramienta centralizada que permita visualizar el nivel de madurez alcanzado ni gestionar de forma
 estructurada la evidencia de cumplimiento. Este informe formula un proyecto orientado a diseñar e
 implementar una solución tecnológica de tipo GRC (Governance, Risk & Compliance) que permita al
-encargado de ciberseguridad del hospital registrar controles, evidencias, incidentes y proveedores,
-visualizando de manera gráfica el avance del SGSI institucional.
+encargado de ciberseguridad del hospital administrar usuarios, recibir denuncias y reportes de incidentes mediante una ticketera, además de
+registrar controles, evidencias, incidentes y proveedores, visualizando de manera gráfica el avance del
+SGSI institucional.
 
 *(Se recomienda redactar la versión final de esta introducción al terminar el resto del informe,
 resumiendo en una página los puntos II a VIII.)*
@@ -94,6 +95,13 @@ actas de reunión firmadas, cláusulas contractuales, revisiones de antecedentes
   con terceros/proveedores es incompleto y disperso, al igual que los controles del ciclo de vida del
   personal (verificación de antecedentes, condiciones de empleo, proceso disciplinario,
   responsabilidades post-término).
+- El reporte de incidentes depende actualmente del analista del CISO y no existe un canal formal
+  interno ni un formulario público que permita a funcionarios u otras personas del hospital presentar
+  denuncias o reportes, incluso de forma anónima. Esto dificulta la detección temprana y puede inhibir
+  la comunicación de hechos sensibles.
+- La administración de cuentas se realiza mediante carga inicial o seed, sin una interfaz para crear,
+  revisar, modificar, habilitar o deshabilitar usuarios y sus roles. La falta de baja lógica oportuna
+  debilita el control de acceso y la trazabilidad cuando una persona deja el hospital.
 
 ### 2.2 Justificación del problema
 
@@ -113,10 +121,11 @@ completo, clasificado como severidad crítica).
 La complejidad radica en la heterogeneidad de los controles a gestionar (organizacionales, de
 personas, físicos y tecnológicos), la multiplicidad de tipos de evidencia (documentos, actas, registros
 digitales), la necesidad de trazabilidad temporal (plazos legales de reporte de incidentes) y la
-integración de actores con roles distintos y no intercambiables (encargado de ciberseguridad,
-administrador de contratos, referente técnico, proveedores externos como InterSystems). A esto se
-suma la ausencia actual de un sistema de información dedicado, por lo que toda la gestión depende de
-trabajo manual y memoria institucional.
+participación de actores con responsabilidades distintas (encargado de ciberseguridad, administrador
+de contratos, referente técnico, admin_sistema, funcionarios denunciantes y proveedores externos como
+InterSystems). Se requiere proteger la confidencialidad de las denuncias y separar la administración
+técnica de usuarios de la gestión de los tickets. A esto se suma la ausencia actual de un sistema de
+información dedicado, por lo que parte de la gestión depende de trabajo manual y memoria institucional.
 
 ---
 
@@ -132,28 +141,47 @@ trabajo manual y memoria institucional.
 
 ### Principales requerimientos identificados (resumen; ver detalle en Anexos)
 
-**Requerimientos funcionales (ejemplos, formato historia de usuario):**
+**Requerimientos funcionales (historias de usuario):**
 
 - Como encargado de ciberseguridad, quiero registrar cada control ISO 27001 con su dominio, estado y
   evidencia asociada, para tener trazabilidad del cumplimiento.
 - Como encargado de ciberseguridad, quiero visualizar el nivel de madurez por dominio y global en
   gráficos (torta/barra), para comunicar el avance a la Dirección de forma comprensible.
-- Como encargado de ciberseguridad, quiero registrar incidentes de ciberseguridad clasificándolos
-  según la taxonomía ANCI (severidad, alcance, tipo), para determinar si corresponde reportar y en qué
-  plazo.
-- Como encargado de ciberseguridad, quiero recibir alertas de vencimiento de plazos de reporte de
-  incidentes (3 h / 72 h / 15 días), para cumplir con la Ley 21.663.
-- Como encargado de ciberseguridad, quiero registrar cláusulas de seguridad exigidas a proveedores en
-  contratos y licitaciones, para verificar su cumplimiento.
-- Como encargado de ciberseguridad, quiero llevar un registro de controles de personas (capacitaciones,
-  verificación de antecedentes, acuerdos de confidencialidad, proceso disciplinario, término de
-  contrato), para evidenciar el dominio "Personas" del Anexo A.
+- Como encargado de ciberseguridad, quiero registrar incidentes según la taxonomía ANCI y recibir
+  alertas de vencimiento de los plazos de reporte (3 h / 72 h / 15 días), para cumplir la Ley 21.663.
+- Como encargado de ciberseguridad, quiero registrar cláusulas de seguridad de proveedores y
+  controles del ciclo de vida de las personas, para evidenciar su cumplimiento.
+- Como Administrador de Sistema (admin_sistema), quiero listar, crear usuarios con nombre completo,
+  username, contraseña inicial y rol, editar sus datos y rol, restablecer contraseñas y habilitar o
+  deshabilitar cuentas, para administrar los accesos; cada operación debe quedar auditada y la baja
+  será lógica. No podré deshabilitar mi propia cuenta ni deshabilitar o degradar al último admin_sistema
+  activo.
+- Como funcionario o denunciante del hospital, quiero crear desde el formulario público, sin iniciar
+  sesión, un ticket de tipo denuncia o reporte_incidente, e indicar categoría de un catálogo (phishing,
+  malware/ransomware, acceso no autorizado, fuga de información, uso indebido de datos, falla/caída de
+  servicio, pérdida/robo de equipo, incumplimiento de políticas u Otros), descripción, sistema/área
+  afectada, fecha y hora aproximada, severidad percibida (baja, media, alta o crítica) y adjuntos
+  opcionales. Si selecciono Otros, informaré una categoría en texto libre. Puedo elegir notificación por
+  correo, bandeja interna o ambos; la identidad no se vinculará al ticket aunque se indique como
+  identificado.
+- Como encargado de ciberseguridad, quiero revisar la bandeja confidencial, cambiar el estado del
+  ticket y, cuando corresponda, convertirlo en incidente formal con taxonomía ANCI y plazos legales.
+- Como denunciante anónimo, quiero consultar el estado de mi ticket con un código de seguimiento,
+  sin acceder a datos sensibles ni tener que revelar mi identidad.
 
-**Requerimientos no funcionales (ejemplos):**
+**Requerimientos no funcionales:**
 
-- Confidencialidad e integridad de la información registrada (datos sensibles de seguridad).
-- Trazabilidad/auditoría de cambios de estado de cada control.
-- Disponibilidad razonable acorde a un sistema de apoyo administrativo (no crítico como Trakcare).
+- **Anonimato:** los tickets no almacenarán nombre, correo, IP, user-agent, token de sesión ni FK al
+  usuario que reporta; la identidad tampoco será visible ni asociable cuando se indique voluntariamente.
+- **Confidencialidad:** el contenido y los adjuntos de tickets solo serán accesibles al encargado de
+  ciberseguridad; admin_sistema no tendrá acceso al contenido de la ticketera.
+- **Control de acceso y auditoría:** RBAC para cinco roles; solo admin_sistema administra usuarios,
+  con trazabilidad de quién, qué y cuándo para altas, cambios, restablecimientos y estados.
+- **Disponibilidad y protección frente a abuso:** canal público disponible en la red interna por
+  HTTPS, con limitación de solicitudes, validación estricta de datos y adjuntos, y manejo de errores
+  sin detalles internos.
+- Confidencialidad e integridad de la información del SGSI, cifrado en tránsito y protección de
+  archivos en repositorios con permisos restringidos.
 - Compatibilidad con la infraestructura tecnológica existente del hospital.
 
 *(Se sugiere incluir en Anexos el listado completo de requerimientos documentado bajo IEEE 830 o
@@ -195,22 +223,21 @@ cada punto; este listado es solo la estructura temática a cubrir.)*
 Se propone diseñar e implementar un **Sistema de Gestión de Seguridad de la Información (SGSI)**,
 materializado como una aplicación web de tipo GRC, que centralice:
 
-1. **Gestión de controles ISO/IEC 27001** — catálogo de controles por dominio (organizacional,
-   personas, físico, tecnológico), estado (no iniciado / iniciado / implementado / gestionado) y
-   evidencia adjunta.
-2. **Cálculo y visualización del nivel de madurez** — indicadores gráficos (torta, barra) por dominio,
-   grupo de control y consolidado institucional.
-3. **Gestión de incidentes de ciberseguridad** — registro, clasificación según taxonomía ANCI
-   (severidad/alcance), cómputo automático de plazos legales de reporte (3 h, 72 h, 15 días) y alertas
-   de vencimiento.
-4. **Gestión de terceros/proveedores** — checklist de cláusulas de seguridad en contratos y bases de
-   licitación, con roles diferenciados (administrador de contratos, referente técnico, encargado de
-   ciberseguridad).
-5. **Gestión de controles de personas** — capacitaciones/concientización, verificación de
-   antecedentes, condiciones de empleo, proceso disciplinario, responsabilidades de término de
-   contrato, acuerdos de confidencialidad.
-6. **Reportería para cumplimiento normativo** — informes exportables para sustentar el indicador de
-   gestión institucional y auditorías internas/externas.
+1. **Gestión de controles ISO/IEC 27001** — catálogo por dominio, estado y evidencia de cumplimiento.
+2. **Gestión de evidencias** — carga y trazabilidad documental asociada a controles y registros.
+3. **Cálculo y visualización de madurez** — indicadores por dominio, grupo de control y consolidado.
+4. **Gestión de incidentes** — clasificación ANCI, cómputo de plazos legales (3 h, 72 h, 15 días) y
+   alertas de vencimiento.
+5. **Gestión de terceros/proveedores** — verificación de cláusulas de seguridad en contratos y
+   licitaciones.
+6. **Gestión de controles de personas** — capacitaciones, antecedentes, condiciones de empleo,
+   confidencialidad y término de contrato.
+7. **Reportería para cumplimiento normativo** — informes exportables para gestión y auditorías.
+8. **Gestión de usuarios** — altas, edición, asignación de roles, restablecimiento de contraseñas y
+   habilitación/deshabilitación lógica con auditoría; acceso exclusivo de admin_sistema.
+9. **Ticketera de denuncias y reportes** — formulario público sin autenticación, registro anónimo,
+   notificaciones seleccionables por correo y/o bandeja interna, gestión confidencial por el encargado
+   y conversión a incidente cuando corresponda.
 
 La solución busca reemplazar el trabajo manual disperso (planillas, correos, actas) por un sistema
 único, auditable y con visualización orientada a la toma de decisiones de la Dirección del hospital.
@@ -218,10 +245,20 @@ La solución busca reemplazar el trabajo manual disperso (planillas, correos, ac
 #### 5.1.2 Alcance y restricciones
 
 **Dentro del alcance:**
-- Módulo de registro y seguimiento de controles ISO 27001 con evidencia y cálculo de madurez.
-- Módulo de incidentes con clasificación según taxonomía ANCI y cómputo de plazos.
-- Módulo de terceros/proveedores y de personas (registro documental y checklist).
-- Dashboard con reportes gráficos.
+- Los nueve módulos descritos en 5.1.1: controles, evidencias, madurez, incidentes, terceros,
+  personas, reportería, usuarios y ticketera.
+- Administración de usuarios solo por admin_sistema: alta, edición, rol, restablecimiento de
+  contraseña y baja lógica, sin borrado físico, con prevención de deshabilitarse a sí mismo o al último
+  administrador de sistema activo y con registro de auditoría. Un usuario deshabilitado no podrá iniciar
+  sesión ni acceder al sistema, incluso si conserva un token previo.
+- Formulario público /reportar sin autenticación, disponible en la red interna del hospital, y acceso
+  desde el menú autenticado; creación de tickets anónimos, consulta de estado mediante código,
+  adjuntos opcionales y selección de notificación por correo institucional y/o bandeja interna.
+- Bandeja de tickets y gestión de su ciclo de vida exclusiva del encargado; conversión a incidente
+  formal con taxonomía ANCI y plazos legales cuando corresponda.
+- RBAC con cinco roles y separación entre administración técnica y gestión de contenidos de negocio.
+- Medidas de seguridad para la ticketera: HTTPS, limitación de solicitudes, validación y restricción
+  de adjuntos, almacenamiento separado y confidencial, y notificaciones sin incluir contenido sensible.
 
 **Fuera del alcance (propuesto para otra instancia):**
 - Integración automática/en tiempo real con Trakcare u otros sistemas clínicos.
@@ -238,19 +275,23 @@ para pruebas).
 #### 5.2.1 Proceso de negocio afectado
 
 Principalmente el proceso de **gestión de seguridad de la información y cumplimiento normativo**,
-liderado por el encargado de ciberseguridad, con interacción indirecta hacia TI/informática (soporte
-técnico), abastecimiento (licitaciones/contratos) y recursos humanos (controles de personas).
+liderado por el encargado de ciberseguridad, con participación de funcionarios y denunciantes del
+hospital mediante el canal de reportes, y del administrador de sistema para la gestión técnica de
+cuentas. Interactúa con TI/informática (soporte técnico), abastecimiento (licitaciones/contratos) y
+recursos humanos (controles de personas).
 
 #### 5.2.2 Registro de Interesados
 
 | Interesado | Rol | Interés/Impacto |
 |---|---|---|
-| Encargado de Ciberseguridad (Miguel Godoy) | Mandante / usuario principal | Gestionar y reportar el SGSI |
+| Encargado de Ciberseguridad (Miguel Godoy) | Mandante / usuario principal | Gestionar incidentes, bandeja y tickets; supervisar el SGSI |
+| Funcionarios y denunciantes del hospital | Usuarios internos o actores anónimos | Informar denuncias y reportes mediante el formulario público sin revelar identidad |
+| Administrador de Sistema (admin_sistema) | Administrador técnico | Gestionar cuentas, roles y estados con trazabilidad; sin acceso al contenido de tickets |
 | Dirección del Hospital | Patrocinador | Visibilidad de cumplimiento y riesgo |
-| Equipo de Informática | Soporte técnico | Mantención de la plataforma |
+| Equipo de Informática | Soporte técnico | Mantención de la plataforma, HTTPS, almacenamiento y correo |
 | Administrador de Contratos | Usuario secundario | Registro de cláusulas de seguridad |
 | Proveedor Trakcare (InterSystems) | Tercero | Referencia de soporte, no usuario directo |
-| ANCI (Agencia Nacional de Ciberseguridad) | Ente regulador | Receptor final de reportes de incidentes |
+| ANCI (Agencia Nacional de Ciberseguridad) | Ente regulador | Receptor final de reportes formales de incidentes |
 
 *(Completar siguiendo formato PMBOK: poder/interés, estrategia de gestión, etc.)*
 
@@ -261,6 +302,13 @@ técnico), abastecimiento (licitaciones/contratos) y recursos humanos (controles
 - % de controles con evidencia registrada por dominio.
 - N.º de incidentes reportados dentro de plazo legal vs. fuera de plazo.
 - % de contratos/licitaciones con cláusulas de seguridad verificadas.
+- **KPI-09 — Tiempo medio de primera respuesta a tickets:** tiempo desde registrado hasta en análisis,
+  con meta de ≤ 24 horas hábiles.
+- **KPI-10 — Gestión de tickets dentro de SLA:** porcentaje de tickets que avanzan desde registrado
+  a otro estado dentro del SLA aplicable, con meta ≥ 90 %.
+- **KPI-11 — Cobertura de deshabilitación de cuentas:** porcentaje de usuarios desvinculados
+  deshabilitados dentro de 24 horas (o 1 día hábil) desde la solicitud, con meta ≥ 100 %.
+- Los tickets convertidos en incidentes reportables mantienen los plazos legales medidos por KPI-03.
 
 #### 5.2.4 Niveles de servicio
 
@@ -272,22 +320,26 @@ tiempo de respuesta de soporte, tiempo máximo para registrar un incidente desde
 #### 5.3.1 Objetivo General
 
 Desarrollar un Sistema de Gestión de Seguridad de la Información (SGSI) que permita al Hospital Félix
-Bulnes Cerda registrar, medir y visualizar el nivel de madurez de sus controles ISO/IEC 27001, así como
-gestionar incidentes de ciberseguridad conforme a la Ley 21.663, con el fin de fortalecer su capacidad
-de cumplimiento normativo y toma de decisiones en seguridad de la información.
+Bulnes Cerda registrar, medir y visualizar el nivel de madurez de sus controles ISO/IEC 27001, gestionar
+incidentes de ciberseguridad conforme a la Ley 21.663, administrar usuarios con roles y auditoría, y
+recibir denuncias y reportes anónimos mediante una ticketera confidencial, con el fin de fortalecer su
+capacidad de cumplimiento normativo y toma de decisiones en seguridad de la información.
 
 #### 5.3.2 Objetivos Específicos
 
-1. Diseñar un modelo de datos y catálogo de controles ISO/IEC 27001 (Anexo A) que permita registrar
-   estado y evidencia de cumplimiento por dominio.
-2. Implementar un módulo de cálculo y visualización gráfica del nivel de madurez del SGSI por dominio
-   y de forma consolidada.
-3. Implementar un módulo de gestión de incidentes de ciberseguridad clasificado según la taxonomía
-   ANCI, con cómputo automático de plazos legales de reporte.
-4. Implementar módulos de gestión de controles de terceros/proveedores y de personas, conforme a los
-   dominios respectivos de ISO/IEC 27001.
-5. Validar la solución con el encargado de ciberseguridad del hospital mediante pruebas funcionales
-   sobre datos de prueba representativos.
+1. Diseñar el modelo de datos del SGSI para sus diez tablas: Control, Evidencia, Incidente,
+   Tercero, PersonaControl, Usuario, tickets, ticket_adjuntos, notificaciones y auditoria_usuarios,
+   preservando el anonimato y la trazabilidad de la información.
+2. Implementar los módulos de controles, evidencias, cálculo de madurez, incidentes, terceros,
+   personas y reportería para apoyar el cumplimiento de ISO/IEC 27001 y la Ley 21.663.
+3. Implementar la administración de usuarios con RBAC de cinco roles, acceso exclusivo de
+   admin_sistema, baja lógica y auditoría de las operaciones sensibles.
+4. Implementar la ticketera con formulario público anónimo, bandeja confidencial, notificaciones
+   seleccionables por correo y/o bandeja, consulta segura de estado y conversión a incidente formal.
+5. Definir controles de seguridad y disponibilidad para proteger el anonimato, la confidencialidad y
+   la trazabilidad, y reducir el abuso del endpoint público.
+6. Validar los módulos y sus permisos mediante pruebas funcionales con datos de prueba representativos
+   y participación del encargado de ciberseguridad del hospital.
 
 ---
 
@@ -296,9 +348,9 @@ de cumplimiento normativo y toma de decisiones en seguridad de la información.
 ### 6.1 Metodología de Desarrollo de la solución
 
 Se propone una metodología **ágil (Scrum)**, dada la necesidad de validar de forma incremental los
-distintos módulos (controles, madurez, incidentes, terceros, personas) directamente con el mandante,
-quien tiene alta disponibilidad de retroalimentación y requerimientos que pueden refinarse a medida que
-se revisan los controles reales del hospital. **[PENDIENTE: justificar formalmente con marco teórico y
+nueve módulos (controles, evidencias, madurez, incidentes, terceros, personas, reportería, usuarios y
+ticketera) directamente con el mandante, priorizando la retroalimentación y refinando los requerimientos
+en el backlog a medida que se revisa la solución. **[PENDIENTE: justificar formalmente con marco teórico y
 confirmar con el equipo si se adoptará metodología predictiva en su lugar.]**
 
 ### 6.2 Duración y cronograma
@@ -306,6 +358,12 @@ confirmar con el equipo si se adoptará metodología predictiva en su lugar.]**
 Duración total: 5 semanas (según guía EF1/ES1). **[PENDIENTE: detallar carta Gantt con hitos semanales:
 S1 formulación y organización de equipo, S2 levantamiento de requerimientos y marco teórico, S3 entrega
 EF1, S4 retroalimentación y ajustes, S5 entrega ES1.]**
+
+**Registro de cambio de alcance (21-10-2026):** por acuerdo con el Product Owner se incorporan los
+módulos Usuarios y Ticketera, junto con el rol admin_sistema y el formulario público anónimo. El cambio
+se gestiona en el backlog y se prioriza en este orden: 1) Usuarios; 2) Ticketera (backend y frontend,
+formulario público y notificaciones). La planificación debe absorber el trabajo mediante solapamiento y
+holgura, manteniendo como hito ES2 el 11-12-2026.
 
 ### 6.3 Equipo de trabajo
 
@@ -345,51 +403,89 @@ verificando la necesidad de integración con otros sistemas"*.
 ### 7.2 Plan de diseño de la solución (arquitectura propuesta)
 
 Se propone una **aplicación web en 3 capas** (presentación, lógica de negocio, datos), de tipo
-cliente-servidor, organizada en los módulos ya definidos en el punto 5.1.1:
+cliente-servidor, organizada en los nueve módulos del punto 5.1.1, con un formulario público separado
+lógicamente de las rutas autenticadas:
 
 ```mermaid
 flowchart TB
     subgraph Presentacion["Capa de Presentación"]
-        UI["SPA Web (dashboard, formularios)"]
+        UI["SPA interna: dashboard y nueve módulos"]
+        PUB["Formulario público /reportar (sin autenticación)"]
     end
     subgraph Aplicacion["Capa de Aplicación (API REST)"]
-        AUTH["Módulo Autenticación / Roles (RBAC)"]
+        AUTH["Autenticación y autorización RBAC"]
+        RBAC["5 roles: encargado, admin_contratos, referente_tecnico, director, admin_sistema"]
         CTRL["Módulo Controles ISO 27001"]
-        MAD["Módulo Cálculo de Madurez"]
-        INC["Módulo Incidentes (taxonomía ANCI + plazos)"]
+        EVID["Módulo Evidencias"]
+        MAD["Módulo Madurez"]
+        INC["Módulo Incidentes (ANCI + plazos)"]
         TERC["Módulo Terceros / Proveedores"]
         PERS["Módulo Personas"]
         REP["Módulo Reportería / Exportación"]
+        USR["Módulo Usuarios (solo admin_sistema)"]
+        TICK["Módulo Ticketera / bandeja (solo encargado)"]
+        PTICK["API pública: POST /api/public/tickets; GET /api/public/tickets/categorias y GET /api/public/tickets/{codigo_seguimiento}"]
+        NOTIF["Servicio de notificaciones: correo y bandeja interna"]
     end
     subgraph Datos["Capa de Datos"]
-        DB[("Base de datos relacional")]
-        FILES[("Repositorio de evidencia/archivos")]
+        DB[("Base relacional: 10 tablas")]
+        FILES[("Repositorio de evidencias")]
+        ADJ[("NAS-01 /evidencias/tickets/, acceso restringido")]
+        SMTP[("SMTP institucional / relay")]
     end
 
     UI --> AUTH
+    AUTH --> RBAC
     UI --> CTRL
+    UI --> EVID
     UI --> MAD
     UI --> INC
     UI --> TERC
     UI --> PERS
     UI --> REP
+    UI --> USR
+    UI --> TICK
+    PUB --> PTICK
     CTRL --> DB
+    EVID --> DB
     MAD --> DB
     INC --> DB
     TERC --> DB
     PERS --> DB
     REP --> DB
+    USR --> DB
+    TICK --> DB
+    TICK --> INC
+    TICK --> ADJ
+    TICK --> NOTIF
+    PTICK --> DB
+    PTICK --> ADJ
+    PTICK --> NOTIF
+    NOTIF --> DB
+    NOTIF --> SMTP
     CTRL --> FILES
+    EVID --> FILES
     INC --> FILES
     TERC --> FILES
     PERS --> FILES
 ```
 
-**Modelo de datos conceptual (entidades principales):** `Control` (dominio, descripción, estado),
-`Evidencia` (tipo, archivo, fecha, control asociado), `Incidente` (severidad ANCI, fecha detección,
-plazo de reporte, estado), `Tercero/Proveedor` (contrato, cláusulas de seguridad, estado de
-cumplimiento), `PersonaControl` (capacitación, antecedentes, confidencialidad, término de contrato) y
-`Usuario` (rol: encargado de ciberseguridad, administrador de contratos, referente técnico).
+**Modelo de datos conceptual:** las seis tablas preexistentes (Control, Evidencia, Incidente,
+Tercero/Proveedor, PersonaControl y Usuario) se amplían con cuatro nuevas, por un total de diez:
+**tickets**, **ticket_adjuntos**, **notificaciones** y **auditoria_usuarios**. Usuario conserva el estado
+activo y uno de los cinco roles. auditoria_usuarios registra actor, usuario objetivo, acción, detalle y
+fecha. tickets almacena código y código de seguimiento, tipo (denuncia o reporte_incidente), categoría
+del catálogo predefinido y categoria_otro para Otros, descripción, sistema/área, fecha-hora aproximada,
+severidad percibida, estado (registrado, en_analisis, derivado_a_incidente o cerrado), origen, medios
+de notificación seleccionados y referencia nullable a incidentes.id; no tiene FK a usuarios ni almacena
+nombre, correo u otro identificador del emisor. ticket_adjuntos referencia al ticket; notificaciones
+registra medio, destinatario del equipo de ciberseguridad, estado de envío y lectura.
+
+**RBAC (5 roles):** encargado, admin_contratos, referente_tecnico, director y admin_sistema. Solo
+admin_sistema administra usuarios y no ve el contenido de tickets; solo encargado gestiona la bandeja,
+el ciclo de vida y la conversión de tickets. admin_sistema se limita a la administración técnica y su
+propio perfil, sin acceso a controles ni incidentes de negocio. El actor no autenticado puede crear un
+ticket o consultar únicamente su estado mediante el código de seguimiento.
 
 **Justificación de la arquitectura elegida:** dado el alcance acotado (una sola institución, volumen
 transaccional bajo, equipo de 3 estudiantes y plazo de un semestre), se prefiere una arquitectura
@@ -402,10 +498,23 @@ tecnología.
 
 ### 7.3 Seguridad de la arquitectura
 
-Dado que el propio sistema almacena información sensible sobre el estado de seguridad del hospital
-(controles, brechas, incidentes), se definen como requisitos arquitectónicos: autenticación con control
-de acceso basado en roles (RBAC), cifrado en tránsito (TLS) y en reposo para evidencia adjunta, y
-registro de auditoría (log inmutable) de cada cambio de estado sobre controles e incidentes.
+Dado que el SGSI almacena información sensible sobre controles, brechas, incidentes y denuncias, se
+requieren RBAC de cinco roles, autenticación en todas las rutas internas, cifrado TLS en tránsito,
+cifrado en reposo para archivos, repositorios con permisos restringidos y auditoría de operaciones
+sensibles, incluidos los cambios de estado de controles e incidentes, y las altas, cambios de rol,
+restablecimientos y cambios de estado de usuarios. Solo admin_sistema podrá administrar usuarios; el
+contenido y la gestión de tickets quedarán reservados al encargado de ciberseguridad, sin acceso para
+admin_sistema ni los otros roles.
+
+El endpoint público POST /api/public/tickets y la ruta /reportar serán excepciones explícitas a la
+autenticación, accesibles por HTTPS desde la red interna del hospital; el firewall/WAF no los expondrá a
+Internet salvo decisión del mandante. Para reducir abuso se aplicarán rate limiting, honeypot o captcha
+simple, validación y sanitización de entradas, lista blanca de tipos de archivo y tamaño máximo cercano
+a 10 MB, con análisis antivirus recomendado. Los errores no revelarán detalles internos. El ticket no
+registrará identidad, token, IP ni user-agent; los logs de aplicación y reverse proxy para esta ruta no
+guardarán la IP o deberán anonimizarla. El código de seguimiento permitirá consultar solo el estado,
+sin datos sensibles. Los correos se limitarán a código, tipo, severidad y enlace a la bandeja; si SMTP
+falla, la creación no se bloqueará y el ticket quedará en la bandeja interna para reintento.
 
 ### 7.4 Modelo de despliegue
 
@@ -439,9 +548,9 @@ TOGAF), en 4 capas:
 | Capa | Elemento institucional | Elemento del proyecto |
 |---|---|---|
 | Negocio | Proceso de gestión de seguridad de la información y cumplimiento normativo (Ley 21.663, protección de datos) | Objetivo general y objetivos específicos del SGSI (punto 5.3) |
-| Aplicación | Función del encargado de ciberseguridad, administrador de contratos, referente técnico | Módulos de Controles, Madurez, Incidentes, Terceros, Personas, Reportería (punto 7.2) |
-| Datos | Evidencia documental de cumplimiento (actas, contratos, certificados) | Modelo de datos conceptual (Control, Evidencia, Incidente, Tercero, PersonaControl) |
-| Tecnología | Infraestructura de red corporativa del hospital, sistema Trakcare | Aplicación web 3 capas, desplegada on-premise/nube privada (punto 7.4) |
+| Aplicación | Funciones del encargado de ciberseguridad, administrador de contratos, referente técnico y administrador técnico; funcionarios como denunciantes | Nueve módulos: Controles, Evidencias, Madurez, Incidentes, Terceros, Personas, Reportería, Usuarios y Ticketera. RBAC con cinco roles: encargado, admin_contratos, referente_tecnico, director y admin_sistema (punto 7.2) |
+| Datos | Evidencia documental de cumplimiento, registros de usuarios y tickets anónimos | Diez tablas: Control, Evidencia, Incidente, Tercero, PersonaControl, Usuario, tickets, ticket_adjuntos, notificaciones y auditoria_usuarios; tickets no se vinculan a la identidad del emisor |
+| Tecnología | Infraestructura de red corporativa del hospital y sistema Trakcare | Aplicación web en 3 capas; APP-01, DB-01, NAS-01 y BK-01; formulario HTTPS desde la LAN, almacenamiento restringido de adjuntos y servicio SMTP institucional/relay (SMTP-01, salida APP-01 por puerto 587 o 25) para notificaciones |
 
 ### 8.2 Compatibilidad de la solución con la arquitectura empresarial
 
@@ -449,9 +558,14 @@ La solución es compatible con la arquitectura empresarial existente porque:
 
 - **No modifica procesos asistenciales** ni el sistema clínico Trakcare; opera exclusivamente sobre el
   proceso de apoyo/gobierno de gestión de seguridad de la información, ya existente en la organización.
-- **Respeta la estructura de roles ya definida** por el hospital (encargado de ciberseguridad,
-  administrador de contratos, referente técnico), replicándolos como roles de usuario dentro del
-  sistema (RBAC), en lugar de crear nuevas funciones organizacionales.
+- **Respeta la estructura de roles de negocio** del hospital (encargado de ciberseguridad,
+  administrador de contratos, referente técnico y director) y añade admin_sistema como rol técnico,
+  distinto del encargado y restringido a administración de usuarios. El RBAC considera cinco roles;
+  el encargado gestiona tickets y admin_sistema no accede a su contenido.
+- **Incorpora a los funcionarios y denunciantes** como actores del proceso de reporte, mediante un
+  formulario público sin autenticación que minimiza datos personales y no asocia la identidad al ticket.
+- **Mantiene la separación de funciones:** el administrador técnico gestiona cuentas; el equipo de
+  ciberseguridad conserva en exclusiva la lectura y gestión del ciclo de vida de los tickets.
 - **Puede adoptarse sin rediseñar la estructura organizacional actual**, ya que se integra como una
   herramienta de apoyo a una función de cumplimiento que el hospital ya ejerce, cubriendo así los
   criterios *"reconoce las características de la arquitectura empresarial"* y *"define la solución de
@@ -465,21 +579,24 @@ vez validado con el mandante.]**
 ## IX. Conclusiones
 
 El diagnóstico realizado (sección II) evidenció que el Hospital Félix Bulnes Cerda, en su condición de
-Operador de Importancia Vital bajo la Ley N.º 21.663, carece de un mecanismo centralizado para
-gestionar el estado de sus controles ISO/IEC 27001, la evidencia de cumplimiento y la clasificación de
-incidentes de ciberseguridad según la taxonomía de la ANCI, lo que compromete su capacidad de reportar
-oportunamente y de sustentar su indicador de gestión institucional. En respuesta directa a ese
-problema, la solución formulada (sección V) —un Sistema de Gestión de Seguridad de la Información con
-módulos de controles, madurez, incidentes, terceros y personas— y su arquitectura de soporte (secciones
-VII y VIII) fueron diseñadas para reemplazar el trabajo manual disperso por un registro único, auditable
-y visualmente comprensible, sin alterar los procesos asistenciales ni la estructura organizacional
-existente del hospital.
+Operador de Importancia Vital bajo la Ley N.º 21.663, necesita centralizar la gestión de controles
+ISO/IEC 27001, evidencias e incidentes ANCI, y además carece de un canal formal interno o público para
+reportar denuncias e incidentes y de herramientas para administrar las cuentas y roles de usuarios. El
+cambio de alcance acordado con el Product Owner el 21-10-2026 incorpora los módulos Usuarios y
+Ticketera para abordar estas brechas.
 
-De este modo, el problema identificado, la solución tecnológica propuesta y su arquitectura de
-implementación son coherentes entre sí: cada módulo del SGSI responde a una carencia concreta detectada
-en la entrevista con el mandante, y las decisiones de arquitectura (sin integración en tiempo real con
-Trakcare, despliegue en red corporativa, RBAC y auditoría) se justifican directamente por la naturaleza
-sensible de la información gestionada y por las obligaciones legales del hospital.
+La solución propuesta (sección V) comprende nueve módulos: Controles, Evidencias, Madurez, Incidentes,
+Terceros, Personas, Reportería, Usuarios y Ticketera. El módulo Usuarios reserva a admin_sistema la
+administración técnica de cuentas, con baja lógica y auditoría; la Ticketera permite crear reportes por
+formulario público anónimo, protege su confidencialidad y reserva su gestión al encargado de
+ciberseguridad. La arquitectura de soporte (secciones VII y VIII) mantiene un registro trazable,
+notificaciones por correo institucional y/o bandeja interna, y conversión de tickets a incidentes
+formales, sin alterar los procesos asistenciales ni integrarse en tiempo real con Trakcare.
+
+De este modo, el problema identificado, la solución y su arquitectura son coherentes: los nueve
+módulos responden a necesidades de cumplimiento y seguridad, con cinco roles RBAC, anonimato,
+confidencialidad y auditoría. El cambio se gestiona en el backlog, priorizando Usuarios y luego
+Ticketera, y debe incorporarse a la planificación sin perder el hito ES2 del 11-12-2026.
 
 **[PENDIENTE — a completar por el equipo]**: incorporar aquí las reflexiones y aprendizajes propios del
 proceso de levantamiento y formulación (p. ej. dificultades para interpretar la normativa de

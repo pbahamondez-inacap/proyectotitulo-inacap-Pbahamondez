@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..deps import get_current_user, require_roles
+from ..deps import get_business_user, require_roles
 from ..models import EstadoCumplimiento, Role, Tercero
 from ..schemas import TerceroCreate, TerceroOut, TerceroUpdate
 from ..utils import to_naive
@@ -32,7 +32,7 @@ def list_terceros(
     estado: str | None = Query(default=None),
     search: str | None = Query(default=None),
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     q = db.query(Tercero)
     if estado:
@@ -64,7 +64,7 @@ def create_tercero(
 def get_tercero(
     tercero_id: int,
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     return _get_tercero(tercero_id, db)
 

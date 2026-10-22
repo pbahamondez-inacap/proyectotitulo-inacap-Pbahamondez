@@ -1,4 +1,6 @@
 """Aplicación FastAPI del SGSI — Hospital Félix Bulnes Cerda."""
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -10,17 +12,33 @@ from .routers import (
     evidencias,
     incidentes,
     madurez,
+    notificaciones,
     personas,
+    public_tickets,
     reportes,
     terceros,
+    tickets,
+    usuarios,
 )
+
+
+class _OmitirRutasPublicas(logging.Filter):
+    """Anonimato: el log de acceso no registra (IP incluida) las solicitudes al formulario público."""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        args = record.args
+        path = args[2] if isinstance(args, tuple) and len(args) >= 3 else ""
+        return not str(path).startswith("/api/public/")
+
+
+logging.getLogger("uvicorn.access").addFilter(_OmitirRutasPublicas())
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="SGSI — Hospital Félix Bulnes Cerda",
-    description="Sistema de Gestión de Seguridad de la Información (controles ISO/IEC 27001, madurez, incidentes ANCI, terceros y personas).",
-    version="1.0.0",
+    description="Sistema de Gestión de Seguridad de la Información (controles ISO/IEC 27001, madurez, incidentes ANCI, terceros, personas, usuarios y ticketera de denuncias/reportes).",
+    version="1.1.0",
 )
 
 app.add_middleware(
@@ -40,6 +58,10 @@ for router in (
     personas.router,
     madurez.router,
     reportes.router,
+    usuarios.router,
+    tickets.router,
+    public_tickets.router,
+    notificaciones.router,
 ):
     app.include_router(router, prefix="/api")
 

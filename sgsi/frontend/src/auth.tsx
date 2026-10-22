@@ -5,7 +5,7 @@ import { api, getToken, setToken } from './api'
 interface AuthContextValue {
   user: Usuario | null
   loading: boolean
-  login: (username: string, password: string) => Promise<void>
+  login: (username: string, password: string) => Promise<Usuario>
   logout: () => void
 }
 
@@ -28,12 +28,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   async function login(username: string, password: string) {
-    const data = await api.post<{ token: string; user: Usuario }>('/auth/login', {
-      username,
-      password,
-    })
+    const data = await api.post<{ token: string; user: Usuario }>('/auth/login', { username, password })
     setToken(data.token)
     setUser(data.user)
+    return data.user
   }
 
   function logout() {
@@ -41,11 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }
 
-  return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {

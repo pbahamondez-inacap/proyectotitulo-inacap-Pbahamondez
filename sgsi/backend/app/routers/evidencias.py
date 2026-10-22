@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from ..config import EVIDENCE_DIR
 from ..database import get_db
-from ..deps import get_current_user
+from ..deps import get_business_user
 from ..models import Evidencia
 
 router = APIRouter(prefix="/evidencias", tags=["evidencias"])
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/evidencias", tags=["evidencias"])
 def download_evidencia(
     evidencia_id: int,
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     evidencia = db.query(Evidencia).filter(Evidencia.id == evidencia_id).first()
     if not evidencia or not evidencia.archivo_path:

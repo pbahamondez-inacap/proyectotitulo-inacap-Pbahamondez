@@ -13,8 +13,8 @@ Dado que el proyecto adopta una **metodología ágil (Scrum)**, la planificació
 
 ## 16.1 Metodología de planificación
 
-Scrum organiza el trabajo en **sprints semanales** con un **incremento entregable** al final de cada
-etapa, alineado a los hitos de la asignatura (avance EF2 → entrega ES2).
+Scrum organiza el trabajo en **sprints con incrementos entregables** al final de cada etapa; su
+duración se ajusta a las dependencias del alcance y a los hitos de la asignatura (EF2 → ES2).
 
 ## 16.2 Detalle de fases (sprints)
 
@@ -22,10 +22,10 @@ etapa, alineado a los hitos de la asignatura (avance EF2 → entrega ES2).
 |---|---|---|---|
 | F1. Formulación y requisitos | 2 semanas | Refinar requerimientos con el mandante; marco normativo | Avance formativo (EF2) |
 | F2. Diseño | 2 semanas | BPMN, UML (casos de uso, componentes), modelo de datos, arquitectura, infraestructura y topología | Entregables 3–8 |
-| F3. Desarrollo backend | 2 semanas | API FastAPI, módulos de negocio, JWT/RBAC, reglas de madurez y plazos | Backend operativo |
-| F4. Desarrollo frontend | 2 semanas | SPA React, páginas, dashboard y reportes | Frontend integrado |
-| F5. Pruebas | 1 semana | Pruebas unitarias, de sistema y UAT (Entregable 11) | Sistema validado |
-| F6. Documentación ES2 | 2 semanas | KPI, SLA, planes de servicio y continuidad, mantención | Entregables 9–15 |
+| F3. Sprint Usuarios | 2 semanas | Backend y frontend del CRUD; RBAC para `admin_sistema`, baja lógica, auditoría y pruebas unitarias | Módulo Usuarios integrado |
+| F4. Sprint Ticketera | 2 semanas | Formulario público, bandeja interna, adjuntos, notificaciones SMTP/bandeja y conversión a incidente; se inicia después del sprint Usuarios | Módulo Ticketera integrado |
+| F5. Pruebas | 4 semanas | Pruebas funcionales CP-01–CP-16 y CP-20–CP-38, seguridad, rendimiento y UAT (Entregable 11) | Sistema validado |
+| F6. Documentación ES2 | 2 semanas | Actualización de KPI, SLA, normas, planes de servicio, continuidad y mantención | Entregables 9–15 actualizados |
 | F7. Cierre y presentación | 1 semana | Informe ABPro, demo y presentación final | Entrega sumativa (ES2) |
 
 ## 16.3 Carta Gantt (referencia)
@@ -44,19 +44,24 @@ gantt
     Modelo de datos y arquitectura    :f2b, 2026-10-15, 5d
     Topología e infraestructura       :f2c, 2026-10-20, 4d
 
+    section Cambio de alcance
+    Aprobación PO Usuarios y Ticketera :chg, 2026-10-21, 1d
+
     section Desarrollo
-    Backend (FastAPI + módulos)       :f3, 2026-10-26, 10d
-    Frontend (SPA React)              :f4, 2026-11-02, 10d
+    Sprint Usuarios (API + SPA)       :f3, 2026-10-26, 10d
+    Sprint Ticketera (API + SPA, formulario público y SMTP) :f4, 2026-11-09, 10d
 
     section Pruebas
-    Pruebas y UAT                     :f5, 2026-11-16, 5d
+    Pruebas CP-20 a CP-26 Usuarios    :f5a, 2026-11-09, 5d
+    Pruebas CP-27 a CP-38 Ticketera :f5b, 2026-11-16, 10d
+    UAT y cierre de pruebas              :f5c, 2026-11-30, 5d
 
     section Documentación
-    KPI, SLA y planes de servicio     :f6a, 2026-11-23, 6d
-    Continuidad y mantención          :f6b, 2026-11-27, 6d
+    KPI, SLA, normas y planes actualizados :f6a, 2026-11-23, 10d
+    Informe ABPro y anexos             :f6b, 2026-11-30, 5d
 
     section Cierre
-    Informe ABPro y demo final        :f7, 2026-12-07, 5d
+    Revisión final y presentación ES2 :f7, 2026-12-07, 5d
 ```
 
 ## 16.4 Hitos de entrega
@@ -64,13 +69,16 @@ gantt
 | Hito | Fecha | Entregable |
 |---|---|---|
 | Avance formativo (EF2) | 09-10-2026 | Pre-informe / avance |
-| Diseño completo | 23-10-2026 | Entregables 3–8 |
-| Sistema integrado | 13-11-2026 | Backend + Frontend |
-| Validación (UAT) | 20-11-2026 | Plan de pruebas ejecutado |
+| Cambio Mayor aprobado | 21-10-2026 | Incorporación de Usuarios y Ticketera, aprobado por el Product Owner |
+| Diseño actualizado | 23-10-2026 | Ajustes de requisitos, BPMN/UML, datos y arquitectura |
+| Módulo Usuarios integrado | 06-11-2026 | Sprint Usuarios y CP-20 a CP-26 |
+| Módulo Ticketera integrado | 20-11-2026 | Sprint Ticketera y canal público con notificaciones |
+| Validación (UAT) | 04-12-2026 | CP-01 a CP-16 y CP-20 a CP-38; pruebas y aceptación |
 | Entrega sumativa (ES2) | 11-12-2026 | Informe final ABPro + demo |
 
 ## 16.5 Gestión del cronograma
 
 - **Revisión por sprint:** al cierre de cada sprint se revisa el avance y se re-prioriza el backlog.
-- **Buffers:** las fases de desarrollo incluyen 1 semana de holgura para absorver ajustes del
-  mandante (detalle en la justificación del cronograma, Entregable 17).
+- **Cambio de alcance:** la incorporación de Usuarios y Ticketera fue formalizada el 21-10-2026 y gestionada como cambio Mayor con aprobación del Product Owner.
+- **Secuencia:** primero se implementa Usuarios y luego Ticketera, conforme al acuerdo con el mandante; el diseño, la preparación de pruebas y la documentación pueden solaparse para proteger el hito.
+- **Buffers:** se conserva holgura mediante solapamiento controlado entre pruebas, documentación y cierre; la fecha ES2 del 11-12-2026 se mantiene.

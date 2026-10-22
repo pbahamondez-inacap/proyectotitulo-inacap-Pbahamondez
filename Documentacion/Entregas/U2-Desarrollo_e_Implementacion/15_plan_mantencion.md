@@ -25,8 +25,11 @@ qué se ejecuta, dónde y en qué versión.
 | Base de datos | Esquema y datos | Versión de esquema (migraciones) |
 | Servidor de aplicaciones | APP-01 (Nginx + Uvicorn) | Configuración versionada |
 | Servidor de BD | DB-01 (PostgreSQL) | Configuración versionada |
-| Almacenamiento | NAS-01 (evidencias) | Ruta y permisos |
-| Ambiente de despliegue | Variables de entorno (`SGSI_*`) | Archivo de configuración |
+| Almacenamiento | NAS-01 (evidencias y adjuntos de tickets) | Rutas separadas y permisos restringidos; `/evidencias/tickets/` |
+| Relay SMTP | Correo institucional saliente | Host/puerto y estado del servicio, sin secretos en la línea base |
+| Servicio de notificaciones | Correo SMTP y bandeja interna | Configuración `SGSI_SMTP_*`, estados de envío y reintentos |
+| Formulario público | Ruta `/reportar`, endpoint público y reglas de Nginx | HTTPS, rate limiting y logs anonimizados/deshabilitados para IP del emisor |
+| Ambiente de despliegue | Variables de entorno (`SGSI_*`, `SGSI_SMTP_*`) | Archivo/gestor de secretos protegido; valores sensibles excluidos de Git |
 
 ### Proceso
 
@@ -47,7 +50,8 @@ interrupción.
 |---|---|---|
 | Estándar | Actualización de contenido (controles, evidencias) | Operador autorizado |
 | Normal | Cambio de código o configuración menor | Encargado de Ciberseguridad |
-| Mayor/emergencia | Corrección de incidente crítico | Encargado + informática |
+| Mayor | Cambio de alcance, funcionalidad o arquitectura con impacto transversal | Product Owner y Encargado de Ciberseguridad, según impacto |
+| Emergencia | Corrección de incidente crítico que no admite espera | Encargado + informática, con revisión posterior |
 
 ### Proceso de control de cambios
 
@@ -61,12 +65,24 @@ interrupción.
 > Los entregables del proyecto (código, diagramas, documentación) también se gestionan como cambios:
 > cada modificación se registra en Git con un identificador y se revisa antes de integrarse.
 
+### Cambio de alcance del 21-10-2026
+
+La incorporación del módulo de Usuarios y de la Ticketera, acordada con el Product Owner el
+21-10-2026, se gestionó como **cambio Mayor**, con aprobación del Product Owner. Se revisaron su
+impacto en alcance, roles, privacidad, pruebas, infraestructura y cronograma; este cambio queda
+registrado en la línea base documental y en la carta Gantt (Entregable 16).
+
 ## 15.3 Gestión de incidentes
 
 ### Objetivo
 Restablecer el servicio lo antes posible ante incidentes del propio SGSI, con trazabilidad completa.
-(Nota: distinto del módulo de negocio de incidentes de ciberseguridad; aquí se gestionan las fallas
-del sistema.)
+
+**Distinción de alcance:** la ticketera es un módulo de negocio para recibir denuncias y reportes de
+ciberseguridad del hospital; sus tickets son gestionados por `encargado` y, si corresponde, se derivan
+a incidentes formales del negocio. Esta sección trata únicamente incidentes de operación del propio
+SGSI (caídas, defectos, pérdida de datos o fallas de configuración), que se registran en el proceso de
+soporte/gestión de incidentes del servicio. No son el mismo registro ni ciclo de vida, y `admin_sistema`
+no obtiene por ello acceso al contenido de denuncias.
 
 ### Priorización
 
@@ -79,7 +95,7 @@ del sistema.)
 
 ### Proceso de gestión de incidentes
 
-1. **Detección y registro:** por monitoreo (`/api/health`) o reporte de usuario.
+1. **Detección y registro:** por monitoreo (`/api/health`) o reporte a la mesa de ayuda; no utilizar la ticketera de negocio como canal de soporte de fallas del propio SGSI.
 2. **Clasificación:** asignar prioridad y categoría.
 3. **Diagnóstico:** identificar causa probable.
 4. **Resolución y recuperación:** aplicar la solución (puede requerir un cambio, sección 15.2).

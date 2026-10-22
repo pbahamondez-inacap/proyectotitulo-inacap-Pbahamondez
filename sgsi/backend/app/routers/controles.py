@@ -16,7 +16,7 @@ from sqlalchemy.orm import Session, selectinload
 
 from ..config import EVIDENCE_DIR
 from ..database import get_db
-from ..deps import get_current_user, require_roles
+from ..deps import get_business_user, require_roles
 from ..models import Control, Dominio, EstadoControl, Evidencia, Role
 from ..schemas import ControlCreate, ControlOut, ControlUpdate, EvidenciaOut
 from ..utils import to_naive
@@ -42,7 +42,7 @@ def list_controles(
     estado: str | None = Query(default=None),
     search: str | None = Query(default=None),
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     q = db.query(Control).options(selectinload(Control.evidencias))
     if dominio:
@@ -76,7 +76,7 @@ def create_control(
 def get_control(
     control_id: int,
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     return _get_control(control_id, db)
 
@@ -145,7 +145,7 @@ async def upload_evidencia(
 def list_evidencias(
     control_id: int,
     db: Session = Depends(get_db),
-    user=Depends(get_current_user),
+    user=Depends(get_business_user),
 ):
     control = _get_control(control_id, db)
     return control.evidencias

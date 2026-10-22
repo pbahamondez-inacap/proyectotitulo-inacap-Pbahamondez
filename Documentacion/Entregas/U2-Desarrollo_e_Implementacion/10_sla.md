@@ -18,7 +18,7 @@ Los valores son una **propuesta referencial** a validar con el mandante.
 |---|---|
 | Horario de servicio | Lunes a viernes, 08:00–17:00 (horario administrativo) |
 | Disponibilidad | ≥ 99 % mensual en horario de servicio |
-| Usuarios | 4 roles (Encargado de Ciberseguridad, Administrador de Contratos, Referente Técnico, Director/a) |
+| Usuarios | 5 roles: `encargado`, `admin_contratos`, `referente_tecnico`, `director` y `admin_sistema` |
 | Mesa de ayuda | Interna (08:00–17:00) + proveedor (17:00–06:59, alineado a la operación del hospital) |
 | Cobertura | El SGSI es un sistema de **apoyo/gobernanza** (no crítico como Trakcare) |
 
@@ -28,7 +28,8 @@ Los valores son una **propuesta referencial** a validar con el mandante.
 
 | Métrica | Compromiso |
 |---|---|
-| Disponibilidad mensual (horario de servicio) | ≥ 99 % |
+| Disponibilidad mensual del SGSI (horario de servicio) | ≥ 99 % |
+| Disponibilidad mensual del formulario público de tickets (horario de servicio) | ≥ 99 %; accesible por HTTPS desde la red interna del hospital, sin autenticación solo en los endpoints auxiliares del formulario (categorías y envío) y la consulta pública de estado por código |
 | Ventanas de mantenimiento | Programadas, notificadas con ≥ 48 h de anticipación, preferentemente fuera del horario de servicio |
 | Tiempo máximo de indisponibilidad planificada | ≤ 2 h por ventana |
 | Monitoreo | Verificación automática del endpoint `GET /api/health` |
@@ -46,13 +47,24 @@ Los valores son una **propuesta referencial** a validar con el mandante.
 
 ---
 
+### SLA específicos de ticketera y ciclo de vida de usuarios
+
+| Servicio / evento | Compromiso | Responsable / condición |
+|---|---|---|
+| Acuse de recibo y primera revisión de un ticket | Pasar a `en_analisis` en ≤ 24 h hábiles desde el registro | Equipo de ciberseguridad (`encargado`); se registra el cambio de estado |
+| Ticket de severidad percibida alta o crítica | Primera atención en ≤ 4 h hábiles | Prioridad en la bandeja; si se determina incidente reportable, aplican además los plazos legales del KPI-03 |
+| Tickets gestionados dentro de SLA | ≥ 90 % | Medición mensual según KPI-10; no reemplaza obligaciones legales de reporte |
+| Baja de usuario desvinculado | Deshabilitación lógica en ≤ 1 día hábil desde la solicitud | `admin_sistema`; no se elimina el usuario ni su auditoría |
+
+La creación pública y la consulta de categorías no requieren autenticación ni deben registrar identidad del emisor. La gestión de la bandeja, el cambio de estado y la conversión a incidente requieren autenticación y rol `encargado`; `admin_sistema` no accede al contenido de tickets.
+
 ## 10.4 Respaldo, recuperación (RTO/RPO) y continuidad
 
 | Métrica | Compromiso |
 |---|---|
-| **RPO** (pérdida máxima de datos tolerada) | ≤ 24 h (respaldo diario de BD y evidencias) |
-| **RTO** (tiempo para restablecer el servicio) | ≤ 8 h hábiles |
-| Frecuencia de respaldo | Diaria (incremental) + semanal (completo) |
+| **RPO** (pérdida máxima de datos tolerada) | ≤ 24 h para base de datos, evidencias y adjuntos de tickets (`ticket_adjuntos`) almacenados en NAS-01 |
+| **RTO** (tiempo para restablecer el servicio) | ≤ 8 h hábiles, incluyendo restauración de base de datos, evidencias y adjuntos de tickets |
+| Frecuencia de respaldo | Diaria (incremental) + semanal (completo) para BD y carpetas de evidencias y tickets |
 | Retención de respaldos | 30 días (mínimo) |
 | Prueba de restauración | Trimestral (simulacro de recuperación) |
 
@@ -75,7 +87,7 @@ Los valores son una **propuesta referencial** a validar con el mandante.
 
 | Métrica | Compromiso |
 |---|---|
-| Autenticación | Obligatoria (JWT) para toda operación; sin acceso anónimo a datos |
+| Autenticación | JWT obligatoria para toda operación, excepto `POST /api/public/tickets`, consulta de categorías y consulta de estado por código de seguimiento; esta excepción no habilita acceso anónimo a otros datos o módulos |
 | Control de acceso | RBAC por rol (mínimo privilegio) |
 | Cifrado en tránsito | HTTPS/TLS obligatorio |
 | Integridad y trazabilidad | Registro de estado y evidencias auditable por control/incidente |
@@ -97,7 +109,8 @@ Los valores son una **propuesta referencial** a validar con el mandante.
 
 - Los SLA se miden mensualmente y se reportan en el **resumen ejecutivo** del módulo de Reportería.
 - El cumplimiento de disponibilidad se vincula al **KPI-06** (uptime ≥ 99 %) del Entregable 9.
-- Los tiempos de resolución se registran en la gestión de incidentes del sistema (Entregable 15).
+- Los tiempos de resolución se registran en la gestión de incidentes del propio SGSI (Entregable 15), distinta de los tickets de negocio de ciberseguridad.
+- Los SLA de tickets y baja de usuarios se siguen con los KPI-09, KPI-10 y KPI-11 del Entregable 9.
 
 ---
 
