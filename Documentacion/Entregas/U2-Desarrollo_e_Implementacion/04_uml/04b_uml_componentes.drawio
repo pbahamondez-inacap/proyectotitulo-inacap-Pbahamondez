@@ -1,123 +1,162 @@
-<?xml version="1.0"?>
-<mxfile host="app.diagrams.net" agent="SGSI-ES2">
+<mxfile host="Electron" agent="SGSI-ES2">
   <diagram id="comp" name="Componentes SGSI">
-    <mxGraphModel dx="1250" dy="960" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1250" pageHeight="960" math="0" shadow="0">
+    <mxGraphModel dx="1334" dy="896" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1250" pageHeight="960" math="0" shadow="0">
       <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-        <mxCell id="capF" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Frontend &#x2014; SPA (React + TypeScript + Vite)" vertex="1">
-          <mxGeometry x="30" y="60" width="300" height="690" as="geometry"/>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="capF" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Frontend — SPA (React + TypeScript + Vite)" vertex="1">
+          <mxGeometry height="690" width="320" x="30" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="capB" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Backend &#x2014; FastAPI (API REST /api)" vertex="1">
-          <mxGeometry x="370" y="60" width="570" height="850" as="geometry"/>
+        <mxCell id="f1" parent="capF" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Páginas: Login · Dashboard · módulos de negocio · Usuarios · Tickets · Reportar" vertex="1">
+          <mxGeometry height="100" width="260" x="48" y="45" as="geometry" />
         </mxCell>
-        <mxCell id="capD" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Capa de datos" vertex="1">
-          <mxGeometry x="980" y="60" width="220" height="340" as="geometry"/>
+        <mxCell id="f2" parent="capF" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Componentes UI: Layout · Modal · Badge · Recharts" vertex="1">
+          <mxGeometry height="60" width="260" x="48" y="165" as="geometry" />
         </mxCell>
-        <mxCell id="f1" parent="capF" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="P&#xE1;ginas: Login &#xB7; Dashboard &#xB7; m&#xF3;dulos de negocio &#xB7; Usuarios &#xB7; Tickets &#xB7; Reportar" vertex="1">
-          <mxGeometry x="20" y="45" width="260" height="100" as="geometry"/>
+        <mxCell id="f3" parent="capF" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Cliente HTTP api.ts: JWT en rutas privadas; formulario público sin token" vertex="1">
+          <mxGeometry height="90" width="260" x="48" y="255" as="geometry" />
         </mxCell>
-        <mxCell id="f2" parent="capF" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Componentes UI: Layout &#xB7; Modal &#xB7; Badge &#xB7; Recharts" vertex="1">
-          <mxGeometry x="20" y="165" width="260" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="f3" parent="capF" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Cliente HTTP api.ts: JWT en rutas privadas; formulario p&#xFA;blico sin token" vertex="1">
-          <mxGeometry x="20" y="255" width="260" height="90" as="geometry"/>
+        <mxCell id="capB" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Backend — FastAPI (API REST /api)" vertex="1">
+          <mxGeometry height="850" width="570" x="370" y="60" as="geometry" />
         </mxCell>
         <mxCell id="bAuth" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Router auth (login / me)" vertex="1">
-          <mxGeometry x="40" y="45" width="490" height="48" as="geometry"/>
+          <mxGeometry height="48" width="490" x="40" y="45" as="geometry" />
         </mxCell>
-        <mxCell id="bBusiness" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Routers de negocio: controles &#xB7; evidencias &#xB7; incidentes &#xB7; madurez &#xB7; terceros &#xB7; personas &#xB7; reportes" vertex="1">
-          <mxGeometry x="40" y="110" width="490" height="76" as="geometry"/>
+        <mxCell id="bBusiness" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Routers de negocio: controles · evidencias · incidentes · madurez · terceros · personas · reportes" vertex="1">
+          <mxGeometry height="76" width="490" x="40" y="110" as="geometry" />
         </mxCell>
         <mxCell id="bUsers" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Router usuarios (/api/usuarios): acceso solo admin_sistema" vertex="1">
-          <mxGeometry x="40" y="205" width="490" height="56" as="geometry"/>
+          <mxGeometry height="56" width="490" x="40" y="205" as="geometry" />
         </mxCell>
-        <mxCell id="bTickets" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Router tickets (/api/tickets): bandeja y gesti&#xF3;n solo encargado" vertex="1">
-          <mxGeometry x="40" y="280" width="490" height="56" as="geometry"/>
+        <mxCell id="bTickets" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Router tickets (/api/tickets): bandeja y gestión solo encargado" vertex="1">
+          <mxGeometry height="56" width="490" x="40" y="280" as="geometry" />
         </mxCell>
-        <mxCell id="bPublic" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Router public_tickets (/api/public/tickets): formulario y consulta sin autenticaci&#xF3;n" vertex="1">
-          <mxGeometry x="40" y="355" width="490" height="64" as="geometry"/>
+        <mxCell id="bPublic" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Router public_tickets (/api/public/tickets): formulario y consulta sin autenticación" vertex="1">
+          <mxGeometry height="64" width="490" x="40" y="355" as="geometry" />
         </mxCell>
-        <mxCell id="bSec" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="security.py: JWT + PBKDF2 &#xB7; deps.py: RBAC" vertex="1">
-          <mxGeometry x="40" y="440" width="490" height="56" as="geometry"/>
+        <mxCell id="bSec" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="security.py: JWT + PBKDF2 · deps.py: RBAC" vertex="1">
+          <mxGeometry height="56" width="490" x="40" y="440" as="geometry" />
         </mxCell>
-        <mxCell id="bServices" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="services.py: plazos legales + c&#xE1;lculo de madurez" vertex="1">
-          <mxGeometry x="40" y="515" width="490" height="56" as="geometry"/>
+        <mxCell id="bServices" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="services.py: plazos legales + cálculo de madurez" vertex="1">
+          <mxGeometry height="56" width="490" x="40" y="515" as="geometry" />
         </mxCell>
-        <mxCell id="bNotify" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Servicio notificaciones: bandeja interna y correo SMTP; contenido m&#xED;nimo" vertex="1">
-          <mxGeometry x="40" y="590" width="490" height="66" as="geometry"/>
+        <mxCell id="bNotify" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="Servicio notificaciones: bandeja interna y correo SMTP; contenido mínimo" vertex="1">
+          <mxGeometry height="66" width="490" x="40" y="590" as="geometry" />
         </mxCell>
-        <mxCell id="bOrm" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="SQLAlchemy ORM (models.py &#xB7; schemas.py)" vertex="1">
-          <mxGeometry x="40" y="675" width="490" height="56" as="geometry"/>
+        <mxCell id="bOrm" parent="capB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="SQLAlchemy ORM (models.py · schemas.py)" vertex="1">
+          <mxGeometry height="56" width="490" x="40" y="675" as="geometry" />
         </mxCell>
-        <mxCell id="dDb" parent="capD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="Base de datos&#10;PostgreSQL / SQLite" vertex="1">
-          <mxGeometry x="30" y="55" width="160" height="90" as="geometry"/>
+        <mxCell id="capD" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Capa de datos" vertex="1">
+          <mxGeometry height="340" width="250" x="980" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="dFiles" parent="capD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="Archivos segregados&#10;evidencias y adjuntos de tickets" vertex="1">
-          <mxGeometry x="20" y="190" width="180" height="100" as="geometry"/>
+        <mxCell id="dDb" parent="capD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="Base de datos&#xa;PostgreSQL / SQLite" vertex="1">
+          <mxGeometry height="90" width="160" x="62" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="dFiles" parent="capD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="Archivos segregados&#xa;evidencias y adjuntos de tickets" vertex="1">
+          <mxGeometry height="100" width="180" x="52" y="190" as="geometry" />
         </mxCell>
         <mxCell id="smtp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" value="SMTP institucional externo" vertex="1">
-          <mxGeometry x="1010" y="510" width="180" height="100" as="geometry"/>
+          <mxGeometry height="100" width="180" x="1032" y="510" as="geometry" />
         </mxCell>
         <mxCell id="comp1" edge="1" parent="1" source="f3" style="html=1;endArrow=none;strokeColor=#333333;" target="bAuth" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="comp2" edge="1" parent="1" source="f3" style="html=1;endArrow=none;strokeColor=#333333;" target="bBusiness" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="comp3" edge="1" parent="1" source="f3" style="html=1;endArrow=none;strokeColor=#333333;" target="bUsers" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="comp4" edge="1" parent="1" source="f3" style="html=1;endArrow=none;strokeColor=#333333;" target="bTickets" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="comp5" edge="1" parent="1" source="f3" style="html=1;endArrow=none;strokeColor=#333333;" target="bPublic" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="comp6" edge="1" parent="1" source="bAuth" style="html=1;endArrow=none;strokeColor=#333333;" target="bSec" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="360" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp7" edge="1" parent="1" source="bUsers" style="html=1;endArrow=none;strokeColor=#333333;" target="bSec" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="620" y="410" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp8" edge="1" parent="1" source="bTickets" style="html=1;endArrow=none;strokeColor=#333333;" target="bSec" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="483" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp9" edge="1" parent="1" source="bBusiness" style="html=1;endArrow=none;strokeColor=#333333;" target="bServices" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="430" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp10" edge="1" parent="1" source="bBusiness" style="html=1;endArrow=none;strokeColor=#333333;" target="bOrm" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="450" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp11" edge="1" parent="1" source="bUsers" style="html=1;endArrow=none;strokeColor=#333333;" target="bOrm" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="270" y="490" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp12" edge="1" parent="1" source="bTickets" style="html=1;endArrow=none;strokeColor=#333333;" target="bNotify" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="520" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp13" edge="1" parent="1" source="bPublic" style="html=1;endArrow=none;strokeColor=#333333;" target="bNotify" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="570" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp14" edge="1" parent="1" source="bPublic" style="html=1;endArrow=none;strokeColor=#333333;" target="bOrm" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="700" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp15" edge="1" parent="1" source="bTickets" style="html=1;endArrow=none;strokeColor=#333333;" target="bOrm" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="270" y="580" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="comp16" edge="1" parent="1" source="bNotify" style="html=1;endArrow=none;strokeColor=#333333;" target="bOrm" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="comp17" edge="1" parent="1" source="bNotify" style="html=1;endArrow=none;strokeColor=#333333;" target="smtp" value="correo m&#xED;nimo">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="comp17" edge="1" parent="1" source="bNotify" style="html=1;endArrow=none;strokeColor=#333333;" target="smtp" value="correo mínimo">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="comp18" edge="1" parent="1" source="bOrm" style="html=1;endArrow=none;strokeColor=#333333;" target="dDb" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="comp19" edge="1" parent="1" source="bBusiness" style="html=1;endArrow=none;strokeColor=#333333;" target="dFiles" value="">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="comp20" edge="1" parent="1" source="bTickets" style="html=1;endArrow=none;strokeColor=#333333;" target="dFiles" value="adjuntos restringidos">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

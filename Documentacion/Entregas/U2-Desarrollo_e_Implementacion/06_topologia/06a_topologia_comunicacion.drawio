@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="SGSI-ES2">
   <diagram id="topo" name="Topología de Comunicación SGSI">
-    <mxGraphModel dx="1459" dy="1144" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1260" pageHeight="760" math="0" shadow="0">
+    <mxGraphModel dx="753" dy="506" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1260" pageHeight="760" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -90,13 +90,23 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="e7" edge="1" parent="1" source="u1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#333333;fontSize=10;" target="ext" value="reporte vía portal (manual)">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="170" />
+              <mxPoint x="600" y="170" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="mail" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="SMTP-01 · relay/correo institucional existente" vertex="1">
           <mxGeometry height="56" width="340" x="840" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="e8" edge="1" parent="1" source="web" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="mail" value="TCP 587 · SMTP STARTTLS">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e8" edge="1" parent="1" source="web" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" target="mail" value="TCP 587 · SMTP STARTTLS">
+          <mxGeometry relative="1" x="0.0382" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="300" />
+              <mxPoint x="870" y="300" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>

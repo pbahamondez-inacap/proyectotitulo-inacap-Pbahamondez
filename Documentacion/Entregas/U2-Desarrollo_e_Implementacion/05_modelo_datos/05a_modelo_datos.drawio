@@ -1,57 +1,56 @@
-<?xml version="1.0"?>
-<mxfile host="app.diagrams.net" agent="SGSI-ES2">
+<mxfile host="Electron" agent="SGSI-ES2">
   <diagram id="er" name="Modelo de Datos SGSI">
-    <mxGraphModel dx="1720" dy="1300" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1720" pageHeight="1300" math="0" shadow="0">
+    <mxGraphModel dx="1831" dy="1229" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1720" pageHeight="1300" math="0" shadow="0">
       <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-        <mxCell id="tblU" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="USUARIOS&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;username : VARCHAR (UQ)&#10;password_hash : VARCHAR&#10;nombre_completo : VARCHAR&#10;rol : ENUM(Role)&#10;activo : BOOLEAN" vertex="1">
-          <mxGeometry x="30" y="40" width="340" height="230" as="geometry"/>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tblU" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="USUARIOS&#xa;─────────────&#xa;id : INT (PK)&#xa;username : VARCHAR (UQ)&#xa;password_hash : VARCHAR&#xa;nombre_completo : VARCHAR&#xa;rol : ENUM(Role)&#xa;activo : BOOLEAN" vertex="1">
+          <mxGeometry height="230" width="340" x="30" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="tblTicket" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="TICKETS&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;codigo : VARCHAR (UQ)&#10;codigo_seguimiento : VARCHAR (UQ)&#10;tipo : ENUM(TipoTicket)&#10;categoria : ENUM(CategoriaTicket)&#10;categoria_otro : VARCHAR (NULL)&#10;descripcion : TEXT&#10;sistema_area : VARCHAR (NULL)&#10;fecha_hecho_aprox : DATETIME (NULL)&#10;severidad_percibida : ENUM(Severidad)&#10;estado : ENUM(EstadoTicket)&#10;notificar_correo : BOOLEAN&#10;notificar_bandeja : BOOLEAN&#10;canal_origen : VARCHAR&#10;incidente_id : INT (FK, UQ, NULL)&#10;creado_en / actualizado_en : DATETIME&#10;notas_internas : TEXT (NULL)&#10;sin FK ni identidad de emisor" vertex="1">
-          <mxGeometry x="430" y="40" width="430" height="500" as="geometry"/>
+        <mxCell id="tblTicket" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="TICKETS&#xa;─────────────&#xa;id : INT (PK)&#xa;codigo : VARCHAR (UQ)&#xa;codigo_seguimiento : VARCHAR (UQ)&#xa;tipo : ENUM(TipoTicket)&#xa;categoria : ENUM(CategoriaTicket)&#xa;categoria_otro : VARCHAR (NULL)&#xa;descripcion : TEXT&#xa;sistema_area : VARCHAR (NULL)&#xa;fecha_hecho_aprox : DATETIME (NULL)&#xa;severidad_percibida : ENUM(Severidad)&#xa;estado : ENUM(EstadoTicket)&#xa;notificar_correo : BOOLEAN&#xa;notificar_bandeja : BOOLEAN&#xa;canal_origen : VARCHAR&#xa;incidente_id : INT (FK, UQ, NULL)&#xa;creado_en / actualizado_en : DATETIME&#xa;notas_internas : TEXT (NULL)&#xa;sin FK ni identidad de emisor" vertex="1">
+          <mxGeometry height="390" width="430" x="620" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="tblAttach" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="TICKET_ADJUNTOS&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;ticket_id : INT (FK, NN)&#10;nombre_archivo : VARCHAR&#10;ruta : VARCHAR&#10;mime : VARCHAR&#10;tamano_bytes : BIGINT&#10;creado_en : DATETIME" vertex="1">
-          <mxGeometry x="920" y="40" width="350" height="230" as="geometry"/>
+        <mxCell id="tblAttach" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="TICKET_ADJUNTOS&#xa;─────────────&#xa;id : INT (PK)&#xa;ticket_id : INT (FK, NN)&#xa;nombre_archivo : VARCHAR&#xa;ruta : VARCHAR&#xa;mime : VARCHAR&#xa;tamano_bytes : BIGINT&#xa;creado_en : DATETIME" vertex="1">
+          <mxGeometry height="230" width="350" x="1270" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="tblNotif" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="NOTIFICACIONES&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;ticket_id : INT (FK, NN)&#10;destinatario_id : INT (FK, NULL)&#10;medio : ENUM(MedioNotificacion)&#10;leida : BOOLEAN&#10;enviada_en : DATETIME (NULL)&#10;estado_envio : VARCHAR" vertex="1">
-          <mxGeometry x="1320" y="40" width="360" height="250" as="geometry"/>
+        <mxCell id="tblNotif" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="NOTIFICACIONES&#xa;─────────────&#xa;id : INT (PK)&#xa;ticket_id : INT (FK, NN)&#xa;destinatario_id : INT (FK, NULL)&#xa;medio : ENUM(MedioNotificacion)&#xa;leida : BOOLEAN&#xa;enviada_en : DATETIME (NULL)&#xa;estado_envio : VARCHAR" vertex="1">
+          <mxGeometry height="250" width="360" x="480" y="590" as="geometry" />
         </mxCell>
-        <mxCell id="tblC" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="CONTROLES&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;codigo : VARCHAR (IX)&#10;titulo : VARCHAR (NN)&#10;descripcion : TEXT&#10;dominio : ENUM(Dominio) (IX)&#10;grupo : VARCHAR&#10;estado : ENUM(EstadoControl) (IX)&#10;responsable : VARCHAR&#10;notas : TEXT&#10;fecha_actualizacion : DATETIME" vertex="1">
-          <mxGeometry x="30" y="600" width="360" height="270" as="geometry"/>
+        <mxCell id="tblC" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="CONTROLES&#xa;─────────────&#xa;id : INT (PK)&#xa;codigo : VARCHAR (IX)&#xa;titulo : VARCHAR (NN)&#xa;descripcion : TEXT&#xa;dominio : ENUM(Dominio) (IX)&#xa;grupo : VARCHAR&#xa;estado : ENUM(EstadoControl) (IX)&#xa;responsable : VARCHAR&#xa;notas : TEXT&#xa;fecha_actualizacion : DATETIME" vertex="1">
+          <mxGeometry height="270" width="360" x="700" y="885" as="geometry" />
         </mxCell>
-        <mxCell id="tblE" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="EVIDENCIAS&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;control_id : INT (FK, NN)&#10;tipo : VARCHAR&#10;nombre : VARCHAR (NN)&#10;descripcion : TEXT&#10;archivo_path : VARCHAR&#10;fecha_subida : DATETIME" vertex="1">
-          <mxGeometry x="450" y="600" width="360" height="220" as="geometry"/>
+        <mxCell id="tblE" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="EVIDENCIAS&#xa;─────────────&#xa;id : INT (PK)&#xa;control_id : INT (FK, NN)&#xa;tipo : VARCHAR&#xa;nombre : VARCHAR (NN)&#xa;descripcion : TEXT&#xa;archivo_path : VARCHAR&#xa;fecha_subida : DATETIME" vertex="1">
+          <mxGeometry height="220" width="320" x="900" y="590" as="geometry" />
         </mxCell>
-        <mxCell id="tblI" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="INCIDENTES&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;titulo : VARCHAR (NN)&#10;descripcion : TEXT&#10;categoria : VARCHAR (ANCI)&#10;severidad : ENUM(Severidad) (IX)&#10;alcance : VARCHAR&#10;sistema_afectado : VARCHAR&#10;fecha_deteccion : DATETIME&#10;fecha_reporte : DATETIME (NULL)&#10;estado : ENUM(EstadoIncidente) (IX)&#10;reportado_anci : BOOLEAN&#10;notas : TEXT" vertex="1">
-          <mxGeometry x="870" y="600" width="360" height="320" as="geometry"/>
+        <mxCell id="tblI" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="INCIDENTES&#xa;─────────────&#xa;id : INT (PK)&#xa;titulo : VARCHAR (NN)&#xa;descripcion : TEXT&#xa;categoria : VARCHAR (ANCI)&#xa;severidad : ENUM(Severidad) (IX)&#xa;alcance : VARCHAR&#xa;sistema_afectado : VARCHAR&#xa;fecha_deteccion : DATETIME&#xa;fecha_reporte : DATETIME (NULL)&#xa;estado : ENUM(EstadoIncidente) (IX)&#xa;reportado_anci : BOOLEAN&#xa;notas : TEXT" vertex="1">
+          <mxGeometry height="320" width="360" x="1270" y="310" as="geometry" />
         </mxCell>
-        <mxCell id="tblT" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="TERCEROS&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;nombre : VARCHAR (NN)&#10;rut : VARCHAR&#10;tipo : VARCHAR&#10;contrato_ref : VARCHAR&#10;fecha_inicio : DATETIME (NULL)&#10;fecha_termino : DATETIME (NULL)&#10;contacto : VARCHAR&#10;estado_cumplimiento : ENUM(EstadoCumplimiento)&#10;clausulas : JSON&#10;notas : TEXT" vertex="1">
-          <mxGeometry x="1290" y="600" width="360" height="300" as="geometry"/>
+        <mxCell id="tblT" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="TERCEROS&#xa;─────────────&#xa;id : INT (PK)&#xa;nombre : VARCHAR (NN)&#xa;rut : VARCHAR&#xa;tipo : VARCHAR&#xa;contrato_ref : VARCHAR&#xa;fecha_inicio : DATETIME (NULL)&#xa;fecha_termino : DATETIME (NULL)&#xa;contacto : VARCHAR&#xa;estado_cumplimiento : ENUM(EstadoCumplimiento)&#xa;clausulas : JSON&#xa;notas : TEXT" vertex="1">
+          <mxGeometry height="300" width="360" x="1260" y="880" as="geometry" />
         </mxCell>
-        <mxCell id="tblP" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="PERSONA_CONTROLES&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;tipo : ENUM(TipoPersonaControl) (IX)&#10;titulo : VARCHAR (NN)&#10;descripcion : TEXT&#10;estado : ENUM(EstadoControl) (IX)&#10;fecha : DATETIME (NULL)&#10;responsable : VARCHAR&#10;notas : TEXT" vertex="1">
-          <mxGeometry x="30" y="1000" width="360" height="240" as="geometry"/>
+        <mxCell id="tblP" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="PERSONA_CONTROLES&#xa;─────────────&#xa;id : INT (PK)&#xa;tipo : ENUM(TipoPersonaControl) (IX)&#xa;titulo : VARCHAR (NN)&#xa;descripcion : TEXT&#xa;estado : ENUM(EstadoControl) (IX)&#xa;fecha : DATETIME (NULL)&#xa;responsable : VARCHAR&#xa;notas : TEXT" vertex="1">
+          <mxGeometry height="240" width="360" x="30" y="900" as="geometry" />
         </mxCell>
-        <mxCell id="tblAudit" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="AUDITORIA_USUARIOS&#10;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#10;id : INT (PK)&#10;actor_id : INT (FK, usuarios.id)&#10;usuario_objetivo_id : INT (FK, usuarios.id)&#10;accion : VARCHAR (IX)&#10;detalle : TEXT (sin secretos)&#10;creado_en : DATETIME (IX)" vertex="1">
-          <mxGeometry x="450" y="1000" width="360" height="240" as="geometry"/>
+        <mxCell id="tblAudit" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=6;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="AUDITORIA_USUARIOS&#xa;─────────────&#xa;id : INT (PK)&#xa;actor_id : INT (FK, usuarios.id)&#xa;usuario_objetivo_id : INT (FK, usuarios.id)&#xa;accion : VARCHAR (IX)&#xa;detalle : TEXT (sin secretos)&#xa;creado_en : DATETIME (IX)" vertex="1">
+          <mxGeometry height="240" width="360" x="30" y="490" as="geometry" />
         </mxCell>
         <mxCell id="er1" edge="1" parent="1" source="tblC" style="html=1;endArrow=none;strokeColor=#333333;" target="tblE" value="1 : N (control_id)">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="er2" edge="1" parent="1" source="tblTicket" style="html=1;endArrow=none;strokeColor=#333333;" target="tblAttach" value="1 : N (ticket_id)">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="er3" edge="1" parent="1" source="tblTicket" style="html=1;endArrow=none;strokeColor=#333333;" target="tblNotif" value="1 : N (ticket_id)">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="er4" edge="1" parent="1" source="tblU" style="html=1;endArrow=none;strokeColor=#333333;" target="tblNotif" value="0..N destinatarios">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="er5" edge="1" parent="1" source="tblU" style="html=1;endArrow=none;strokeColor=#333333;" target="tblAudit" value="actor / objetivo">
-          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="er6" edge="1" parent="1" source="tblTicket" style="html=1;endArrow=none;strokeColor=#333333;" target="tblI" value="0..1 incidente (&#xFA;nico)">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="er6" edge="1" parent="1" source="tblTicket" style="html=1;endArrow=none;strokeColor=#333333;" target="tblI" value="0..1 incidente (único)">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="SGSI-ES2">
+<mxfile host="Electron" agent="SGSI-ES2">
   <diagram id="p2" name="P2-Incidentes">
-    <mxGraphModel dx="1241" dy="732" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="820" math="0" shadow="0">
+    <mxGraphModel dx="943" dy="633" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="820" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -54,6 +54,9 @@
             <mxPoint x="506" y="210" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="start_ticket" parent="bandA" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" value="Inicio: ticket derivado" vertex="1">
+          <mxGeometry height="46" width="58" x="8" y="205" as="geometry" />
+        </mxCell>
         <mxCell id="bandC" parent="1" style="swimlane;html=1;startSize=34;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Carril: Sistema SGSI" vertex="1">
           <mxGeometry height="150" width="840" x="40" y="500" as="geometry" />
         </mxCell>
@@ -63,16 +66,23 @@
         <mxCell id="tc2" parent="bandC" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Generar alerta temprana y alertas de vencimiento" vertex="1">
           <mxGeometry height="54" width="280" x="511" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="bandD" parent="1" style="swimlane;html=1;startSize=50;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Pool externo: ANCI&lt;div&gt;(Agencia Nacional de&lt;/div&gt;&lt;div&gt;Ciberseguridad)&lt;/div&gt;" vertex="1">
+        <mxCell id="bandD" parent="1" style="swimlane;html=1;startSize=60;horizontal=0;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;" value="Pool externo: ANCI&lt;div&gt;(Agencia Nacional de&lt;/div&gt;&lt;div&gt;Ciberseguridad)&lt;/div&gt;" vertex="1">
           <mxGeometry height="130" width="840" x="40" y="670" as="geometry">
             <mxRectangle height="150" width="70" x="40" y="670" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="td1" parent="bandD" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Recepcionar reporte del incidente" vertex="1">
-          <mxGeometry height="54" width="260" x="90" y="45" as="geometry" />
+          <mxGeometry height="54" width="260" x="110" y="38" as="geometry" />
         </mxCell>
-        <mxCell id="start_ticket" parent="bandA" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" value="Inicio: ticket derivado" vertex="1"><mxGeometry height="46" width="58" x="8" y="205" as="geometry" /></mxCell>
-        <mxCell id="e15" edge="1" parent="1" source="start_ticket" target="ta1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="68" y="448" /><mxPoint x="68" y="300" /><mxPoint x="130" y="300" /></Array></mxGeometry></mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="start_ticket" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="ta1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="68" y="448" />
+              <mxPoint x="68" y="300" />
+              <mxPoint x="130" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
         <mxCell id="e1" edge="1" parent="1" source="start2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;" target="tb1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>

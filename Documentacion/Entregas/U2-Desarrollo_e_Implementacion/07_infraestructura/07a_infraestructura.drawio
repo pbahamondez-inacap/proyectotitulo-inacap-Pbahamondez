@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="SGSI-ES2">
   <diagram id="infra" name="Infraestructura SGSI">
-    <mxGraphModel dx="753" dy="590" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1160" pageHeight="760" math="0" shadow="0">
+    <mxGraphModel dx="834" dy="560" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1160" pageHeight="760" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -44,12 +44,10 @@
           <mxGeometry height="48" width="220" x="50" y="330" as="geometry" />
         </mxCell>
         <mxCell id="e1" edge="1" parent="1" source="sw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="fw1" value="LAN">
-          <mxGeometry relative="1" x="-0.127" as="geometry">
+          <mxGeometry relative="1" x="-0.2087" as="geometry">
             <Array as="points">
-              <mxPoint x="900" y="110" />
-              <mxPoint x="560" y="110" />
-              <mxPoint x="560" y="120" />
-              <mxPoint x="210" y="120" />
+              <mxPoint x="850" y="110" />
+              <mxPoint x="210" y="110" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -83,7 +81,11 @@
           <mxGeometry height="70" width="340" x="740" y="540" as="geometry" />
         </mxCell>
         <mxCell id="e7" edge="1" parent="1" source="app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="smtp" value="TCP 587 · STARTTLS">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" x="-0.1383" as="geometry">
+            <Array as="points">
+              <mxPoint x="1050" y="230" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>

@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="SGSI-ES2">
   <diagram id="arq" name="Arquitectura de la Solución SGSI">
-    <mxGraphModel dx="907" dy="711" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="980" pageHeight="1020" math="0" shadow="0">
+    <mxGraphModel dx="1153" dy="774" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="980" pageHeight="1020" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -23,13 +23,13 @@
           <mxGeometry height="50" width="240" x="205" y="50" as="geometry" />
         </mxCell>
         <mxCell id="api" parent="cap2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="FastAPI / Uvicorn · routers auth, usuarios, tickets, public_tickets" vertex="1">
-          <mxGeometry height="65" width="390" x="455" y="45" as="geometry" />
+          <mxGeometry height="65" width="390" x="475" y="42.5" as="geometry" />
         </mxCell>
         <mxCell id="mod" parent="cap2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="9 módulos: controles · evidencias · madurez · incidentes · terceros · personas · reportes · usuarios · ticketera" vertex="1">
           <mxGeometry height="65" width="700" x="100" y="130" as="geometry" />
         </mxCell>
         <mxCell id="seg" parent="cap2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="security.py (JWT/PBKDF2) · deps.py (RBAC)" vertex="1">
-          <mxGeometry height="50" width="250" x="205" y="220" as="geometry" />
+          <mxGeometry height="50" width="250" x="160" y="222.5" as="geometry" />
         </mxCell>
         <mxCell id="neg" parent="cap2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" value="services.py · notificaciones.py (bandeja + SMTP/reintentos) · adjuntos · SQLAlchemy · Pydantic" vertex="1">
           <mxGeometry height="65" width="410" x="465" y="215" as="geometry" />
@@ -55,11 +55,11 @@
         <mxCell id="bk" parent="trans" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" value="Respaldo (BK-01) · BD + adjuntos" vertex="1">
           <mxGeometry height="50" width="200" x="603" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="e1" edge="1" parent="1" source="spa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="nginx" value="HTTPS 443 · REST/JWT privado">
-          <mxGeometry relative="1" x="0.4848" as="geometry">
+        <mxCell id="e1" edge="1" parent="1" source="spa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;entryX=0.879;entryY=0.026;entryDx=0;entryDy=0;entryPerimeter=0;" target="nginx" value="HTTPS 443 · REST/JWT privado">
+          <mxGeometry relative="1" x="0.7887" as="geometry">
             <Array as="points">
               <mxPoint x="750" y="200" />
-              <mxPoint x="365" y="200" />
+              <mxPoint x="456" y="200" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -75,7 +75,12 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="e4" edge="1" parent="1" source="mod" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="fs" value="carga/descarga">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" x="0.0037" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="540" />
+              <mxPoint x="579" y="540" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="e5" edge="1" parent="1" source="sec" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#b85450;" target="seg">
           <mxGeometry relative="1" x="0.2089" as="geometry">
@@ -86,12 +91,12 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="e6" edge="1" parent="1" source="mon" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;strokeColor=#b85450;" target="api">
-          <mxGeometry relative="1" x="-0.1121" as="geometry">
+          <mxGeometry relative="1" x="-0.2717" as="geometry">
             <Array as="points">
               <mxPoint x="430" y="825" />
               <mxPoint x="430" y="580" />
-              <mxPoint x="800" y="580" />
-              <mxPoint x="800" y="325" />
+              <mxPoint x="930" y="580" />
+              <mxPoint x="930" y="325" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -106,14 +111,26 @@
         <mxCell id="mail" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="SMTP-01 · Relay de correo institucional existente" vertex="1">
           <mxGeometry height="70" width="340" x="330" y="930" as="geometry" />
         </mxCell>
-        <mxCell id="e8" edge="1" parent="1" source="pub" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="nginx" value="HTTPS 443 · /reportar sin login">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e8" edge="1" parent="1" source="pub" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="nginx" value="HTTPS 443 · /reportar sin login">
+          <mxGeometry relative="1" x="-0.1304" as="geometry">
+            <Array as="points">
+              <mxPoint x="210" y="325" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="e9" edge="1" parent="1" source="nginx" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="api" value="POST /api/public/tickets · rate limit">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e10" edge="1" parent="1" source="neg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;" target="mail" value="SMTP TCP 587 STARTTLS · asíncrono">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e10" edge="1" parent="1" source="neg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#333333;fontSize=10;entryX=0.852;entryY=-0.03;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.525;exitY=0.993;exitDx=0;exitDy=0;exitPerimeter=0;" target="mail" value="SMTP TCP 587 STARTTLS · asíncrono">
+          <mxGeometry relative="1" x="0.0197" as="geometry">
+            <Array as="points">
+              <mxPoint x="720.3" y="540" />
+              <mxPoint x="720" y="780" />
+              <mxPoint x="619.7" y="780" />
+            </Array>
+            <mxPoint x="830" y="540.0000000000001" as="sourcePoint" />
+            <mxPoint x="620" y="940" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
