@@ -14,7 +14,7 @@ Ley N.º 21.663 (taxonomía ANCI y plazos legales de reporte).
 |---|---|
 | **Controles ISO/IEC 27001** | Catálogo de controles del Anexo A por dominio (organizacional, personas, físico, tecnológico), estado (no iniciado / iniciado / implementado / gestionado) y evidencias adjuntas. |
 | **Madurez del SGSI** | Cálculo automático del % de madurez por dominio y global, con gráficos (barras y torta). |
-| **Incidentes** | Registro y clasificación según taxonomía ANCI, cómputo automático de plazos legales (alerta temprana 3 h; reporte 72 h para severidad alta/crítica, 15 días para media/baja) y alerta de vencimiento. |
+| **Incidentes** | Registro y clasificación según taxonomía ANCI, cómputo automático de plazos legales (alerta temprana 3 h; reporte 72 h para severidad alta/crítica, 15 días para media/baja), alerta de vencimiento e **importación masiva por CSV** (plantilla descargable y guía integrada). |
 | **Terceros / Proveedores** | Registro de contratos con checklist de cláusulas de seguridad y estado de cumplimiento. |
 | **Controles de Personas** | Ciclo de vida del personal: capacitación, antecedentes, condiciones de empleo, disciplinario, término de contrato y confidencialidad. |
 | **Reportería** | Resumen ejecutivo y exportación a CSV (compatible con Excel) para sustentar el indicador de gestión y auditorías. |
@@ -53,6 +53,7 @@ sgsi/
         ├── pages/           # Login, Dashboard, Controles, Incidentes, Terceros, Personas, Reportes, Usuarios, Tickets, Reportar (público), SeguimientoTicket (público)
         ├── components/      # Layout, Modal, Badge
         ├── api.ts           # Cliente HTTP con token
+        ├── incidentesCsv.ts # Importación masiva de incidentes (parser, validación y plantilla CSV)
         └── constants.ts     # Etiquetas y catálogos
 ```
 
@@ -140,6 +141,39 @@ GET    /api/public/tickets/{codigo_seguimiento}
 ```
 
 La documentación interactiva (Swagger) está disponible en http://localhost:8000/docs.
+
+## Importación masiva de incidentes (CSV)
+
+El módulo **Incidentes** permite cargar incidentes en lote desde un archivo CSV (botón **Importar CSV**,
+disponible solo para el rol `encargado`). La importación es 100 % frontend y **reutiliza el contrato del
+backend** `POST /api/incidentes`: cada fila válida se envía como un incidente con la misma estructura del
+formulario manual.
+
+La ventana de importación incluye:
+
+- **Guía integrada** con las columnas, su obligatoriedad y los valores/formato aceptados.
+- **Plantilla descargable** (`plantilla_incidentes.csv`) con encabezados y filas de ejemplo.
+- **Vista previa** de las filas válidas y listado de filas con error.
+- **Resultado** de la importación (cuántos se registraron y cuáles fallaron).
+
+### Formato del CSV
+
+Archivo UTF-8 con encabezado en la primera fila. Columnas:
+
+| Columna | Obligatoria | Valores / formato |
+|---|---|---|
+| `titulo` | Sí | Texto libre |
+| `severidad` | Sí | `baja` · `media` · `alta` · `critica` |
+| `fecha_deteccion` | Sí | `AAAA-MM-DD` o `AAAA-MM-DD HH:MM` |
+| `descripcion` | No | Texto libre |
+| `categoria` | No | Texto libre (taxonomía ANCI) |
+| `alcance` | No | `interno` (por defecto) · `externo` · `proveedor` |
+| `sistema_afectado` | No | Texto libre |
+| `estado` | No | `registrado` (por defecto) · `en_analisis` · `contenido` · `resuelto` · `reportado` · `cerrado` |
+| `reportado_anci` | No | `SI`/`NO` · `true`/`false` · `1`/`0` (por defecto NO) |
+| `notas` | No | Texto libre |
+
+Las filas con error se omiten y el resto se importa; una fecha sin hora se interpreta a las 00:00.
 
 ## Configuración
 

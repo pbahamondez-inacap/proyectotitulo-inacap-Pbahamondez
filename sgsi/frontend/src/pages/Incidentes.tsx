@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type ChangeEvent } from 'react'
 import { useAuth } from '../auth'
 import { api } from '../api'
 import Badge from '../components/Badge'
@@ -14,6 +14,12 @@ import {
   SEVERIDAD_LABELS,
 } from '../constants'
 import { fmtDate, fromLocalInput, toLocalInput } from '../helpers'
+import {
+  descargarPlantillaIncidentes,
+  parseIncidentesCsv,
+  toIncidentePayload,
+  type IncidenteCsvParseResult,
+} from '../incidentesCsv'
 import type { EstadoIncidente, Incidente, Severidad } from '../types'
 
 interface IncidenteForm {
@@ -59,6 +65,16 @@ export default function Incidentes() {
   const [editing, setEditing] = useState<Incidente | null>(null)
   const [form, setForm] = useState<IncidenteForm>(emptyForm())
   const [saving, setSaving] = useState(false)
+
+  const [importOpen, setImportOpen] = useState(false)
+  const [importName, setImportName] = useState('')
+  const [importResult, setImportResult] = useState<IncidenteCsvParseResult | null>(null)
+  const [importing, setImporting] = useState(false)
+  const [importProgress, setImportProgress] = useState({ done: 0, total: 0 })
+  const [importSummary, setImportSummary] = useState<{
+    ok: number
+    fallos: { numero: number; mensaje: string }[]
+  } | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -146,6 +162,52 @@ export default function Incidentes() {
     }
   }
 
+  function openImport() {
+    setImportOpen(true)
+    setImportName('')
+    setImportResult(null)
+    setImportProgress({ done: 0, total: 0 })
+    setImportSummary(null)
+  }
+
+  async function onImportFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    setImportSummary(null)
+    if (!file) return
+    setImportName(file.name)
+    try {
+      const texto = await file.text()
+      setImportResult(parseIncidentesCsv(texto))
+    } catch {
+      setImportResult({
+        filas: [],
+        errores: [{ numero: 0, mensaje: 'No se pudo leer el archivo. Verifique que sea un CSV válido.' }],
+      })
+    }
+  }
+
+  async function runImport() {
+    if (!importResult || importResult.filas.length === 0) return
+    setImporting(true)
+    setImportSummary(null)
+    setImportProgress({ done: 0, total: importResult.filas.length })
+    let ok = 0
+    const fallos: { numero: number; mensaje: string }[] = []
+    for (const fila of importResult.filas) {
+      try {
+        await api.post('/incidentes', toIncidentePayload(fila))
+        ok += 1
+      } catch (e) {
+        fallos.push({ numero: fila.numero, mensaje: e instanceof Error ? e.message : 'Error desconocido' })
+      }
+      setImportProgress({ done: ok + fallos.length, total: importResult.filas.length })
+    }
+    setImportSummary({ ok, fallos })
+    setImporting(false)
+    if (ok > 0) await load()
+  }
+
   return (
     <div>
       <div className="toolbar">
@@ -174,9 +236,14 @@ export default function Incidentes() {
           </select>
         </div>
         {canWrite && (
-          <button className="btn btn-primary" onClick={openNew}>
-            + Nuevo incidente
-          </button>
+          <>
+            <button className="btn btn-ghost" onClick={openImport}>
+              Importar CSV
+            </button>
+            <button className="btn btn-primary" onClick={openNew}>
+              + Nuevo incidente
+            </button>
+          </>
         )}
       </div>
 
@@ -349,6 +416,186 @@ export default function Incidentes() {
           </button>
           <button className="btn btn-primary" onClick={save} disabled={saving}>
             {saving ? 'Guardando…' : 'Guardar'}
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        title="Importar incidentes desde CSV"
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
+        wide
+      >
+        <div className="alert alert-info">
+          Cargue un archivo <strong>CSV</strong> (UTF-8, separado por comas) con el encabezado en la
+          primera fila. Cada fila válida se registra como un incidente usando el mismo contrato del
+          formulario (<code>POST /api/incidentes</code>).
+        </div>
+
+        <details className="card" style={{ padding: 14, marginBottom: 14 }}>
+          <summary style={{ cursor: 'pointer', fontWeight: 700, color: 'var(--text-secondary)' }}>
+            Guía de columnas y formatos
+          </summary>
+          <div className="table-wrap" style={{ marginTop: 10 }}>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Columna</th>
+                  <th>Obligatoria</th>
+                  <th>Valores aceptados / formato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>titulo</code></td>
+                  <td>Sí</td>
+                  <td>Texto libre</td>
+                </tr>
+                <tr>
+                  <td><code>severidad</code></td>
+                  <td>Sí</td>
+                  <td>baja · media · alta · critica</td>
+                </tr>
+                <tr>
+                  <td><code>fecha_deteccion</code></td>
+                  <td>Sí</td>
+                  <td><code>AAAA-MM-DD</code> o <code>AAAA-MM-DD HH:MM</code></td>
+                </tr>
+                <tr>
+                  <td><code>descripcion</code></td>
+                  <td>No</td>
+                  <td>Texto libre</td>
+                </tr>
+                <tr>
+                  <td><code>categoria</code></td>
+                  <td>No</td>
+                  <td>Texto libre (taxonomía ANCI)</td>
+                </tr>
+                <tr>
+                  <td><code>alcance</code></td>
+                  <td>No</td>
+                  <td>interno (por defecto) · externo · proveedor</td>
+                </tr>
+                <tr>
+                  <td><code>sistema_afectado</code></td>
+                  <td>No</td>
+                  <td>Texto libre</td>
+                </tr>
+                <tr>
+                  <td><code>estado</code></td>
+                  <td>No</td>
+                  <td>registrado (por defecto) · en_analisis · contenido · resuelto · reportado · cerrado</td>
+                </tr>
+                <tr>
+                  <td><code>reportado_anci</code></td>
+                  <td>No</td>
+                  <td>SI/NO · true/false · 1/0 (por defecto NO)</td>
+                </tr>
+                <tr>
+                  <td><code>notas</code></td>
+                  <td>No</td>
+                  <td>Texto libre</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="field-hint">
+            Guarde el archivo como CSV UTF-8. Use la plantilla descargable para respetar los
+            encabezados exactos. Las filas con error se omiten y el resto se importa. Una fecha sin
+            hora se interpreta a las 00:00.
+          </p>
+        </details>
+
+        <div className="form-grid">
+          <div className="field field-full">
+            <label className="field-label">Archivo CSV</label>
+            <input type="file" accept=".csv,text/csv" className="input" onChange={onImportFile} />
+            {importName && <span className="field-hint">Seleccionado: {importName}</span>}
+          </div>
+        </div>
+
+        {importResult && importResult.errores.length > 0 && (
+          <div className="alert alert-error">
+            <strong>{importResult.errores.length} fila(s) con error:</strong>
+            <ul style={{ margin: '8px 0 0 18px' }}>
+              {importResult.errores.map((e, i) => (
+                <li key={i}>
+                  {e.numero > 0 ? `Fila ${e.numero}: ` : ''}
+                  {e.mensaje}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {importResult && importResult.filas.length > 0 && (
+          <div className="card" style={{ padding: 14, marginTop: 14 }}>
+            <strong>Vista previa ({importResult.filas.length} incidentes válidos)</strong>
+            <div className="table-wrap" style={{ maxHeight: 240, overflowY: 'auto', marginTop: 8 }}>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Fila</th>
+                    <th>Título</th>
+                    <th>Severidad</th>
+                    <th>Alcance</th>
+                    <th>Estado</th>
+                    <th>Detección</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {importResult.filas.map((f) => (
+                    <tr key={f.numero}>
+                      <td>{f.numero}</td>
+                      <td>{f.titulo}</td>
+                      <td>
+                        <Badge color={SEVERIDAD_COLORS[f.severidad]}>{SEVERIDAD_LABELS[f.severidad]}</Badge>
+                      </td>
+                      <td>{f.alcance}</td>
+                      <td>
+                        <Badge color={ESTADO_INCIDENTE_COLORS[f.estado] || 'gray'}>
+                          {ESTADO_INCIDENTE_LABELS[f.estado]}
+                        </Badge>
+                      </td>
+                      <td>{fmtDate(f.fecha_deteccion)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {importSummary && (
+          <div className={`alert ${importSummary.fallos.length > 0 ? 'alert-error' : 'alert-info'}`}>
+            <strong>Resultado:</strong> {importSummary.ok} importado(s) correctamente
+            {importSummary.fallos.length > 0 && `, ${importSummary.fallos.length} con error.`}
+            {importSummary.fallos.length > 0 && (
+              <ul style={{ margin: '8px 0 0 18px' }}>
+                {importSummary.fallos.map((f, i) => (
+                  <li key={i}>Fila {f.numero}: {f.mensaje}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
+        <div className="modal-actions">
+          <button className="btn btn-ghost" onClick={descargarPlantillaIncidentes}>
+            Descargar plantilla CSV
+          </button>
+          <span style={{ flex: 1 }} />
+          <button className="btn btn-ghost" onClick={() => setImportOpen(false)}>
+            Cerrar
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={runImport}
+            disabled={importing || !importResult || importResult.filas.length === 0}
+          >
+            {importing
+              ? `Importando ${importProgress.done}/${importProgress.total}…`
+              : `Importar ${importResult?.filas.length ?? 0} incidente(s)`}
           </button>
         </div>
       </Modal>
